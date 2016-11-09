@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#006064</color>
+    <color name="colorAccent">#ff4081</color>
+
+    <color name="colorPrimaryMorskoy">#002d62</color>
+
+    <color name="colorPrimaryLazyrnoi">#3dbd9a</color>
+
+    <color name="colorPrimaryChrystalny">#0055a5</color>
+
+    <color name="colorPrimaryAlmazny">#5bc8d8</color>
+
+    <color name="colorPrimaryKiparisny">#6d4a9e</color>
+
+    <color name="colorPrimaryLes">#85c440</color>
+
+    <color name="colorPrimaryMorflot">#4f91cd</color>
+
+    <color name="colorPrimaryOzerniy">#fdbf26</color>
+
+    <color name="colorPrimaryPolevoy">#f68c2b</color>
+
+    <color name="colorPrimaryRechnoy">#97c0e6</color>
+
+    <color name="colorPrimaryYantarny">#ee2f2e</color>
+
+</resources>

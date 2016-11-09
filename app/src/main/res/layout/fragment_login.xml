@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:weightSum="1"
+    android:baselineAligned="false"
+    android:touchscreenBlocksFocus="false"
+    android:transitionGroup="false"
+    android:orientation="vertical">
+
+
+
+    <ImageView
+        android:layout_width="775dp"
+        android:layout_height="0dp"
+        android:id="@+id/imageLogoOpenArtek"
+        android:src="@drawable/icon_artek"
+        android:layout_weight="0.5"
+        android:onClick="open_artek"
+        android:contentDescription="@string/logo_pic"
+        android:cropToPadding="false"
+        android:contextClickable="false"
+        android:baselineAlignBottom="false"
+        android:adjustViewBounds="false" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/imageButtonLoginVk"
+        android:onClick="login_vk"
+        android:src="@drawable/vklogin_button"
+        android:layout_weight="0.1" />
+
+
+</LinearLayout>

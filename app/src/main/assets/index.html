@@ -1,0 +1,153 @@
+<html id="page">
+<head>
+<script>
+window.onload = function init () {
+	imageMapResize();
+	document.getElementById("page").onselectstart = function() {
+    return false;
+};
+document.getElementById("img").onclick = function() {
+    return false;
+};
+
+}
+function call (obj){
+	console.log(obj.id);
+	Android.show(obj.id);
+}
+
+
+!function(){"use strict";function a(){function a(){function a(a){function c(a){return a*b[1===(d=1-d)?"width":"height"]}var d=0;return a.split(",").map(Number).map(c).map(Math.floor).join(",")}for(var b={width:i.width/j.width,height:i.height/j.height},c=0;g>c;c++)f[c].coords=a(h[c])}function b(){j.onload=function(){(i.width!==j.width||i.height!==j.height)&&a()},j.src=i.src}function c(){function b(){clearTimeout(k),k=setTimeout(a,250)}window.addEventListener?window.addEventListener("resize",b,!1):window.attachEvent&&window.attachEvent("onresize",b)}function d(a){return a.coords.replace(/ *, */g,",").replace(/ +/g,",")}var e=this,f=e.getElementsByTagName("area"),g=f.length,h=Array.prototype.map.call(f,d),i=document.querySelector('img[usemap="#'+e.name+'"]'),j=new Image,k=null;b(),c()}function b(){function b(b){if(!b.tagName)throw new TypeError("Object is not a valid DOM element");if("MAP"!==b.tagName.toUpperCase())throw new TypeError("Expected <MAP> tag, found <"+b.tagName+">.");a.call(b)}return function(a){switch(typeof a){case"undefined":case"string":Array.prototype.forEach.call(document.querySelectorAll(a||"map"),b);break;case"object":b(a);break;default:throw new TypeError("Unexpected data type ("+typeof a+").")}}}"function"==typeof define&&define.amd?define([],b):"object"==typeof exports?module.exports=b():window.imageMapResize=b(),"jQuery"in window&&(jQuery.fn.imageMapResize=function(){return this.filter("map").each(a).end()})}();
+//# sourceMappingURL=imageMapResizer.map
+(function(){
+    'use strict';
+
+    function scaleImageMap(){
+
+        function resizeMap() {
+            function resizeAreaTag(cachedAreaCoords){
+                function scaleCoord(e){
+                    return e * scallingFactor[(1===(isWidth = 1-isWidth) ? 'width' : 'height')];
+                }
+
+                var isWidth = 0;
+
+                return cachedAreaCoords.split(',').map(Number).map(scaleCoord).map(Math.floor).join(',');
+            }
+
+            var scallingFactor = {
+                width  : displayedImage.width  / sourceImage.width,
+                height : displayedImage.height / sourceImage.height
+            };
+
+            for (var i=0; i < areasLen ; i++) {
+                areas[i].coords = resizeAreaTag(cachedAreaCoordsArray[i]);
+            }
+        }
+
+        function start(){
+            //WebKit asyncs image loading, so we have to catch the load event.
+            sourceImage.onload = function sourceImageOnLoadF(){
+                if ((displayedImage.width !== sourceImage.width) || (displayedImage.height !== sourceImage.height)) {
+                    resizeMap();
+                }
+            };
+            //Make copy of image, so we can get the actual size measurements
+            sourceImage.src = displayedImage.src;
+        }
+
+        function listenForResize(){
+            function debounce() {
+                clearTimeout(timer);
+                timer = setTimeout(resizeMap, 250);
+            }
+            if (window.addEventListener) { window.addEventListener('resize', debounce, false); }
+            else if (window.attachEvent) { window.attachEvent('onresize', debounce); }
+        }
+
+        function getCoords(e){
+            // normalize coord-string to csv format without any space chars
+            return e.coords.replace(/ *, */g,',').replace(/ +/g,',');
+        }
+
+        var
+            /*jshint validthis:true */
+            map                   = this, 
+            areas                 = map.getElementsByTagName('area'),
+            areasLen              = areas.length,
+            cachedAreaCoordsArray = Array.prototype.map.call(areas, getCoords),
+            displayedImage        = document.querySelector('img[usemap="#'+map.name+'"]'),
+            sourceImage           = new Image(),
+            timer                 = null;
+
+        start();
+        listenForResize();
+    }
+
+
+
+    function factory(){
+        function init(element){
+            if(!element.tagName) {
+                throw new TypeError('Object is not a valid DOM element');
+            } else if ('MAP' !== element.tagName.toUpperCase()) {
+                throw new TypeError('Expected <MAP> tag, found <'+element.tagName+'>.');
+            }
+ 
+            scaleImageMap.call(element);
+        }
+
+        return function imageMapResizeF(target){
+            switch (typeof(target)){
+                case 'undefined':
+                case 'string':
+                    Array.prototype.forEach.call(document.querySelectorAll(target||'map'),init);
+                    break;
+                case 'object':
+                    init(target);
+                    break;
+                default:
+                    throw new TypeError('Unexpected data type ('+typeof(target)+').');
+            }
+        };
+    }
+
+
+    if (typeof define === 'function' && define.amd) {
+        define([],factory);
+    } else if (typeof exports === 'object') { //Node for browserfy
+        module.exports = factory();
+    } else {
+        window.imageMapResize = factory();
+    }
+
+
+    if('jQuery' in window) {
+        jQuery.fn.imageMapResize = function $imageMapResizeF(){
+            return this.filter('map').each(scaleImageMap).end();
+        };
+    }
+
+})();
+
+
+
+</script>
+<MAP NAME="ImageMap">
+<area id="centrStadion" onclick="call(this)" SHAPE="rect" COORDS="1600,800,1875,1067">
+<area id="vezd" onclick="call(this)" SHAPE="rect" COORDS="963,406,1127,480">
+<area id="avtobaza" onclick="call(this)" SHAPE="rect" COORDS="1167,530,1300,682"><!-- 
+<area id="1" onclick="call(this)" SHAPE="rect" COORDS="121,1625,161,1673"> -->
+<!-- <area id="13" onclick="call(this)" SHAPE="rect" COORDS="525,1683,637,1771">
+ --><area id="kiparis" onclick="call(this)" SHAPE="rect" COORDS="43,1509,637,1837">
+<area id="lazyr" onclick="call(this)" SHAPE="rect" COORDS="627,1347,1193,1755">
+<area id="adalar" onclick="call(this)" SHAPE="rect" COORDS="877,1791,1137,2269">
+<area id="pribrejny" onclick="call(this)" SHAPE="rect" COORDS="1119,1097,1825,1803">
+<area id="gorny" onclick="call(this)" SHAPE="rect" COORDS="1826,1070,3081,1457">
+<area id="morskoy" onclick="call(this)" SHAPE="rect" COORDS="2041,1485,2721,1999">
+</MAP>
+</head>
+<body>
+<img id="img" usemap="#ImageMap" height="100%" style="margin : 0px;"  width="100%" src="file:///android_asset/karta-arteka.jpg" >
+</body>
+</html>

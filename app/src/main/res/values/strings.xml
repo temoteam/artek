@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Артек</string>
+    <string name="title_activity_login">Войти</string>
+
+
+    <string name="title_activity_main">Артек</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_camp">Выбрать лагерь</string>
+    <string name="logo_pic">logo</string>
+    <string name="login_vk">Войти с вк</string>
+    <string name="title_activity_game">Игра</string>
+
+    <string name="action_settings">Настройки</string>
+    <string name="cong">Поздравляем</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

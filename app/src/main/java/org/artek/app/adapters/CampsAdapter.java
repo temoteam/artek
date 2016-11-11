@@ -19,12 +19,14 @@ public class CampsAdapter extends ArrayAdapter<Camps> {
     Context context;
     int layoutResourceId;
     Camps data[] = null;
+    Activity activity;
 
-    public CampsAdapter(Context context, int layoutResourceId, Camps[] data) {
+    public CampsAdapter(Context context, int layoutResourceId, Camps[] data,Activity activity) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
+        this.activity = activity;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class CampsAdapter extends ArrayAdapter<Camps> {
         CampsHolder holder = null;
 
         if (row == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = activity.getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new CampsHolder();

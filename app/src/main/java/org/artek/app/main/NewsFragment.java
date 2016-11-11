@@ -29,16 +29,13 @@ import java.util.HashMap;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NewsFragment extends Fragment {
 
 
     ListView mListView;
-    String domain = "artek.media";
-    Context baseContext;
+    final String domain = "artek.media";
     NoInternetFragment noInternetFragment;
+    Context baseContext;
 
 
     public NewsFragment() {
@@ -48,20 +45,16 @@ public class NewsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        baseContext = getActivity().getBaseContext();
+        noInternetFragment = new NoInternetFragment();
+        noInternetFragment.setNewsFragment(this);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        baseContext = getActivity().getBaseContext();
 
-        noInternetFragment = new NoInternetFragment();
-        noInternetFragment.setNewsFragment(this);
-
-        String strUrl = "https://api.vk.com/method/wall.get?domain=" + domain + "&count=50";
-        DownloadTask downloadTask = new DownloadTask();
-        downloadTask.execute(strUrl);
     }
 
 
@@ -70,7 +63,11 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.fragment_blank, container, false);
         mListView = (ListView) result.findViewById(R.id.listView);
-        onResume();
+
+        String strUrl = "https://api.vk.com/method/wall.get?domain=" + domain + "&count=50";
+        DownloadTask downloadTask = new DownloadTask();
+        downloadTask.execute(strUrl);
+
         return result;
     }
 
@@ -95,7 +92,6 @@ public class NewsFragment extends Fragment {
             br.close();
 
         } catch (Exception e) {
-            Log.d("Exception while downloading url", e.toString());
         } finally {
             iStream.close();
         }
@@ -162,6 +158,7 @@ public class NewsFragment extends Fragment {
             try{
 
             mListView.setAdapter(adapter);
+                Log.i("adapter","setted");
             for (int i = 0; i < adapter.getCount(); i++) {
 
                 HashMap<String, Object> hm = (HashMap<String, Object>) adapter

@@ -41,8 +41,8 @@ public class SelectCampFragment extends Fragment {
                         new Camps(R.drawable.yantarny, "Yantarny", "#ee2f2e")
                 };
 
-        CampsAdapter adapter = new CampsAdapter(getContext(),
-                R.layout.listview_enter_camp, camps_data);
+        CampsAdapter adapter = new CampsAdapter(getActivity().getApplicationContext(),
+                R.layout.listview_enter_camp, camps_data,getActivity());
 
         ListView listView1 = (ListView) getActivity().findViewById(R.id.campsview);
 

@@ -30,11 +30,6 @@ public class NewsJSONParser {
 
         for (int i = 0; i < arrayNewsCount; i++) {
             try {
-                if (i == 0) {
-                    System.out.println("The transition towards the next object"
-                            + i);
-                    i++;
-                }
                 news = getNews((JSONObject) jArrayNews.get(i));
                 arrayNewsList.add(news);
             } catch (JSONException e) {

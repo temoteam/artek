@@ -23,8 +23,13 @@ public class RadioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+      /*  try {
+            wait(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        
         return inflater.inflate(R.layout.fragment_radio, null);
-
 
     }
 
@@ -48,7 +53,7 @@ public class RadioFragment extends Fragment {
                 }
             }
         };
-        getContext().registerReceiver(service, filter);
+        getActivity().registerReceiver(service, filter);
 
 
 
@@ -58,11 +63,11 @@ public class RadioFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(isPlaying){
-                getContext().startService(new Intent(getContext(),RadioService.class));
+                getActivity().startService(new Intent(getActivity(),RadioService.class));
                 isPlaying= false;
             } else {
                 //if(service!= null){getContext().unregisterReceiver(service);}
-                getContext().stopService(new Intent(getContext(),RadioService.class));
+                getActivity().stopService(new Intent(getActivity(),RadioService.class));
                 isPlaying = true;
             }
         }

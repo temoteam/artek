@@ -78,7 +78,7 @@ public class FirstFragment extends Fragment {
         try {
 
             // open stream to write data
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getContext().openFileOutput(FILENAME, MODE_PRIVATE)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getActivity().getApplicationContext().openFileOutput(FILENAME, MODE_PRIVATE)));
 
             // write data
             bw.write(content);

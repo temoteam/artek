@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Thread.UncaughtExceptionHandler {
 
     final String LOG_TAG = "myLogs";
 
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentTransaction fTrans;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -52,7 +54,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Global.initilizate(this);
+        try {
+            Global.initilizate(this);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -72,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         radioFragment = new RadioFragment();
 
         new Updater(this);
+
+        //Thread.setDefaultUncaughtExceptionHandler (this);
 
         /*if (Global.userInfo!=null)
             Global.accountManager.login(Global.userInfo.get("utoken"),Global.userInfo.get("uid"));*/
@@ -105,6 +114,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable throwable) {
+
+        Intent intent = new Intent ();
+        intent.setAction ("org.artek.app.SEND_LOG");
+        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity (intent);
+        System.exit(1);
     }
 
     @Override
@@ -159,6 +178,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            Global.logReader.stop();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -171,6 +200,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fTrans.replace(R.id.frgmCont, newsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
+
+            Log.i("news","started");
 
         } else if (id == R.id.nav_dictionary) {
 

@@ -215,7 +215,7 @@ public class LoginVKFragment extends Fragment {
                     }
 
                 }
-                Log.i("httpAnswer", answerHTTP);
+                //Log.i("httpAnswer", answerHTTP);
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {

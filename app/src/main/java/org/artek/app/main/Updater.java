@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class Updater {
 
     private int lastVertion;
-    private final int THIS_VERSION = 0;
+    private final int THIS_VERSION = -1;
     private final String LAST_API_FILE_PACH = "http://lohness.com/artek/update/update.txt";
     private String updateFile;
     private String updateURL;
@@ -133,12 +133,13 @@ public class Updater {
                 ad.setMessage("Текущая верся программы "+THIS_VERSION+", последняя версия "+lastVertion); // сообщение
                 ad.setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        /*
+
                         Toast.makeText(activity.getApplicationContext(), "Началась загрузка обновления",
                                 Toast.LENGTH_SHORT).show();
-                        new InstallUpdate().execute();*/
+                        new InstallUpdate().execute();
+                        /*
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://lohness.com/artek/app/index.php"));
-                        activity.startActivity(intent);
+                        activity.startActivity(intent);*/
                     }
                 });
                 ad.setCancelable(false);

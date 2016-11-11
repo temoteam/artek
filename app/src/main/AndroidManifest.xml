@@ -7,9 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -35,7 +34,16 @@
         <service
             android:name=".RadioService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".main.SendingActivity"
+            android:label="@string/title_activity_sending"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+            <action android:name="org.artek.app.SEND_LOG" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter></activity>
     </application>
 
 </manifest>

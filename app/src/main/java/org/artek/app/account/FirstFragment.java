@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
 import java.io.BufferedWriter;
@@ -41,6 +42,9 @@ public class FirstFragment extends Fragment {
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         super.onActivityCreated(savedInstanceState);
         Log.d("kek", "first");
 

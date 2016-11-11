@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.adapters.Camps;
 import org.artek.app.R;
 import org.artek.app.adapters.CampsAdapter;
@@ -25,6 +26,9 @@ public class SelectCampFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         super.onActivityCreated(savedInstanceState);
         Camps camps_data[] = new Camps[]
                 {
@@ -41,8 +45,8 @@ public class SelectCampFragment extends Fragment {
                         new Camps(R.drawable.yantarny, "Yantarny", "#ee2f2e")
                 };
 
-        CampsAdapter adapter = new CampsAdapter(getActivity().getApplicationContext(),
-                R.layout.listview_enter_camp, camps_data,getActivity());
+        CampsAdapter adapter = new CampsAdapter(getActivity(),
+                R.layout.listview_enter_camp, camps_data);
 
         ListView listView1 = (ListView) getActivity().findViewById(R.id.campsview);
 

@@ -19,17 +19,25 @@ public class RadioFragment extends Fragment {
 
     boolean isPlaying = true;
     BroadcastReceiver service;
+    private View.OnClickListener pausePlay = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (isPlaying) {
+                getActivity().getApplicationContext().startService(new Intent(getActivity(), RadioService.class));
+                isPlaying = false;
+            } else {
+                //if(service!= null){getContext().unregisterReceiver(service);}
+                getActivity().getApplicationContext().stopService(new Intent(getActivity(), RadioService.class));
+                isPlaying = true;
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-      /*  try {
-            wait(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        
         return inflater.inflate(R.layout.fragment_radio, null);
+
 
     }
 
@@ -42,35 +50,17 @@ public class RadioFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction("AppService");
 
-        service = new BroadcastReceiver()
-        {
+        service = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                if(intent.getAction().equals("AppService"))
-                {
-                    Log.d("AppService",intent.getStringExtra("Data"));
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("AppService")) {
+                    Log.d("AppService", intent.getStringExtra("Data"));
                 }
             }
         };
         getActivity().registerReceiver(service, filter);
 
 
-
     }
-
-    private View.OnClickListener pausePlay = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(isPlaying){
-                getActivity().startService(new Intent(getActivity(),RadioService.class));
-                isPlaying= false;
-            } else {
-                //if(service!= null){getContext().unregisterReceiver(service);}
-                getActivity().stopService(new Intent(getActivity(),RadioService.class));
-                isPlaying = true;
-            }
-        }
-    };
 
 }

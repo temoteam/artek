@@ -26,6 +26,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.artek.app.Global;
 import org.artek.app.main.NewsFragment;
@@ -59,6 +60,9 @@ public class LoginVKFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_vk, container, false);
     }
@@ -215,7 +219,7 @@ public class LoginVKFragment extends Fragment {
                     }
 
                 }
-                //Log.i("httpAnswer", answerHTTP);
+                Log.i("httpAnswer", answerHTTP);
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {

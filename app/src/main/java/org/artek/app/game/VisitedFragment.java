@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
 import org.artek.app.RecyclerItemClickListener;
@@ -39,6 +40,9 @@ public class VisitedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         return inflater.inflate(R.layout.fragment_visited, null);
 
     }

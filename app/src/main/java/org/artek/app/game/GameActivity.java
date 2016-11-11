@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.main.MainActivity;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
@@ -55,6 +56,9 @@ public class GameActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 

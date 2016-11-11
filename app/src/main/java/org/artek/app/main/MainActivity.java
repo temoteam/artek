@@ -13,9 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.artek.app.account.FirstFragment;
-import org.artek.app.R;
+import org.artek.app.ExceptionHandler;
 import org.artek.app.Global;
+import org.artek.app.R;
+import org.artek.app.account.FirstFragment;
 import org.artek.app.game.GameActivity;
 
 import java.io.BufferedReader;
@@ -26,7 +27,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Thread.UncaughtExceptionHandler {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final String LOG_TAG = "myLogs";
 
@@ -44,22 +45,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentTransaction fTrans;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        try {
-            Global.initilizate(this);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Global.initilizate(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -79,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         radioFragment = new RadioFragment();
 
         new Updater(this);
-
-        //Thread.setDefaultUncaughtExceptionHandler (this);
 
         /*if (Global.userInfo!=null)
             Global.accountManager.login(Global.userInfo.get("utoken"),Global.userInfo.get("uid"));*/
@@ -117,16 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable throwable) {
-
-        Intent intent = new Intent ();
-        intent.setAction ("org.artek.app.SEND_LOG");
-        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity (intent);
-        System.exit(1);
-    }
-
-    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -146,8 +130,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-
-
 
 
     }
@@ -178,16 +160,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            Global.logReader.stop();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -200,8 +172,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fTrans.replace(R.id.frgmCont, newsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
-
-            Log.i("news","started");
 
         } else if (id == R.id.nav_dictionary) {
 
@@ -217,13 +187,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fTrans.addToBackStack(null);
             fTrans.commit();
 
-        }else if (id == R.id.nav_radio) {
+        } else if (id == R.id.nav_radio) {
             Log.d("lala", "lala");
             fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmCont,radioFragment);
+            fTrans.replace(R.id.frgmCont, radioFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
-        }else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_settings) {
 
             fTrans = getFragmentManager().beginTransaction();
             fTrans.replace(R.id.frgmCont, settingsFragment);

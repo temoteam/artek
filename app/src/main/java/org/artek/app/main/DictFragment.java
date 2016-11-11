@@ -4,6 +4,8 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.widget.SimpleAdapter;
 
+import org.artek.app.ExceptionHandler;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,6 +22,9 @@ public class DictFragment extends ListFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         super.onActivityCreated(savedInstanceState);
 
 
@@ -151,8 +156,6 @@ public class DictFragment extends ListFragment {
                 new int[]{android.R.id.text1, android.R.id.text2});
         setListAdapter(adapter);
     }
-
-
 
 
 }

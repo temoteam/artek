@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.artek.app.ExceptionHandler;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -23,9 +24,9 @@ import java.util.Scanner;
 
 public class Updater {
 
-    private int lastVertion;
-    private final int THIS_VERSION = -1;
+    private final int THIS_VERSION = 0;
     private final String LAST_API_FILE_PACH = "http://lohness.com/artek/update/update.txt";
+    private int lastVertion;
     private String updateFile;
     private String updateURL;
 
@@ -33,46 +34,48 @@ public class Updater {
 
 
     public Updater(Activity activity) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         this.activity = activity;
-        updateFile = Environment.getExternalStorageDirectory().getPath()+"/update.apk";
+        updateFile = Environment.getExternalStorageDirectory().getPath() + "/update.apk";
         new CheckerForUpdates().execute();
     }
 
 
-
-    public boolean checkForUpdates () throws IOException{
+    public boolean checkForUpdates() throws IOException {
         getLastVersion();
-        Log.i("lastVertion",""+ lastVertion);
+        Log.i("lastVertion", "" + lastVertion);
         return THIS_VERSION < lastVertion;
 
     }
 
     public String getUpdate() throws IOException {
 
-                File update = new File(updateFile);
-                if (update.exists())
-                    update.delete();
-                update = new File(updateFile);
-                update.createNewFile();
-                 //getUpdate(activity.getApplicationContext());
-                download(updateURL,update);
-                return updateFile;
+        File update = new File(updateFile);
+        if (update.exists())
+            update.delete();
+        update = new File(updateFile);
+        update.createNewFile();
+        //getUpdate(activity.getApplicationContext());
+        download(updateURL, update);
+        return updateFile;
     }
 
 
-    public String getUpdate(Context context){
+    public String getUpdate(Context context) {
         File update = new File(Environment.DIRECTORY_DOWNLOADS + "/update.apk");
         if (update.exists())
             update.delete();
-            downloadByDownloader(context,Uri.parse(updateURL));
+        downloadByDownloader(context, Uri.parse(updateURL));
 
-        return Environment.DIRECTORY_DOWNLOADS+"/update.apk";
+        return Environment.DIRECTORY_DOWNLOADS + "/update.apk";
     }
 
 
     private void download(String urlStr, File file) throws IOException {
         URL url = new URL(urlStr);
-        Log.i("download",urlStr);
+        Log.i("download", urlStr);
         BufferedInputStream bis = new BufferedInputStream(url.openStream());
         FileOutputStream fis = new FileOutputStream(file);
         byte[] buffer = new byte[1024];
@@ -84,12 +87,12 @@ public class Updater {
         bis.close();
     }
 
-    private void downloadByDownloader(Context context,Uri uri) {
+    private void downloadByDownloader(Context context, Uri uri) {
         DownloadManager.Request r = new DownloadManager.Request(uri);
         r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "update.apk");
         r.allowScanningByMediaScanner();
         r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        DownloadManager dm = (DownloadManager)context.getSystemService(context.DOWNLOAD_SERVICE);
+        DownloadManager dm = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
         long i = dm.enqueue(r);
         try {
             Thread.sleep(60000);
@@ -125,21 +128,20 @@ public class Updater {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            Log.i("updates",""+aBoolean);
-            if(aBoolean) {
+            Log.i("updates", "" + aBoolean);
+            if (aBoolean) {
                 AlertDialog.Builder ad;
                 ad = new AlertDialog.Builder(activity);
                 ad.setTitle("Доступно обновление");  // заголовок
-                ad.setMessage("Текущая верся программы "+THIS_VERSION+", последняя версия "+lastVertion); // сообщение
+                ad.setMessage("Текущая верся программы " + THIS_VERSION + ", последняя версия " + lastVertion); // сообщение
                 ad.setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-
+                        /*
                         Toast.makeText(activity.getApplicationContext(), "Началась загрузка обновления",
                                 Toast.LENGTH_SHORT).show();
-                        new InstallUpdate().execute();
-                        /*
+                        new InstallUpdate().execute();*/
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://lohness.com/artek/app/index.php"));
-                        activity.startActivity(intent);*/
+                        activity.startActivity(intent);
                     }
                 });
                 ad.setCancelable(false);
@@ -149,15 +151,16 @@ public class Updater {
                     }
                 });
                 ad.show();
+            } else {
+                Toast.makeText(activity.getApplicationContext(), "Обновления не обнаружены",
+                        Toast.LENGTH_SHORT).show();
             }
-            else {Toast.makeText(activity.getApplicationContext(), "Обновления не обнаружены",
-                    Toast.LENGTH_SHORT).show();}
         }
 
         class InstallUpdate extends AsyncTask<Void, Void, String> {
             private ProgressDialog dialog;
 
-            public InstallUpdate(){
+            public InstallUpdate() {
                 dialog = new ProgressDialog(activity);
             }
 

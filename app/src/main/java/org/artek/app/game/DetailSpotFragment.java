@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
 
@@ -33,6 +34,9 @@ public class DetailSpotFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         return inflater.inflate(R.layout.fragment_detail_spot, null);
 
 

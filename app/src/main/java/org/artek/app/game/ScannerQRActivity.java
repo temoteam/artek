@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.zxing.Result;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -21,6 +22,9 @@ public class ScannerQRActivity extends AppCompatActivity implements ZXingScanner
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkPermissionsCamera();

@@ -1,12 +1,12 @@
 package org.artek.app.main;
 
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.json.JSONObject;
 
@@ -29,13 +30,16 @@ import java.util.HashMap;
 import java.util.List;
 
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class NewsFragment extends Fragment {
 
 
     ListView mListView;
-    final String domain = "artek.media";
-    NoInternetFragment noInternetFragment;
+    String domain = "artek.media";
     Context baseContext;
+    NoInternetFragment noInternetFragment;
 
 
     public NewsFragment() {
@@ -45,16 +49,23 @@ public class NewsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        baseContext = getActivity().getBaseContext();
-        noInternetFragment = new NoInternetFragment();
-        noInternetFragment.setNewsFragment(this);
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        baseContext = getActivity().getBaseContext();
 
+        noInternetFragment = new NoInternetFragment();
+        noInternetFragment.setNewsFragment(this);
+
+        String strUrl = "https://api.vk.com/method/wall.get?domain=" + domain + "&count=50";
+        DownloadTask downloadTask = new DownloadTask();
+        downloadTask.execute(strUrl);
     }
 
 
@@ -63,11 +74,7 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.fragment_blank, container, false);
         mListView = (ListView) result.findViewById(R.id.listView);
-
-        String strUrl = "https://api.vk.com/method/wall.get?domain=" + domain + "&count=50";
-        DownloadTask downloadTask = new DownloadTask();
-        downloadTask.execute(strUrl);
-
+        onResume();
         return result;
     }
 
@@ -92,6 +99,7 @@ public class NewsFragment extends Fragment {
             br.close();
 
         } catch (Exception e) {
+            Log.d("Exception while downloading url", e.toString());
         } finally {
             iStream.close();
         }
@@ -155,27 +163,25 @@ public class NewsFragment extends Fragment {
         @Override
         protected void onPostExecute(SimpleAdapter adapter) {
 
-            try{
+            try {
 
-            mListView.setAdapter(adapter);
-                Log.i("adapter","setted");
-            for (int i = 0; i < adapter.getCount(); i++) {
+                mListView.setAdapter(adapter);
+                for (int i = 0; i < adapter.getCount(); i++) {
 
-                HashMap<String, Object> hm = (HashMap<String, Object>) adapter
-                        .getItem(i);
-                String imgUrl = (String) hm.get("imageLogo_path");
-                ImageLoaderTask imageLoaderTask = new ImageLoaderTask();
-                HashMap<String, Object> hmDownload = new HashMap<String, Object>();
-                hm.put("imageLogo_path", imgUrl);
-                hm.put("position", i);
-                imageLoaderTask.execute(hm);
-
+                    HashMap<String, Object> hm = (HashMap<String, Object>) adapter
+                            .getItem(i);
+                    String imgUrl = (String) hm.get("imageLogo_path");
+                    ImageLoaderTask imageLoaderTask = new ImageLoaderTask();
+                    HashMap<String, Object> hmDownload = new HashMap<String, Object>();
+                    hm.put("imageLogo_path", imgUrl);
+                    hm.put("position", i);
+                    imageLoaderTask.execute(hm);
 
 
-            }
-            }catch(NullPointerException e){
+                }
+            } catch (NullPointerException e) {
                 e.printStackTrace();
-                Log.i("internet connection","NO INTERNET");
+                Log.i("internet connection", "NO INTERNET");
                 getFragmentManager().beginTransaction().replace(R.id.frgmCont, noInternetFragment).commit();
                 onPause();
                 onStop();

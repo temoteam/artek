@@ -17,45 +17,45 @@ import java.util.Random;
 
 
 public class RadioService extends Service {
-    String a[];
-    public MediaPlayer mediaPlayer;
-
-    final Random random = new Random();
-
-    boolean intialStage = true;
-
     final static String SENDMESAGGE = "passMessage";
-
     public static Boolean serviceStatus = false;
+    final Random random = new Random();
+    public MediaPlayer mediaPlayer;
+    String a[];
+    boolean intialStage = true;
 
 
     public RadioService() {
     }
 
 
-
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
-        return  null;
+        return null;
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //you service etc...
+
         return Service.START_STICKY;
     }
-    private void passMessageToActivity(String message){
+
+    private void passMessageToActivity(String message) {
         Intent intent = new Intent();
         intent.setAction(SENDMESAGGE);
-        intent.putExtra("message",message);
+        intent.putExtra("message", message);
         sendBroadcast(intent);
     }
 
 
-
-
     public void onCreate() {
         super.onCreate();
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
+        new GetSongs().execute();
     }
 
 
@@ -64,14 +64,10 @@ public class RadioService extends Service {
     }
 
 
-
-
-
-
-
-
-
     class Player extends AsyncTask<String, Void, Boolean> {
+
+        public Player() {
+        }
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -91,7 +87,7 @@ public class RadioService extends Service {
                         mediaPlayer.reset();
                         int e = random.nextInt(a.length);
                         new Player()
-                                .execute("http://lohness.com/artek/radio/files/"+a[e]);
+                                .execute("http://lohness.com/artek/radio/files/" + a[e]);
                     }
                 });
                 mediaPlayer.prepare();
@@ -127,9 +123,6 @@ public class RadioService extends Service {
             intialStage = false;
         }
 
-        public Player() {
-        }
-
         @Override
         protected void onPreExecute() {
             // TODO Auto-generated method stub
@@ -139,52 +132,51 @@ public class RadioService extends Service {
     }
 
 
-
     class GetSongs extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... path) {
 
             String content;
-            try{
+            try {
 
                 content = getContent("http://lohness.com/artek/radio/index.php");
-            }
-            catch (IOException ex){
+            } catch (IOException ex) {
                 content = ex.getMessage();
             }
 
             return content;
         }
+
         @Override
         protected void onProgressUpdate(Void... items) {
         }
+
         @Override
         public void onPostExecute(String content) {
 
             a = content.split("#");
             int e = random.nextInt(a.length);
             new Player()
-                    .execute("http://lohness.com/artek/radio/files/"+a[e]);
+                    .execute("http://lohness.com/artek/radio/files/" + a[e]);
 
         }
 
         private String getContent(String path) throws IOException {
-            BufferedReader reader=null;
+            BufferedReader reader = null;
             try {
-                URL url=new URL(path);
-                HttpURLConnection c=(HttpURLConnection)url.openConnection();
+                URL url = new URL(path);
+                HttpURLConnection c = (HttpURLConnection) url.openConnection();
                 c.setRequestMethod("GET");
                 c.setReadTimeout(10000);
                 c.connect();
-                reader= new BufferedReader(new InputStreamReader(c.getInputStream()));
-                StringBuilder buf=new StringBuilder();
-                String line=null;
-                while ((line=reader.readLine()) != null) {
+                reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
+                StringBuilder buf = new StringBuilder();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
                     buf.append(line + "\n");
                 }
-                return(buf.toString());
-            }
-            finally {
+                return (buf.toString());
+            } finally {
                 if (reader != null) {
                     reader.close();
                 }

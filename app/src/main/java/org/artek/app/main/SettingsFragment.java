@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.artek.app.account.FirstFragment;
 
@@ -16,6 +17,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         return inflater.inflate(R.layout.fragment_settings, null);
 
     }
@@ -28,7 +32,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                getContext().deleteFile("first");
+                getActivity().getApplicationContext().deleteFile("first");
                 getFragmentManager().beginTransaction().replace(R.id.frgmCont, new FirstFragment()).commit();
             }
         });

@@ -10,6 +10,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
 public class HistoryFragment extends Fragment {
@@ -23,6 +24,9 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         super.onActivityCreated(savedInstanceState);
 
         WebView wv = (WebView) getView().findViewById(R.id.mapWebView);

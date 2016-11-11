@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -23,7 +22,7 @@ import android.widget.Toast;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.main.MainActivity;
 import org.artek.app.R;
-import org.artek.app.adapters.RecyclerAdapter;
+import org.artek.app.main.RadioFragment;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -35,23 +34,12 @@ import java.io.OutputStreamWriter;
 public class GameActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    final String FILENAME = "gameData";
     final String IO_LOG_TAG = "I/O_Logs";
-    final int[] datass = {};
     int backButton = 0;
     int DIALOG_CONG = 11;
     String places = "63#70";
 
     FragmentTransaction fTrans;
-    VisitedFragment visitedFragment;
-    GameFragment gameFragment;
-    org.artek.app.game.StartGameFragment StartGameFragment;
-    org.artek.app.game.DetailSpotFragment DetailSpotFragment;
-
-    private RecyclerView mRecyclerView;
-
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerAdapter mAdapter;
 
 
     @Override
@@ -62,16 +50,13 @@ public class GameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        // Register the onClick listener with the implementation above
-
-
         writeFile("places", places);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        StartGameFragment = new StartGameFragment();
+
         fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmContGame, StartGameFragment);
+        fTrans.replace(R.id.frgmContGame, new StartGameFragment());
         fTrans.addToBackStack(null);
         fTrans.commit();
 
@@ -106,7 +91,7 @@ public class GameActivity extends AppCompatActivity
 
     public void onVisitedButtonClick(View view) {
         fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCont, visitedFragment);
+        fTrans.replace(R.id.frgmCont, new VisitedFragment());
         fTrans.addToBackStack(null);
         fTrans.commit();
     }
@@ -195,23 +180,21 @@ public class GameActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        /*if (id == R.id.nav_game) {
-
+        if (id == R.id.nav_visited) {
             fTrans = getFragmentManager().beginTransaction();
-            StartGameFragment = new StartGameFragment();
-            fTrans.replace(R.id.frgmContGame, gameFragment);
+            fTrans.replace(R.id.frgmContGame, new VisitedFragment());
             fTrans.addToBackStack(null);
             fTrans.commit();
-        } else*/ if (id == R.id.nav_visited) {
+        } else if (id == R.id.nav_stat) {
             fTrans = getFragmentManager().beginTransaction();
-            visitedFragment = new VisitedFragment();
-            fTrans.replace(R.id.frgmContGame, visitedFragment);
+            fTrans.replace(R.id.frgmContGame, new StartGameFragment());
             fTrans.addToBackStack(null);
             fTrans.commit();
-        } else if (id == R.id.nav_leaderboard) {
-            //
         } else if (id == R.id.nav_radio) {
-            //
+            fTrans = getFragmentManager().beginTransaction();
+            fTrans.replace(R.id.frgmContGame, new RadioFragment());
+            fTrans.addToBackStack(null);
+            fTrans.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -290,8 +273,7 @@ public class GameActivity extends AppCompatActivity
                 String keklol[] = readFile(scan).split("#");
                 writeFile("currcardclick", keklol[0]);
                 fTrans = getFragmentManager().beginTransaction();
-                DetailSpotFragment = new DetailSpotFragment();
-                fTrans.replace(R.id.frgmContGame,DetailSpotFragment);
+                fTrans.replace(R.id.frgmContGame, new DetailSpotFragment());
                 fTrans.addToBackStack(null);
                 fTrans.commit();
 

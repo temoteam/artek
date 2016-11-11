@@ -4,7 +4,8 @@
     <item
         android:id="@+id/endGame"
         android:title="End game"
-        android:icon="@android:drawable/star_big_off" />
+        android:icon="@android:drawable/star_big_off"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/action_camp"
         android:orderInCategory="100"

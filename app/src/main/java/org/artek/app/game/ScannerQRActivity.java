@@ -1,6 +1,7 @@
 package org.artek.app.game;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import org.artek.app.R;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class ScannerQRActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class ScannerQRActivity extends Activity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     private static final int REQUEST_CAMERA = 10;
 
@@ -26,8 +27,7 @@ public class ScannerQRActivity extends AppCompatActivity implements ZXingScanner
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        checkPermissionsCamera();
+        //checkPermissionsCamera();
 
     }
 

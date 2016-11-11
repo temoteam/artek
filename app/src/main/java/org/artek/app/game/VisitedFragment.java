@@ -53,7 +53,7 @@ public class VisitedFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                new RecyclerItemClickListener(getActivity().getApplicationContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         Log.d("azaza", "click" + position);
                         Log.d("azaza", view.toString());
@@ -83,7 +83,7 @@ public class VisitedFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new RecyclerAdapter(myDataset);
@@ -119,7 +119,7 @@ public class VisitedFragment extends Fragment {
         try {
 
             // open stream to write data
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getContext().openFileOutput(FILENAME, MODE_PRIVATE)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getActivity().getApplicationContext().openFileOutput(FILENAME, MODE_PRIVATE)));
 
             // write data
             bw.write(content);
@@ -139,7 +139,7 @@ public class VisitedFragment extends Fragment {
         try {
 
             // open stream to read data
-            BufferedReader br = new BufferedReader(new InputStreamReader(getContext().openFileInput(FILENAME)));
+            BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getApplicationContext().openFileInput(FILENAME)));
 
             // read data
             while ((str = br.readLine()) != null) {

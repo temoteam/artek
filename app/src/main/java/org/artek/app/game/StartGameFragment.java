@@ -20,19 +20,6 @@ import java.io.InputStreamReader;
 public class StartGameFragment extends Fragment {
 
 
-    FragmentTransaction fTrans;
-    VisitedFragment visitedFragment;
-
-    private View.OnClickListener mCorkyListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            visitedFragment = new VisitedFragment();
-            fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmContGame, visitedFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-        }
-    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,11 +34,6 @@ public class StartGameFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
-       // Button button1 = (Button) getActivity().findViewById(R.id.button31);
-       // button1.setOnClickListener(mCorkyListener);
-
         writeText();
 
     }
@@ -77,8 +59,6 @@ public class StartGameFragment extends Fragment {
 
         String kek = readFile("places");
         String topkek[] = kek.split("#");
-        //Log.d("kekekeke",  String.valueOf(kek.indexOf(scan)));
-        //Log.d("klololol",  scan);
         if ( Integer.parseInt(readFile("score")) == 0){
 
             return "Вы не посетили не одной точки!";
@@ -97,7 +77,7 @@ public class StartGameFragment extends Fragment {
         try {
 
             // open stream to read data
-            BufferedReader br = new BufferedReader(new InputStreamReader(getContext().openFileInput(FILENAME)));
+            BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getApplicationContext().openFileInput(FILENAME)));
 
             // read data
             while ((str = br.readLine()) != null) {
@@ -113,12 +93,6 @@ public class StartGameFragment extends Fragment {
             e.printStackTrace();
         }
         return content;
-    }
-    public void onVisitedButtonClick(View view) {
-        fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCont, visitedFragment);
-        fTrans.addToBackStack(null);
-        fTrans.commit();
     }
 
 

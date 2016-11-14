@@ -1,23 +1,17 @@
 package org.artek.app.account;
 
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,8 +21,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.artek.app.ExceptionHandler;
-import org.artek.app.R;
 import org.artek.app.Global;
+import org.artek.app.R;
 import org.artek.app.main.NewsFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,11 +33,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
-import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
 /**
@@ -60,9 +51,7 @@ public class LoginVKFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_vk, container, false);
     }
@@ -92,16 +81,11 @@ public class LoginVKFragment extends Fragment {
         String token = url.substring(a + 13, b);
         a = url.indexOf("user_id=");
         String user_id = url.substring(a + 8);
-        Log.d("kek",user_id);
-        Log.d("kek", token);
-        SharedPreferences sPref = getActivity().getPreferences(MODE_WORLD_WRITEABLE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString("token", token);
-        ed.putString("user_id", user_id);
-        ed.commit();
+
+        Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.LAST_TOKEN,token).commit();
+        Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.LAST_ID,user_id).commit();
 
         Global.accountManager.login(token,user_id);
-        Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.LAST_TOKEN,token).commit();
         /*
         try {
             Global.userInfo = new httpGet("https://api.vk.com/method/users.get?access_token=" + token).execute().get();
@@ -143,15 +127,12 @@ public class LoginVKFragment extends Fragment {
             //Log.d(Constants.DEBUG_TAG, "Redirecting URL " + url);
 
             if (url.startsWith("https://oauth.vk.com/blank.html") & (!url.contains("error"))) {
-                Log.d("kek","url contains callback url");
-                Log.d("kek", url);
                 getUserData(url);
                 return true;
 
             } else if (url.contains("error")) {
                 return false;
             } else {
-                Log.d("kek","url not contains callback url");
                 view.loadUrl(url);
                 return true;
             }

@@ -48,13 +48,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
-
-
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-            Log.d("bug","setmain");
 
 
         super.onCreate(savedInstanceState);
@@ -83,7 +78,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         selectCampFragment = new SelectCampFragment();
 
 
+        Global.accountManager.setAppInterface(new Global.appInterface() {
+            @Override
+            public void returner() {
+                fTrans = getFragmentManager().beginTransaction();
+                fTrans.replace(R.id.frgmCont,new LoginFragment());
+                fTrans.addToBackStack(null);
+                fTrans.commit();
+            }
+        });
 
+        fTrans = getFragmentManager().beginTransaction();
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)){
+            selectCampFragment.setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.CAMP,0),this);
+            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)){
+                fTrans.replace(R.id.frgmCont, newsFragment);
+                Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null));}
+            else
+                fTrans.replace(R.id.frgmCont,new LoginFragment());}
+        else
+            fTrans.replace(R.id.frgmCont,selectCampFragment);
+        fTrans.addToBackStack(null);
+        fTrans.commit();
+
+
+        selectCampFragment.setAppInterface(new Global.appInterface() {
+            @Override
+            public void returner() {
+                fTrans = getFragmentManager().beginTransaction();
+                if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN))
+                    fTrans.replace(R.id.frgmCont, newsFragment);
+                else
+                    fTrans.replace(R.id.frgmCont,new LoginFragment());
+
+                fTrans.addToBackStack(null);
+                fTrans.commit();
+            }
+        });
 
 
     }
@@ -111,32 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
 
-        fTrans = getFragmentManager().beginTransaction();
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)){
-            selectCampFragment.setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.CAMP,0),this);
-            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)){
-                fTrans.replace(R.id.frgmCont, newsFragment);
-                Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null));}
-            else
-                fTrans.replace(R.id.frgmCont,new LoginFragment());}
-        else
-            fTrans.replace(R.id.frgmCont,selectCampFragment);
-        fTrans.addToBackStack(null);
-        fTrans.commit();
-
-        selectCampFragment.setAppInterface(new Global.appInterface() {
-            @Override
-            public void returner() {
-                fTrans = getFragmentManager().beginTransaction();
-                if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN))
-                    fTrans.replace(R.id.frgmCont, newsFragment);
-                else
-                    fTrans.replace(R.id.frgmCont,new LoginFragment());
-
-                fTrans.addToBackStack(null);
-                fTrans.commit();
-            }
-        });
 
         new Updater(this);
     }

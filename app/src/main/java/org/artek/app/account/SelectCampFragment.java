@@ -36,11 +36,6 @@ public class SelectCampFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appInterface = new Global.appInterface() {
-            @Override
-            public void returner() {
-            }
-        };
     }
 
     public void setAppInterface(Global.appInterface appInterface) {
@@ -79,7 +74,6 @@ public class SelectCampFragment extends Fragment {
                                     int position, long id) {
                 setTheme((int)id,getActivity());
                 appInterface.returner();
-                getFragmentManager().beginTransaction().replace(R.id.frgmCont, new LoginFragment()).addToBackStack(null).commit();
             }
         });
 

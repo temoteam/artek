@@ -6,7 +6,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import org.artek.app.Global;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +22,13 @@ public class AccountManager {
 
     final public static byte SUCCESS = 1;
     final public static byte ERROR_UNKNOWN = 0;
+    final public static byte ERROR_BAD = -1;
 
     private Activity activity;
     private String vkToken;
     private String vkId;
+
+    private Global.appInterface appInterface;
 
     public AccountManager(Activity activity){
         this.activity = activity;
@@ -36,7 +41,12 @@ public class AccountManager {
     }
 
     public void getUserInfo(String token){
+        vkToken = token;
+        new CheckToken().execute();
+    }
 
+    public void setAppInterface(Global.appInterface appInterface) {
+        this.appInterface = appInterface;
     }
 
     private String rawQuery(URL url) throws IOException {
@@ -64,6 +74,48 @@ public class AccountManager {
         return ad;
     }
 
+    class CheckToken extends AsyncTask<Void, Void, Byte>{
+
+        @Override
+        protected Byte doInBackground(Void... params) {
+            try {
+                URL url = new URL("https://api.vk.com/method/groups.join?group_id=44235988&not_sure=1&access_token="+vkToken+"&v=V");
+                String answer = rawQuery(url);
+                Log.i("VK CHECK url:",url +" answer: "+answer);
+                if (answer.equals("{\"response\":1}"))
+                    return SUCCESS;
+                else return ERROR_BAD;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return  ERROR_UNKNOWN;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Byte aByte) {
+            super.onPostExecute(aByte);
+            switch (aByte){
+
+
+
+                case ERROR_UNKNOWN:
+                {
+                    Toast.makeText(activity,"Не удалось войти вконтакте \n проверьте соединение с интернетом",Toast.LENGTH_SHORT);
+                }
+                case ERROR_BAD:
+                {
+                    Toast.makeText(activity,"Не удалось войти вконтакте \n подтвердите ваши данные",Toast.LENGTH_SHORT);
+                    appInterface.returner();
+                    Global.sharedPreferences.edit().remove(Global.SharedPreferencesTags.LAST_TOKEN);
+                }
+                case SUCCESS:
+                {
+                    Toast.makeText(activity,"Вы успешно вошли в систему",Toast.LENGTH_SHORT);
+                }
+            }
+        }
+    }
+
 
     class Login extends AsyncTask<Void, Void, Byte> {
 
@@ -71,7 +123,6 @@ public class AccountManager {
         protected Byte doInBackground(Void... params) {
 
             try {
-                Log.i("",SERVER_URL+LOGIN+"?vk_token="+vkToken+"&vk_id="+vkId);
                 if (rawQuery(new URL(SERVER_URL+LOGIN+"?vk_token="+vkToken+"&vk_id="+vkId)).equals("S"))
                 return SUCCESS;
                 else return ERROR_UNKNOWN;

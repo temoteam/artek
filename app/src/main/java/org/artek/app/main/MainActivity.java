@@ -46,11 +46,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+<<<<<<< HEAD
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
 
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
 
+=======
+
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+            Log.d("bug","setmain");
+>>>>>>> origin/master
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

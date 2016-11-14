@@ -101,6 +101,7 @@ public class LoginVKFragment extends Fragment {
         ed.commit();
 
         Global.accountManager.login(token,user_id);
+        Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.LAST_TOKEN,token).commit();
         /*
         try {
             Global.userInfo = new httpGet("https://api.vk.com/method/users.get?access_token=" + token).execute().get();
@@ -121,7 +122,7 @@ public class LoginVKFragment extends Fragment {
         try {
 
             // open stream to write data
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getContext().openFileOutput(FILENAME, MODE_PRIVATE)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getActivity().openFileOutput(FILENAME, MODE_PRIVATE)));
 
             // write data
             bw.write(content);

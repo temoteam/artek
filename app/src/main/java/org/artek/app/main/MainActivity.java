@@ -17,6 +17,8 @@ import org.artek.app.ExceptionHandler;
 import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.FirstFragment;
+import org.artek.app.account.LoginFragment;
+import org.artek.app.account.SelectCampFragment;
 import org.artek.app.game.GameActivity;
 
 import java.io.BufferedReader;
@@ -29,10 +31,6 @@ import java.io.OutputStreamWriter;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    final String LOG_TAG = "myLogs";
-
-    final String FILENAME = "file";
-
     int backButton = 0;
 
     DictFragment dictFragment;
@@ -43,13 +41,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SettingsFragment settingsFragment;
     RadioFragment radioFragment;
     FragmentTransaction fTrans;
+    SelectCampFragment selectCampFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -73,42 +75,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         historyFragment = new HistoryFragment();
         settingsFragment = new SettingsFragment();
         radioFragment = new RadioFragment();
-
-        new Updater(this);
-
-        /*if (Global.userInfo!=null)
-            Global.accountManager.login(Global.userInfo.get("utoken"),Global.userInfo.get("uid"));*/
+        selectCampFragment = new SelectCampFragment();
 
 
-        String content = "";
-        String str = "";
-        try {
 
-            // open stream to read data
-            BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput("first")));
 
-            // read data
-            while ((str = br.readLine()) != null) {
-                content = content + str;
-            }
-
-            // close stream
-            br.close();
-
-            fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmCont, newsFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
-            getFragmentManager().beginTransaction().replace(R.id.frgmCont, new FirstFragment()).commit();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -132,6 +106,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
 
+        fTrans = getFragmentManager().beginTransaction();
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)){
+            selectCampFragment.setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.CAMP,0),this);
+            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)){
+                fTrans.replace(R.id.frgmCont, newsFragment);
+                Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null));}
+            else
+                fTrans.replace(R.id.frgmCont,new LoginFragment());}
+        else
+            fTrans.replace(R.id.frgmCont,selectCampFragment);
+        fTrans.addToBackStack(null);
+        fTrans.commit();
+
+        selectCampFragment.setAppInterface(new Global.appInterface() {
+            @Override
+            public void returner() {
+                fTrans = getFragmentManager().beginTransaction();
+                if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN))
+                    fTrans.replace(R.id.frgmCont, newsFragment);
+                else
+                    fTrans.replace(R.id.frgmCont,new LoginFragment());
+
+                fTrans.addToBackStack(null);
+                fTrans.commit();
+            }
+        });
+
+        new Updater(this);
     }
 
     @Override
@@ -165,37 +167,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        fTrans = getFragmentManager().beginTransaction();
+
         if (id == R.id.nav_news) {
 
-
-            fTrans = getFragmentManager().beginTransaction();
             fTrans.replace(R.id.frgmCont, newsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
 
         } else if (id == R.id.nav_dictionary) {
 
-            fTrans = getFragmentManager().beginTransaction();
             fTrans.replace(R.id.frgmCont, dictFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
 
         } else if (id == R.id.nav_tips) {
 
-            fTrans = getFragmentManager().beginTransaction();
             fTrans.replace(R.id.frgmCont, tipsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
 
         } else if (id == R.id.nav_radio) {
-            Log.d("lala", "lala");
-            fTrans = getFragmentManager().beginTransaction();
+
             fTrans.replace(R.id.frgmCont, radioFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
         } else if (id == R.id.nav_settings) {
 
-            fTrans = getFragmentManager().beginTransaction();
             fTrans.replace(R.id.frgmCont, settingsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
@@ -206,49 +204,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
-    public String readFile(String FILENAME) {
-        String content = "";
-        String str = "";
-        try {
-
-            // open stream to read data
-            BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(FILENAME)));
-
-            // read data
-            while ((str = br.readLine()) != null) {
-                content = content + str;
-            }
-
-            // close stream
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
-            writeFile(FILENAME, "0");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content;
-    }
-
-    public void writeFile(String FILENAME, String content) {
-        try {
-
-            // open stream to write data
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(openFileOutput(FILENAME, MODE_PRIVATE)));
-
-            // write data
-            bw.write(content);
-
-            // close stream
-            bw.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

@@ -46,8 +46,6 @@ public class FirstFragment extends Fragment {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
         super.onActivityCreated(savedInstanceState);
-        Log.d("kek", "first");
-
 
         selectCampFragment = new SelectCampFragment();
 
@@ -68,8 +66,6 @@ public class FirstFragment extends Fragment {
                 "\n" +
                 "Автор проекта: Анатолий Трофимовича Полянский, московский архитектор. Длина 27 метров, ширина 26 метров, высота 8 метров.");
 
-
-        // writeFile("","");
 
         writeFile("score", "0");
         writeFile("all", "10");

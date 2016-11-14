@@ -1,6 +1,7 @@
 package org.artek.app.account;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,17 +12,39 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.artek.app.ExceptionHandler;
+import org.artek.app.Global;
 import org.artek.app.adapters.Camps;
 import org.artek.app.R;
 import org.artek.app.adapters.CampsAdapter;
 
 public class SelectCampFragment extends Fragment {
 
+    Global.appInterface appInterface;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_select_camp, null);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        appInterface = new Global.appInterface() {
+            @Override
+            public void returner() {
+            }
+        };
+    }
+
+    public void setAppInterface(Global.appInterface appInterface) {
+        this.appInterface = appInterface;
     }
 
     @Override
@@ -55,52 +78,51 @@ public class SelectCampFragment extends Fragment {
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                switch ((int) id) {
-                    case 0:
-                        getActivity().getApplication().setTheme(R.style.AppThemeMorskoy);
-                        break;
-                    case 1:
-                        getActivity().getApplication().setTheme(R.style.AppThemeAlmazny);
-                        break;
-                    case 2:
-                        getActivity().getApplication().setTheme(R.style.AppThemeChrustalny);
-                        break;
-                    case 3:
-                        getActivity().getApplication().setTheme(R.style.AppThemeKiparis);
-                        break;
-                    case 4:
-                        getActivity().getApplication().setTheme(R.style.AppThemeLazyrny);
-                        break;
-                    case 5:
-                        getActivity().getApplication().setTheme(R.style.AppThemeLes);
-                        break;
-                    case 6:
-                        getActivity().getApplication().setTheme(R.style.AppThemeMorflot);
-                        break;
-                    case 7:
-                        getActivity().getApplication().setTheme(R.style.AppThemeOzer);
-                        break;
-                    case 8:
-                        getActivity().getApplication().setTheme(R.style.AppThemePole);
-                        break;
-                    case 9:
-                        getActivity().getApplication().setTheme(R.style.AppThemeReka);
-                        Log.d("*", " id reka = "
-                                + id);
-                        break;
-                    case 10:
-                        getActivity().getApplication().setTheme(R.style.AppThemeYantar);
-                        break;
-                }
-
-
-                getFragmentManager().beginTransaction().replace(R.id.frgmCont, new LoginFragment()).commit();
-
-
-                Log.d("*", "itemClick: position = " + position + ", id = "
-                        + id);
+                setTheme((int)id,getActivity());
+                appInterface.returner();
             }
         });
+
+    }
+
+    public void setTheme(int id, Activity activity){
+        switch (id) {
+            case 0:
+                activity.setTheme(R.style.AppThemeMorskoy);
+                break;
+            case 1:
+                activity.setTheme(R.style.AppThemeAlmazny);
+                break;
+            case 2:
+                activity.setTheme(R.style.AppThemeChrustalny);
+                break;
+            case 3:
+                activity.setTheme(R.style.AppThemeKiparis);
+                break;
+            case 4:
+                activity.setTheme(R.style.AppThemeLazyrny);
+                break;
+            case 5:
+                activity.setTheme(R.style.AppThemeLes);
+                break;
+            case 6:
+                activity.setTheme(R.style.AppThemeMorflot);
+                break;
+            case 7:
+                activity.setTheme(R.style.AppThemeOzer);
+                break;
+            case 8:
+                activity.setTheme(R.style.AppThemePole);
+                break;
+            case 9:
+                activity.setTheme(R.style.AppThemeReka);
+                break;
+            case 10:
+                activity.setTheme(R.style.AppThemeYantar);
+                break;
+        }
+
+        Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.CAMP,id).commit();
 
     }
 

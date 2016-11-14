@@ -35,6 +35,10 @@ public class AccountManager {
         new Login().execute();
     }
 
+    public void getUserInfo(String token){
+
+    }
+
     private String rawQuery(URL url) throws IOException {
         InputStream input = url.openStream();
         Scanner in = new Scanner(input);

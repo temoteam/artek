@@ -8,6 +8,8 @@ package org.artek.app;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -17,10 +19,12 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -46,6 +50,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     public void uncaughtException(Thread t, Throwable e) {
+        Log.d("bug","exeption");
         String timestamp = Calendar.getInstance().getTime().toString();
         final Writer result = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(result);
@@ -56,9 +61,9 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
         writeToFile(stacktrace, filename);
 
-        if (url != null) {
+
             new SendLOG(filename, stacktrace).execute();
-        }
+
 
         defaultUEH.uncaughtException(t, e);
     }
@@ -93,10 +98,10 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         @Override
         protected String doInBackground(String... params) {
 
-
+            Log.d("bug","first");
             String resultToDisplay = "";
 
-            InputStream in = null;
+
             try {
 
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -108,7 +113,31 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
                 try {
                     httpPost.setEntity(
                             new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-                    httpClient.execute(httpPost);
+                    HttpEntity response = httpClient.execute(httpPost).getEntity();
+
+                    try{
+                        InputStream in = (InputStream) response.getContent();
+                        //Header contentEncoding = Response.getFirstHeader("Content-Encoding");
+                    /*if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+                        in = new GZIPInputStream(in);
+                    }*/
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                        StringBuilder str = new StringBuilder();
+                        String line = null;
+                        while((line = reader.readLine()) != null){
+                            str.append(line + "\n");
+                        }
+                        in.close();
+                        String resp = str.toString();
+                        Log.i("bug", "response"+resp);
+                    }
+                    catch(IllegalStateException exc){
+
+                        exc.printStackTrace();
+                    }
+
+
+                    Log.d("bug","bug");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

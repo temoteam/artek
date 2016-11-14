@@ -52,9 +52,8 @@ public class RadioService extends Service {
 
     public void onCreate() {
         super.onCreate();
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         new GetSongs().execute();
     }
 

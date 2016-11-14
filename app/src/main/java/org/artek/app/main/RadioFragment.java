@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.artek.app.RadioService;
 
@@ -43,6 +44,8 @@ public class RadioFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         Button radioButton = (Button) getActivity().findViewById(R.id.radioButton);
         radioButton.setOnClickListener(pausePlay);

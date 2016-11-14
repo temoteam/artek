@@ -49,9 +49,8 @@ public class SelectCampFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
         super.onActivityCreated(savedInstanceState);
         Camps camps_data[] = new Camps[]
                 {
@@ -80,6 +79,7 @@ public class SelectCampFragment extends Fragment {
                                     int position, long id) {
                 setTheme((int)id,getActivity());
                 appInterface.returner();
+                getFragmentManager().beginTransaction().replace(R.id.frgmCont, new LoginFragment()).addToBackStack(null).commit();
             }
         });
 

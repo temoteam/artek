@@ -23,9 +23,8 @@ public class ScannerQRActivity extends Activity implements ZXingScannerView.Resu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         super.onCreate(savedInstanceState);
         //checkPermissionsCamera();
 

@@ -24,9 +24,8 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         super.onActivityCreated(savedInstanceState);
 
         WebView wv = (WebView) getView().findViewById(R.id.mapWebView);

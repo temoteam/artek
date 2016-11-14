@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.artek.app.ExceptionHandler;
+import org.artek.app.account.LoginVKFragment;
+import org.artek.app.account.SelectCampFragment;
 import org.artek.app.main.MainActivity;
 import org.artek.app.R;
 import org.artek.app.main.RadioFragment;
@@ -44,9 +46,8 @@ public class GameActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -163,6 +164,7 @@ public class GameActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_camp) {
+            getFragmentManager().beginTransaction().replace(R.id.frgmContGame, new SelectCampFragment()).addToBackStack(null).commit();
             return true;
         }
         if (id == R.id.endGame) {

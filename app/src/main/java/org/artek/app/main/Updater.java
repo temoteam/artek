@@ -34,9 +34,8 @@ public class Updater {
 
 
     public Updater(Activity activity) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         this.activity = activity;
         updateFile = Environment.getExternalStorageDirectory().getPath() + "/update.apk";
         new CheckerForUpdates().execute();

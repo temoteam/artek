@@ -42,9 +42,9 @@ public class FirstFragment extends Fragment {
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         super.onActivityCreated(savedInstanceState);
 
         selectCampFragment = new SelectCampFragment();

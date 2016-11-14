@@ -60,9 +60,9 @@ public class LoginVKFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_vk, container, false);
     }

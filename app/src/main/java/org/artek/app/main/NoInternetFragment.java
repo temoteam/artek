@@ -31,9 +31,8 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
         View result = inflater.inflate(R.layout.fragment_no_internet, container, false);
         reload = (Button) result.findViewById(R.id.reload);
         reload.setOnClickListener(this);

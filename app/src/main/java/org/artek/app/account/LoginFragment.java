@@ -74,57 +74,5 @@ public class LoginFragment extends Fragment {
     };
 
 
-    private class SendPost extends AsyncTask<String, String, String> {
-        public String answerHTTP;
-        public String adress;
-        public ProgressDialog mProgressDialog;
-        public List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
-
-
-        SendPost(String adress) {
-            this.adress = adress;
-        }
-
-        public void setParameters(String name, String value) {
-            nameValuePairs.add(new BasicNameValuePair(name, value));
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-
-        @Override
-        protected String doInBackground(String... params) {
-            // Create a new HttpClient and Post Header
-            HttpClient httpclient = new DefaultHttpClient();
-            //HttpPost httppost = new HttpPost("http://dfd40d03.compilers.sphere-engine.com/api/v3/submissions?access_token=d98bcd9f1b408f40113023fcd2135dd4");
-            HttpPost httppost = new HttpPost(adress);
-            try {
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
-                // Execute HTTP Post Request
-                HttpResponse response = httpclient.execute(httppost);
-                if (response.getStatusLine().getStatusCode() == 200) {
-                    HttpEntity entity = response.getEntity();
-                    answerHTTP = EntityUtils.toString(entity);
-                }
-            } catch (ClientProtocolException e) {
-
-            } catch (IOException e) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-
-
-    }
 
 }

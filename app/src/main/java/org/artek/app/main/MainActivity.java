@@ -18,6 +18,7 @@ import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.FirstFragment;
 import org.artek.app.account.LoginFragment;
+import org.artek.app.account.LoginVKFragment;
 import org.artek.app.account.SelectCampFragment;
 import org.artek.app.game.GameActivity;
 
@@ -47,10 +48,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
 
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        }
+
 
 
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_camp) {
+            getFragmentManager().beginTransaction().replace(R.id.frgmCont, new SelectCampFragment()).addToBackStack(null).commit();
             return true;
         }
         if (id == R.id.startGame) {

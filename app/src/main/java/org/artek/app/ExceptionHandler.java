@@ -9,10 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
-<<<<<<< HEAD
-=======
 import org.apache.http.HttpResponse;
->>>>>>> origin/master
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -20,10 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-<<<<<<< HEAD
-=======
-import java.io.BufferedInputStream;
->>>>>>> origin/master
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;

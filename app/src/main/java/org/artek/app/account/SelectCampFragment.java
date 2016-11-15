@@ -44,8 +44,7 @@ public class SelectCampFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         super.onActivityCreated(savedInstanceState);
         Camps camps_data[] = new Camps[]
                 {
@@ -73,6 +72,7 @@ public class SelectCampFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 setTheme((int)id,getActivity());
+                if (appInterface!=null)
                 appInterface.returner();
             }
         });

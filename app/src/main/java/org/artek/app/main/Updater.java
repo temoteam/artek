@@ -24,7 +24,7 @@ import java.util.Scanner;
 
 public class Updater {
 
-    private final int THIS_VERSION = 0;
+    private final int THIS_VERSION = 2;
     private final String LAST_API_FILE_PACH = "http://lohness.com/artek/update/update.txt";
     private int lastVertion;
     private String updateFile;
@@ -34,8 +34,9 @@ public class Updater {
 
 
     public Updater(Activity activity) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
+        }
         this.activity = activity;
         updateFile = Environment.getExternalStorageDirectory().getPath() + "/update.apk";
         new CheckerForUpdates().execute();
@@ -56,8 +57,8 @@ public class Updater {
             update.delete();
         update = new File(updateFile);
         update.createNewFile();
-        //getUpdate(activity.getApplicationContext());
-        download(updateURL, update);
+        getUpdate(activity.getApplicationContext());
+        //download(updateURL, update);
         return updateFile;
     }
 
@@ -143,7 +144,7 @@ public class Updater {
                         activity.startActivity(intent);
                     }
                 });
-                ad.setCancelable(false);
+                ad.setCancelable(true);
                 ad.setNegativeButton("Обновоить позже", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
 

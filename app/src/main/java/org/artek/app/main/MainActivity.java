@@ -18,7 +18,6 @@ import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.FirstFragment;
 import org.artek.app.account.LoginFragment;
-import org.artek.app.account.LoginVKFragment;
 import org.artek.app.account.SelectCampFragment;
 import org.artek.app.game.GameActivity;
 
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -78,11 +76,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         selectCampFragment = new SelectCampFragment();
 
 
+
         Global.accountManager.setAppInterface(new Global.appInterface() {
             @Override
             public void returner() {
                 fTrans = getFragmentManager().beginTransaction();
                 fTrans.replace(R.id.frgmCont,new LoginFragment());
+                fTrans.addToBackStack(null);
+                fTrans.commit();
+            }
+        });
+
+        selectCampFragment.setAppInterface(new Global.appInterface() {
+            @Override
+            public void returner() {
+                fTrans = getFragmentManager().beginTransaction();
+                if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN))
+                    fTrans.replace(R.id.frgmCont, newsFragment);
+                else
+                    fTrans.replace(R.id.frgmCont,new LoginFragment());
+
                 fTrans.addToBackStack(null);
                 fTrans.commit();
             }
@@ -102,19 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fTrans.commit();
 
 
-        selectCampFragment.setAppInterface(new Global.appInterface() {
-            @Override
-            public void returner() {
-                fTrans = getFragmentManager().beginTransaction();
-                if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN))
-                    fTrans.replace(R.id.frgmCont, newsFragment);
-                else
-                    fTrans.replace(R.id.frgmCont,new LoginFragment());
-
-                fTrans.addToBackStack(null);
-                fTrans.commit();
-            }
-        });
 
 
     }
@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_camp) {
-            getFragmentManager().beginTransaction().replace(R.id.frgmCont, new SelectCampFragment()).addToBackStack(null).commit();
             return true;
         }
         if (id == R.id.startGame) {

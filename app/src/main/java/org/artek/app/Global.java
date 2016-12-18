@@ -12,7 +12,7 @@ public class Global {
     public static AccountManager accountManager;
     public static User user;
     public static SharedPreferences sharedPreferences;
-    public static int theme = R.style.AppThemeYantar_NoActionBar;
+
 
     public static void initilizate(Activity activity) {
         accountManager = new AccountManager(activity);
@@ -30,6 +30,7 @@ public class Global {
         public final static String CAMP = "camp";
         public final static String LAST_TOKEN = "last_token";
         public final static String LAST_ID = "last_id";
+        public final static String THEME_ID = "theme_id";
     }
 
     public interface appInterface{

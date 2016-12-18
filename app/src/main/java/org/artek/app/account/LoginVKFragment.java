@@ -27,7 +27,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.artek.app.ExceptionHandler;
-import org.artek.app.FileRW;
+
 import org.artek.app.R;
 import org.artek.app.Global;
 import org.artek.app.main.NewsFragment;
@@ -53,7 +53,7 @@ import static android.content.Context.MODE_WORLD_WRITEABLE;
 public class LoginVKFragment extends Fragment {
 
 
-    private FileRW fileRW;
+
     public LoginVKFragment() {
         // Required empty public constructor
     }
@@ -77,7 +77,7 @@ public class LoginVKFragment extends Fragment {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(false);*/
 
-        fileRW = new FileRW(getActivity());
+
         WebView loginVkWeb = (WebView) getView().findViewById(R.id.webView);
         loginVkWeb.setWebViewClient(new VkWebViewClient());
         loginVkWeb.getSettings().setJavaScriptEnabled(true);
@@ -116,7 +116,7 @@ public class LoginVKFragment extends Fragment {
 
 
 
-        fileRW.writeFile("first", "0");
+
         getFragmentManager().beginTransaction().replace(R.id.frgmCont, new NewsFragment()).commit();
     }
 

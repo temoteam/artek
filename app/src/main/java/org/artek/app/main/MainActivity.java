@@ -14,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.artek.app.ExceptionHandler;
-import org.artek.app.FileRW;
 import org.artek.app.Global;
 import org.artek.app.R;
-import org.artek.app.account.FirstFragment;
 import org.artek.app.account.LoginFragment;
 import org.artek.app.account.SelectCampFragment;
 import org.artek.app.game.GameActivity;
@@ -37,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
 
-    FileRW fileRW;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,20 +42,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         super.onCreate(savedInstanceState);
-        //setTheme(R.style.AppTheme2_NoActionBar);\
 
-        fileRW = new FileRW(this);
-        if (fileRW.readFile("first") == "") {
+
+     /*   if (fileRW.readFile("first") == "") {
             Log.d("erar", "no fisrt");
             getFragmentManager().beginTransaction().replace(R.id.frgmCont, new FirstFragment()).commit();
         }
+
         if (fileRW.readFile("theme") != "") {
             Global.theme = Integer.parseInt(fileRW.readFile("theme"));
             Log.d("erar", "no thtme");
             setTheme(Global.theme);
         }
+        */
         setContentView(R.layout.activity_main);
-        ;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -110,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fTrans.commit();
             }
         });
+
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
+            setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar));
+        }
 
         fTrans = getFragmentManager().beginTransaction();
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)){

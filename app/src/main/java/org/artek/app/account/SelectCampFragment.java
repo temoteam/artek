@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import org.artek.app.ExceptionHandler;
-import org.artek.app.FileRW;
 import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.adapters.Camps;
@@ -21,7 +20,6 @@ import org.artek.app.main.MainActivity;
 
 public class SelectCampFragment extends Fragment {
 
-    private FileRW fileRW;
     Global.appInterface appInterface;
 
     @Override
@@ -71,7 +69,6 @@ public class SelectCampFragment extends Fragment {
                         new Camps(R.drawable.yantarny, "Yantarny", "#ee2f2e")
                 };
 
-        fileRW = new FileRW(getActivity());
         CampsAdapter adapter = new CampsAdapter(getActivity(),
                 R.layout.listview_enter_camp, camps_data);
 
@@ -98,37 +95,37 @@ public class SelectCampFragment extends Fragment {
     public void wtiteTheme(int id) {
         switch (id) {
             case 0:
-                fileRW.writeFile("theme", "" + R.style.AppThemeMorskoy_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeMorskoy_NoActionBar).commit();
                 break;
             case 1:
-                fileRW.writeFile("theme", "" + R.style.AppThemeAlmazny_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeAlmazny_NoActionBar).commit();
                 break;
             case 2:
-                fileRW.writeFile("theme", "" + R.style.AppThemeChrustalny_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeChrustalny_NoActionBar).commit();
                 break;
             case 3:
-                fileRW.writeFile("theme", "" + R.style.AppThemeKiparis_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeKiparis_NoActionBar).commit();
                 break;
             case 4:
-                fileRW.writeFile("theme", "" + R.style.AppThemeLazyrny_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeLazyrny_NoActionBar).commit();
                 break;
             case 5:
-                fileRW.writeFile("theme", "" + R.style.AppThemeLes_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeLes_NoActionBar).commit();
                 break;
             case 6:
-                fileRW.writeFile("theme", "" + R.style.AppThemeMorflot_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeMorflot_NoActionBar).commit();
                 break;
             case 7:
-                fileRW.writeFile("theme", "" + R.style.AppThemeOzer_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID, R.style.AppThemeOzer_NoActionBar).commit();
                 break;
             case 8:
-                fileRW.writeFile("theme", "" + R.style.AppThemePole_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemePole_NoActionBar).commit();
                 break;
             case 9:
-                fileRW.writeFile("theme", "" + R.style.AppThemeReka_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID, R.style.AppThemeReka_NoActionBar).commit();
                 break;
             case 10:
-                fileRW.writeFile("theme", "" + R.style.AppThemeYantar_NoActionBar);
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar).commit();
                 break;
         }
 

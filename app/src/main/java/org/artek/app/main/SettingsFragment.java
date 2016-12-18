@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
-import org.artek.app.account.FirstFragment;
 
 public class SettingsFragment extends Fragment {
 
@@ -32,7 +31,6 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
 
                 getActivity().getApplicationContext().deleteFile("first");
-                getFragmentManager().beginTransaction().replace(R.id.frgmCont, new FirstFragment()).commit();
             }
         });
 

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.artek.app.ExceptionHandler;
+import org.artek.app.FileRW;
 import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.FirstFragment;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

@@ -1,17 +1,23 @@
 package org.artek.app.account;
 
 
-import android.app.Fragment;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.Fragment;
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -21,8 +27,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.artek.app.ExceptionHandler;
-import org.artek.app.Global;
+import org.artek.app.FileRW;
 import org.artek.app.R;
+import org.artek.app.Global;
 import org.artek.app.main.NewsFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,8 +40,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
 /**
@@ -43,6 +53,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginVKFragment extends Fragment {
 
 
+    private FileRW fileRW;
     public LoginVKFragment() {
         // Required empty public constructor
     }
@@ -51,7 +62,9 @@ public class LoginVKFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_vk, container, false);
     }
@@ -64,6 +77,7 @@ public class LoginVKFragment extends Fragment {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(false);*/
 
+        fileRW = new FileRW(getActivity());
         WebView loginVkWeb = (WebView) getView().findViewById(R.id.webView);
         loginVkWeb.setWebViewClient(new VkWebViewClient());
         loginVkWeb.getSettings().setJavaScriptEnabled(true);
@@ -81,9 +95,13 @@ public class LoginVKFragment extends Fragment {
         String token = url.substring(a + 13, b);
         a = url.indexOf("user_id=");
         String user_id = url.substring(a + 8);
-
-        Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.LAST_TOKEN,token).commit();
-        Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.LAST_ID,user_id).commit();
+        Log.d("kek",user_id);
+        Log.d("kek", token);
+        SharedPreferences sPref = getActivity().getPreferences(MODE_WORLD_WRITEABLE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString("token", token);
+        ed.putString("user_id", user_id);
+        ed.commit();
 
         Global.accountManager.login(token,user_id);
         /*
@@ -98,28 +116,10 @@ public class LoginVKFragment extends Fragment {
 
 
 
-        writeFile("first", "0");
+        fileRW.writeFile("first", "0");
         getFragmentManager().beginTransaction().replace(R.id.frgmCont, new NewsFragment()).commit();
     }
 
-    public void writeFile(String FILENAME, String content) {
-        try {
-
-            // open stream to write data
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getActivity().openFileOutput(FILENAME, MODE_PRIVATE)));
-
-            // write data
-            bw.write(content);
-
-            // close stream
-            bw.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private class VkWebViewClient extends WebViewClient {
         @Override
@@ -127,12 +127,15 @@ public class LoginVKFragment extends Fragment {
             //Log.d(Constants.DEBUG_TAG, "Redirecting URL " + url);
 
             if (url.startsWith("https://oauth.vk.com/blank.html") & (!url.contains("error"))) {
+                Log.d("kek","url contains callback url");
+                Log.d("kek", url);
                 getUserData(url);
                 return true;
 
             } else if (url.contains("error")) {
                 return false;
             } else {
+                Log.d("kek","url not contains callback url");
                 view.loadUrl(url);
                 return true;
             }

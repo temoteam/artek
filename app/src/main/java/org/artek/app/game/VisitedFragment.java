@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.artek.app.ExceptionHandler;
+import org.artek.app.FileRW;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
 import org.artek.app.RecyclerItemClickListener;
@@ -30,7 +31,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class VisitedFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-
+    private FileRW fileRW;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerAdapter mAdapter;
 
@@ -40,8 +41,9 @@ public class VisitedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
+        }
         return inflater.inflate(R.layout.fragment_visited, null);
 
     }
@@ -50,16 +52,18 @@ public class VisitedFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        fileRW = new FileRW(getActivity());
+
         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity().getApplicationContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         Log.d("azaza", "click" + position);
                         Log.d("azaza", view.toString());
                         TextView tw = (TextView)view.findViewById(R.id.tv_recycler_item);
                         String yop = tw.getText().toString();
                         Log.d("yop", yop);
-                        writeFile("currcardclick", yop);
+                        fileRW.writeFile("currcardclick", yop);
                         fTrans = getFragmentManager().beginTransaction();
                         detailSpotFragment = new DetailSpotFragment();
                         fTrans.replace(R.id.frgmContGame,detailSpotFragment);
@@ -82,7 +86,7 @@ public class VisitedFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new RecyclerAdapter(myDataset);
@@ -95,7 +99,7 @@ public class VisitedFragment extends Fragment {
 
         ArrayList<String> myDataSet = new ArrayList<>();
 
-        String lala = readFile("visited");
+        String lala = fileRW.readFile("visited");
        // String lalakek[] = lala.split("##");
         String kek[] = lala.split("#");
 
@@ -103,7 +107,7 @@ public class VisitedFragment extends Fragment {
         Log.d("lala", a.toString());
 
         for (String v : kek) {
-            String toplol = readFile(v);
+            String toplol = fileRW.readFile(v);
             String topkek[] = toplol.split("#");
             myDataSet.add(topkek[0]);
             // Log.d("lalala", kek[i]);
@@ -113,47 +117,5 @@ public class VisitedFragment extends Fragment {
 
 
     }
-
-    public void writeFile(String FILENAME, String content) {
-        try {
-
-            // open stream to write data
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(getActivity().getApplicationContext().openFileOutput(FILENAME, MODE_PRIVATE)));
-
-            // write data
-            bw.write(content);
-
-            // close stream
-            bw.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public String readFile(String FILENAME) {
-        String content = "";
-        String str = "";
-        try {
-
-            // open stream to read data
-            BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getApplicationContext().openFileInput(FILENAME)));
-
-            // read data
-            while ((str = br.readLine()) != null) {
-                content = content + str;
-            }
-
-            // close stream
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content;
-    }
-
 
 }

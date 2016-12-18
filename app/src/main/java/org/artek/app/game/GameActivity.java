@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -20,11 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.artek.app.ExceptionHandler;
-import org.artek.app.account.LoginVKFragment;
-import org.artek.app.account.SelectCampFragment;
+import org.artek.app.FileRW;
 import org.artek.app.main.MainActivity;
 import org.artek.app.R;
-import org.artek.app.main.RadioFragment;
+import org.artek.app.adapters.RecyclerAdapter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,28 +36,46 @@ import java.io.OutputStreamWriter;
 public class GameActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    final String FILENAME = "gameData";
     final String IO_LOG_TAG = "I/O_Logs";
+    final int[] datass = {};
     int backButton = 0;
     int DIALOG_CONG = 11;
     String places = "63#70";
 
     FragmentTransaction fTrans;
+    VisitedFragment visitedFragment;
+    GameFragment gameFragment;
+    org.artek.app.game.StartGameFragment StartGameFragment;
+    org.artek.app.game.DetailSpotFragment DetailSpotFragment;
+
+    private RecyclerView mRecyclerView;
+
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerAdapter mAdapter;
+    FileRW fileRW;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        writeFile("places", places);
+        fileRW = new FileRW(this);
+        // Register the onClick listener with the implementation above
+
+
+        fileRW.writeFile("places", places);
+        //writeFile("test", "");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        StartGameFragment = new StartGameFragment();
         fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmContGame, new StartGameFragment());
+        fTrans.replace(R.id.frgmContGame, StartGameFragment);
         fTrans.addToBackStack(null);
         fTrans.commit();
 
@@ -92,7 +110,7 @@ public class GameActivity extends AppCompatActivity
 
     public void onVisitedButtonClick(View view) {
         fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCont, new VisitedFragment());
+        fTrans.replace(R.id.frgmCont, visitedFragment);
         fTrans.addToBackStack(null);
         fTrans.commit();
     }
@@ -164,7 +182,6 @@ public class GameActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_camp) {
-            getFragmentManager().beginTransaction().replace(R.id.frgmContGame, new SelectCampFragment()).addToBackStack(null).commit();
             return true;
         }
         if (id == R.id.endGame) {
@@ -182,21 +199,23 @@ public class GameActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_visited) {
+        /*if (id == R.id.nav_game) {
+
             fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmContGame, new VisitedFragment());
+            StartGameFragment = new StartGameFragment();
+            fTrans.replace(R.id.frgmContGame, gameFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
-        } else if (id == R.id.nav_stat) {
+        } else*/ if (id == R.id.nav_visited) {
             fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmContGame, new StartGameFragment());
+            visitedFragment = new VisitedFragment();
+            fTrans.replace(R.id.frgmContGame, visitedFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
+        } else if (id == R.id.nav_leaderboard) {
+            //
         } else if (id == R.id.nav_radio) {
-            fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmContGame, new RadioFragment());
-            fTrans.addToBackStack(null);
-            fTrans.commit();
+            //
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -204,58 +223,12 @@ public class GameActivity extends AppCompatActivity
         return true;
     }
 
-
-    public void writeFile(String FILENAME, String content) {
-        try {
-
-            // open stream to write data
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(openFileOutput(FILENAME, MODE_PRIVATE)));
-
-            // write data
-            bw.write(content);
-
-            // close stream
-            bw.close();
-            Log.d(IO_LOG_TAG, "File write");
-            Log.d(IO_LOG_TAG, content);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String readFile(String FILENAME) {
-        String content = "";
-        String str = "";
-        try {
-
-            // open stream to read data
-            BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(FILENAME)));
-
-            // read data
-            while ((str = br.readLine()) != null) {
-                Log.d(IO_LOG_TAG, str);
-                content = content + str;
-            }
-
-            // close stream
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content;
-    }
-
     public void getQr(String scan) {
         String content = "";
         String str = "";
 
-        String kek = readFile("places");
-        String topkek = readFile("visited");
+        String kek = fileRW.readFile("places");
+        String topkek = fileRW.readFile("visited");
         //Log.d("kekekeke",  String.valueOf(kek.indexOf(scan)));
         //Log.d("klololol",  scan);
         if (topkek.contains(scan)) {
@@ -264,18 +237,19 @@ public class GameActivity extends AppCompatActivity
             toast.show();
         } else {
             if (kek.contains(scan)) {
-                String azaz = readFile("visited");
-                writeFile("visited", azaz + scan + "#");
-                Integer score = Integer.parseInt(readFile("score"));
+                String azaz = fileRW.readFile("visited");
+                fileRW.writeFile("visited", azaz + scan + "#");
+                Integer score = Integer.parseInt(fileRW.readFile("score"));
                 score += 5;
                 showDialog(DIALOG_CONG);
                 deleteFile("score");
-                writeFile("score", score.toString());
+                fileRW.writeFile("score", score.toString());
 
-                String keklol[] = readFile(scan).split("#");
-                writeFile("currcardclick", keklol[0]);
+                String keklol[] = fileRW.readFile(scan).split("#");
+                fileRW.writeFile("currcardclick", keklol[0]);
                 fTrans = getFragmentManager().beginTransaction();
-                fTrans.replace(R.id.frgmContGame, new DetailSpotFragment());
+                DetailSpotFragment = new DetailSpotFragment();
+                fTrans.replace(R.id.frgmContGame,DetailSpotFragment);
                 fTrans.addToBackStack(null);
                 fTrans.commit();
 
@@ -288,7 +262,7 @@ public class GameActivity extends AppCompatActivity
         }
      /*   switch (scan){
             case 1:
-                writeFile( "visited",  "");
+                fileRW.writeFile( "visited",  "");
 
 
 

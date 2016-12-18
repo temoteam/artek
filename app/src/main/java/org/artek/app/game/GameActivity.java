@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,16 +21,10 @@ import android.widget.Toast;
 
 import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
-import org.artek.app.main.MainActivity;
+import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import org.artek.app.main.MainActivity;
 
 public class GameActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,10 +54,15 @@ public class GameActivity extends AppCompatActivity
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
+
         super.onCreate(savedInstanceState);
+        fileRW = new FileRW(this);
+        if (fileRW.readFile("theme") != "") {
+            Global.theme = Integer.parseInt(fileRW.readFile("theme"));
+            setTheme(Global.theme);
+        }
         setContentView(R.layout.activity_game);
 
-        fileRW = new FileRW(this);
         // Register the onClick listener with the implementation above
 
 
@@ -78,7 +76,7 @@ public class GameActivity extends AppCompatActivity
         fTrans.replace(R.id.frgmContGame, StartGameFragment);
         fTrans.addToBackStack(null);
         fTrans.commit();
-
+/*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +86,7 @@ public class GameActivity extends AppCompatActivity
             }
         });
 
-        //
+        //*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

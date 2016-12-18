@@ -1,9 +1,9 @@
 package org.artek.app.account;
 
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +12,6 @@ import android.view.ViewGroup;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
 import org.artek.app.R;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -49,6 +42,7 @@ public class FirstFragment extends Fragment {
 
         fileRW = new FileRW(getActivity());
         super.onActivityCreated(savedInstanceState);
+        fileRW.writeFile("first", "1");
         Log.d("kek", "first");
 
 
@@ -77,6 +71,8 @@ public class FirstFragment extends Fragment {
         fileRW.writeFile("score", "0");
         fileRW.writeFile("all", "10");
         fileRW.writeFile("visited", "");
+        fileRW.writeFile("theme", "" + R.style.AppThemeYantar_NoActionBar);
+        //Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.CAMP, R.style.AppThemeMorskoy_NoActionBar).commit();
         getFragmentManager().beginTransaction().replace(R.id.frgmCont, new SelectCampFragment()).commit();
     }
 

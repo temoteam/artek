@@ -2,19 +2,17 @@ package org.artek.app;
 
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.artek.app.account.AccountManager;
-
-import java.util.HashMap;
 
 public class Global {
 
     public static AccountManager accountManager;
     public static User user;
     public static SharedPreferences sharedPreferences;
+    public static int theme = R.style.AppThemeYantar_NoActionBar;
 
     public static void initilizate(Activity activity) {
         accountManager = new AccountManager(activity);

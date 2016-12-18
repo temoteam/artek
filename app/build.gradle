@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "org.artek.app"
         minSdkVersion 15
-        targetSdkVersion 17
+        targetSdkVersion 24
         versionName 'alpha2'
     }
     buildTypes {

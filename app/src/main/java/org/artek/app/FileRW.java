@@ -2,7 +2,6 @@ package org.artek.app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -21,14 +20,22 @@ import static android.content.Context.MODE_PRIVATE;
 public final class FileRW {
     private final String IO_LOG_TAG = "FileRW";
     private Context context;
+    private Activity activity;
 
 
-    public FileRW(Activity activity){
+    public FileRW(Activity activity) {
         this.context = activity.getApplicationContext();
-    };
-    public FileRW(Context context){
+        this.activity = activity;
+    }
+
+    ;
+
+    public FileRW(Context context) {
         this.context = this.context;
-    };
+    }
+
+    ;
+
     public void writeFile(String FILENAME, String content) {
         try {
 

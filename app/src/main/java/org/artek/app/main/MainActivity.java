@@ -22,13 +22,6 @@ import org.artek.app.account.LoginFragment;
 import org.artek.app.account.SelectCampFragment;
 import org.artek.app.game.GameActivity;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
 
-
+    FileRW fileRW;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -52,8 +45,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setTheme(R.style.AppTheme2_NoActionBar);\
 
+        fileRW = new FileRW(this);
+        if (fileRW.readFile("first") == "") {
+            Log.d("erar", "no fisrt");
+            getFragmentManager().beginTransaction().replace(R.id.frgmCont, new FirstFragment()).commit();
+        }
+        if (fileRW.readFile("theme") != "") {
+            Global.theme = Integer.parseInt(fileRW.readFile("theme"));
+            Log.d("erar", "no thtme");
+            setTheme(Global.theme);
+        }
+        setContentView(R.layout.activity_main);
+        ;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,7 +70,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        // fileRW = new FileRW(this);
+        //int kekzaza = fileRW.readIntFile("theme");
 
+        // laTheme(0);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         dictFragment = new DictFragment();
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fTrans = getFragmentManager().beginTransaction();
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)){
-            selectCampFragment.setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.CAMP,0),this);
+            setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.CAMP, 0));
             if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)){
                 fTrans.replace(R.id.frgmCont, newsFragment);
                 Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null));}
@@ -216,5 +224,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public void laTheme(int id) {
+        switch (id) {
+            case 0:
+                this.setTheme(R.style.AppTheme2);
+                Log.d("kek", "hhlh");
+                break;
+            case 1:
+                setTheme(R.style.AppThemeAlmazny_NoActionBar);
+                break;
+            case 2:
+                setTheme(R.style.AppThemeChrustalny_NoActionBar);
+                break;
+            /*case 3:
+                activity.setTheme(R.style.AppThemeKiparis_NoActionBar);
+                break;
+            case 4:
+                activity.setTheme(R.style.AppThemeLazyrny_NoActionBar);
+                break;
+            case 5:
+                activity.setTheme(R.style.AppThemeLes_NoActionBar);
+                break;
+            case 6:
+                activity.setTheme(R.style.AppThemeMorflot_NoActionBar);
+                break;
+            case 7:
+                activity.setTheme(R.style.AppThemeOzer_NoActionBar);
+                break;
+            case 8:
+                activity.setTheme(R.style.AppThemePole_NoActionBar);
+                break;
+            case 9:
+                activity.setTheme(R.style.AppThemeReka_NoActionBar);
+                break;
+            case 10:
+                activity.setTheme(R.style.AppThemeYantar_NoActionBar);
+                break;
+        }*/
+        }
+    }
 
 }

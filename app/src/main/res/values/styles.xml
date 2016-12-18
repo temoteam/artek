@@ -1,205 +1,36 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" >
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#006064</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="homeAsUpIndicator">@color/colorPrimaryDark</item>
-    </style>
-    <style name="AppThemeMorskoy" parent="Theme.AppCompat.Light.NoActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryMorskoy</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-<style name="AppThemeLazyrny" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryLazyrnoi</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-<style name="AppThemeChrustalny" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryChrystalny</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<style name="AppThemeAlmazny" parent="Theme.AppCompat.Light.DarkActionBar" >
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!-- TEEEST Base application theme. -->
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryAlmazny</item>
+        <item name="colorPrimary">#ffffff</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<style name="AppThemeKiparis" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryKiparisny</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-<style name="AppThemeLes" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryLes</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-<style name="AppThemeMorflot" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryMorflot</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-<style name="AppThemeOzer" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryOzerniy</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-<style name="AppThemePole" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryPolevoy</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-<style name="AppThemeReka" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryRechnoy</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-<style name="AppThemeYantar" parent="Theme.AppCompat.Light.DarkActionBar" >
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryYantarny</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-///////////
-    <style name="AppThemeMorskoy.NoActionBar">
+    <style name="AppTheme2.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppThemeMorskoy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppThemeMorskoy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-
-
-    <style name="AppThemeAlmazny.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeAlmazny.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeAlmazny.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-    <style name="AppThemeKiparis.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeKiparis.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeKiparis.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-    <style name="AppThemeLes.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeLes.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeLes.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="AppThemeMorflot.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeMorflot.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeMorflot.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="AppThemeOzer.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeOzer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeOzer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="AppThemePole.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemePole.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemePole.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-    <style name="AppThemeReka.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeReka.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeReka.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-
-    <style name="AppThemeYantar.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeYantar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeYantar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-
-
-
-
-
-
-
-   <style name="AppThemeLazyrny.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeLazyrny.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.AppThemeLazyrny" parent="ThemeOverlay.AppCompat.Light" />
-   <style name="AppThemeChrustalny.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-   <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppThemeChrustalny.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppThemeChrustalny.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="Def" parent="Theme.AppCompat.NoActionBar" />
-    /////
 </resources>

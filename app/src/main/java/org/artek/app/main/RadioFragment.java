@@ -18,18 +18,20 @@ import org.artek.app.RadioService;
 
 public class RadioFragment extends Fragment {
 
-    boolean isPlaying = true;
+    boolean isPlaying = false;
     BroadcastReceiver service;
     private View.OnClickListener pausePlay = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (isPlaying) {
-                getActivity().getApplicationContext().startService(new Intent(getActivity(), RadioService.class));
+                getActivity().getApplicationContext().stopService(new Intent(getActivity(), RadioService.class));
                 isPlaying = false;
+                Log.d("radio", "sendStop");
             } else {
                 //if(service!= null){getContext().unregisterReceiver(service);}
-                getActivity().getApplicationContext().stopService(new Intent(getActivity(), RadioService.class));
+                getActivity().getApplicationContext().startService(new Intent(getActivity(), RadioService.class));
                 isPlaying = true;
+                Log.d("radio","sendStart");
             }
         }
     };
@@ -57,7 +59,7 @@ public class RadioFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("AppService")) {
-                    Log.d("AppService", intent.getStringExtra("Data"));
+                    Log.d("Radio", intent.getStringExtra("Data"));
                 }
             }
         };

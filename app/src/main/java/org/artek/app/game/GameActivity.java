@@ -57,10 +57,11 @@ public class GameActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         fileRW = new FileRW(this);
+        /*
         if (fileRW.readFile("theme") != "") {
             Global.theme = Integer.parseInt(fileRW.readFile("theme"));
             setTheme(Global.theme);
-        }
+        }*/
         setContentView(R.layout.activity_game);
 
         // Register the onClick listener with the implementation above

@@ -1,12 +1,12 @@
 {
   "project_info": {
-    "project_number": "702752610299",
-    "project_id": "firebase-artek"
+    "project_number": "1085000591250",
+    "project_id": "artek-6b809"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:702752610299:android:069d9a670106be00",
+        "mobilesdk_app_id": "1:1085000591250:android:069d9a670106be00",
         "android_client_info": {
           "package_name": "org.artek.app"
         }
@@ -14,7 +14,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAL2TkBze_Sb8iltwGpyX22aIXKsZP5Gco"
+          "current_key": "AIzaSyCulxlri0FZ60xOJedgPr3C8Utg3q_BPnY"
         }
       ],
       "services": {

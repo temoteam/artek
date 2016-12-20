@@ -242,7 +242,7 @@ public class NewsFragment extends Fragment {
             String path = (String) result.get("imageLogo");
             int position = (Integer) result.get("position");
             SimpleAdapter adapter = (SimpleAdapter) mListView.getAdapter();
-            if(adapter.getItem(position)!=null){
+            if(position != 0){
             HashMap<String, Object> hm = (HashMap<String, Object>) adapter
                     .getItem(position);
             hm.put("imageLogo", path);

@@ -10,11 +10,15 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
 public class HistoryFragment extends Fragment {
-
+    private String name = "History";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -27,6 +31,11 @@ public class HistoryFragment extends Fragment {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         super.onActivityCreated(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         WebView wv = (WebView) getView().findViewById(R.id.mapWebView);
         wv.loadUrl("file:///android_asset/index.html");

@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
 public class SettingsFragment extends Fragment {
-
+    private String name = "Settings";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,6 +29,10 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         Button button = (Button) getActivity().findViewById(R.id.resetapp);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,6 +41,8 @@ public class SettingsFragment extends Fragment {
                 getActivity().getApplicationContext().deleteFile("first");
             }
         });
+
+
 
     }
 

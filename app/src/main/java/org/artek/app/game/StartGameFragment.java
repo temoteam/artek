@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
@@ -24,7 +28,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class StartGameFragment extends Fragment {
 
-
+    private String name = "StartGameFrgmnt";
     FragmentTransaction fTrans;
     VisitedFragment visitedFragment;
 
@@ -55,6 +59,11 @@ public class StartGameFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
 
        // Button button1 = (Button) getActivity().findViewById(R.id.button31);
        // button1.setOnClickListener(mCorkyListener);
@@ -71,7 +80,10 @@ public class StartGameFragment extends Fragment {
 
     public void writeText() {
         TextView textView = (TextView) getActivity().findViewById(R.id.textView2);
-        int score = Integer.parseInt(readFile("score"));
+        int score = 0;
+        if(readFile("score")!= "") {
+            score = Integer.parseInt(readFile("score"));
+        }
         int visitedAmmount =  score / 5;
         int all = 10;
         textView.setText("Посещенно точек: " + visitedAmmount + "\n"  +

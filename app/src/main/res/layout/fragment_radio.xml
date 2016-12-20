@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     tools:context="org.artek.app.main.RadioFragment">
 
-
-    <Button
-        android:text="Button"
+    <TextView
+        android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/radioButton" />
+        android:id="@+id/nameTrack" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/startStopRadio"
+        android:layout_gravity="center_vertical|center_horizontal|center"/>
+
+
 </FrameLayout>

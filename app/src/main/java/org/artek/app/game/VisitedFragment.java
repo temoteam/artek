@@ -12,6 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
 import org.artek.app.R;
@@ -30,6 +34,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class VisitedFragment extends Fragment {
 
+    private String name = "Visited";
     private RecyclerView mRecyclerView;
     private FileRW fileRW;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -51,6 +56,11 @@ public class VisitedFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         fileRW = new FileRW(getActivity());
 

@@ -11,17 +11,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
 
 public class DetailSpotFragment extends Fragment {
 
+    private String name = "DetailedSpot";
     private RecyclerView mRecyclerView;
 
     private RecyclerView.LayoutManager mLayoutManager;
@@ -45,7 +50,12 @@ public class DetailSpotFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    getDataSet();/*
+    getDataSet();
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        /*
         CardView cardView = (CardView) getActivity().findViewById(R.id.card_view);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override

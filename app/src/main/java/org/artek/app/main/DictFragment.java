@@ -4,6 +4,10 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.widget.SimpleAdapter;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 
 import java.util.ArrayList;
@@ -11,20 +15,17 @@ import java.util.HashMap;
 
 
 public class DictFragment extends ListFragment {
-
-    String data[] = new String[]{"пайта", "абсолют", "three", "four"};
-
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dict, null);
-    }*/
-
+    private String name = "Dictionary";
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         super.onActivityCreated(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
 
         ArrayList<HashMap<String, String>> myArrList = new ArrayList<HashMap<String, String>>();

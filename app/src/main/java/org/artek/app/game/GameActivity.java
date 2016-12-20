@@ -19,6 +19,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
 import org.artek.app.Global;
@@ -29,6 +33,7 @@ import org.artek.app.main.MainActivity;
 public class GameActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private String name = "GameActivity";
     final String FILENAME = "gameData";
     final String IO_LOG_TAG = "I/O_Logs";
     final int[] datass = {};
@@ -56,6 +61,11 @@ public class GameActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         fileRW = new FileRW(this);
         /*
         if (fileRW.readFile("theme") != "") {

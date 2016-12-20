@@ -68,7 +68,7 @@
                 android:textColor="@color/colorAccent" />
 
             <TextView
-                android:text="Приложение было разработано в д/л Морском на 12 смене 2к16г"
+                android:text="Приложение было разработано в д/л Морском на 12 смене 2016-го года"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
@@ -154,7 +154,7 @@
                 android:layout_marginTop="71dp">
 
                 <TextView
-                    android:text='Выражаем отдельную благодарность вожатскому составу и адменистрации МДЦ"Артек"'
+                    android:text='Выражаем отдельную благодарность вожатскому составу и администрации МДЦ"Артек"'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView9"

@@ -13,6 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.Global;
 import org.artek.app.R;
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RadioFragment radioFragment;
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
+    String name = "MainActivity";
+    Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         Global.initilizate(this);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -152,9 +163,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-
-
-
         new Updater(this);
     }
 
@@ -176,6 +184,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         if (id == R.id.startGame) {
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("StartGame")
+                    .build());
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
             this.finish();
@@ -192,30 +204,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fTrans = getFragmentManager().beginTransaction();
 
         if (id == R.id.nav_news) {
-
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("OpenNews")
+                    .build());
             fTrans.replace(R.id.frgmCont, newsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
 
         } else if (id == R.id.nav_dictionary) {
-
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("OpenDictionary")
+                    .build());
             fTrans.replace(R.id.frgmCont, dictFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
 
         } else if (id == R.id.nav_tips) {
-
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("OpenTips")
+                    .build());
             fTrans.replace(R.id.frgmCont, tipsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
 
         } else if (id == R.id.nav_radio) {
-
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("OpenRadio")
+                    .build());
             fTrans.replace(R.id.frgmCont, radioFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
         } else if (id == R.id.nav_settings) {
-
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("OpenSettings")
+                    .build());
             fTrans.replace(R.id.frgmCont, settingsFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
@@ -230,7 +257,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case 0:
                 this.setTheme(R.style.AppTheme2);
-                Log.d("kek", "hhlh");
                 break;
             case 1:
                 setTheme(R.style.AppThemeAlmazny_NoActionBar);

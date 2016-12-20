@@ -14,6 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.json.JSONObject;
@@ -37,9 +41,10 @@ public class NewsFragment extends Fragment {
 
 
     ListView mListView;
-    String domain = "artek.media";
+    String domain = "artekmedia";
     Context baseContext;
     NoInternetFragment noInternetFragment;
+    private String name = "News";
 
 
     public NewsFragment() {
@@ -50,6 +55,11 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
 
     }
@@ -98,7 +108,7 @@ public class NewsFragment extends Fragment {
             br.close();
 
         } catch (Exception e) {
-            Log.d("Exception while downloading url", e.toString());
+            Log.d("Exception when down url", e.toString());
         } finally {
             iStream.close();
         }
@@ -232,11 +242,11 @@ public class NewsFragment extends Fragment {
             String path = (String) result.get("imageLogo");
             int position = (Integer) result.get("position");
             SimpleAdapter adapter = (SimpleAdapter) mListView.getAdapter();
-
+            if(adapter.getItem(position)!=null){
             HashMap<String, Object> hm = (HashMap<String, Object>) adapter
                     .getItem(position);
             hm.put("imageLogo", path);
-            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();}
         }
     }
 }

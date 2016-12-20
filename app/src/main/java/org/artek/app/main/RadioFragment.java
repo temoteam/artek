@@ -10,27 +10,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 import org.artek.app.RadioService;
+import static org.artek.app.R.id.startStopRadio;
 
 public class RadioFragment extends Fragment {
 
     boolean isPlaying = false;
     BroadcastReceiver service;
+    ImageView radioButton;
     private View.OnClickListener pausePlay = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (isPlaying) {
                 getActivity().getApplicationContext().stopService(new Intent(getActivity(), RadioService.class));
                 isPlaying = false;
+                radioButton.setImageResource(R.drawable.mute);
                 Log.d("radio", "sendStop");
             } else {
                 //if(service!= null){getContext().unregisterReceiver(service);}
                 getActivity().getApplicationContext().startService(new Intent(getActivity(), RadioService.class));
                 isPlaying = true;
+                radioButton.setImageResource(R.drawable.speaker);
                 Log.d("radio","sendStart");
             }
         }
@@ -49,7 +53,7 @@ public class RadioFragment extends Fragment {
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
-        Button radioButton = (Button) getActivity().findViewById(R.id.radioButton);
+        radioButton = (ImageView) getActivity().findViewById(startStopRadio);
         radioButton.setOnClickListener(pausePlay);
         //Регистрация приемника
         IntentFilter filter = new IntentFilter();

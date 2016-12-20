@@ -10,8 +10,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.zxing.Result;
 
+import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
@@ -20,12 +23,18 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class ScannerQRActivity extends Activity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     private static final int REQUEST_CAMERA = 10;
+    private String name = "QR_Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         super.onCreate(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         //checkPermissionsCamera();
 
     }
@@ -66,6 +75,7 @@ public class ScannerQRActivity extends Activity implements ZXingScannerView.Resu
     }
 
     public void QrScanner() {
+
 
 
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view

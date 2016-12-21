@@ -2,20 +2,24 @@ package org.artek.app;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Scanner;
 
-/**
- * Created by Belal on 4/15/2016.
- */
+
 public class GCMRegistrationIntentService extends IntentService {
     //Constants for success and errors
     public static final String REGISTRATION_SUCCESS = "RegistrationSuccess";
     public static final String REGISTRATION_ERROR = "RegistrationError";
+    String token = null;
 
     //Class constructor
     public GCMRegistrationIntentService() {
@@ -35,7 +39,7 @@ public class GCMRegistrationIntentService extends IntentService {
 
         //Register token is also null
         //we will get the token on successfull registration
-        String token = null;
+
         try {
             //Creating an instanceid
             InstanceID instanceID = InstanceID.getInstance(getApplicationContext());
@@ -46,6 +50,7 @@ public class GCMRegistrationIntentService extends IntentService {
             //Displaying the token in the log so that we can copy it to send push notification
             //You can also extend the app by storing the token in to your server
             Log.w("GCMRegIntentService", "token:" + token);
+            new Login().execute();
 
             //on registration complete creating intent with success
             registrationComplete = new Intent(REGISTRATION_SUCCESS);
@@ -60,5 +65,35 @@ public class GCMRegistrationIntentService extends IntentService {
 
         //Sending the broadcast that registration is completed
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+    }
+
+
+
+    class Login extends AsyncTask<Void, Void, Byte> {
+
+        @Override
+        protected Byte doInBackground(Void... params) {
+
+            try {
+                rawQuery(new URL("http://lohness.com/artek/notify/addClient.php?token="+token)).equals("S");
+
+            } catch (IOException e) {
+
+            }
+            return 0;
+        }
+
+        private String rawQuery(URL url) throws IOException {
+            InputStream input = url.openStream();
+            Scanner in = new Scanner(input);
+            String answer = in.nextLine();
+            Log.i ("URL IS",url+" RESULT IS: "+answer);
+            return answer;
+        }
+
+        @Override
+        protected void onPostExecute(Byte aByte) {
+            super.onPostExecute(aByte);
+        }
     }
 }

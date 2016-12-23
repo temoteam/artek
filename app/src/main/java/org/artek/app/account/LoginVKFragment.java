@@ -97,11 +97,12 @@ public class LoginVKFragment extends Fragment {
         String user_id = url.substring(a + 8);
         Log.d("kek",user_id);
         Log.d("kek", token);
-        SharedPreferences sPref = getActivity().getPreferences(MODE_WORLD_WRITEABLE);
+
+        SharedPreferences sPref = Global.sharedPreferences;
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString("token", token);
-        ed.putString("user_id", user_id);
-        ed.commit();
+        ed.putString(Global.SharedPreferencesTags.LAST_TOKEN, token);
+        ed.putString(Global.SharedPreferencesTags.LAST_ID, user_id);
+        ed.apply();
 
         Global.accountManager.login(token,user_id);
         /*

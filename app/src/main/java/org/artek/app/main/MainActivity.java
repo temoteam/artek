@@ -60,18 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         super.onCreate(savedInstanceState);
 
-
-     /*   if (fileRW.readFile("first") == "") {
-            Log.d("erar", "no fisrt");
-            getFragmentManager().beginTransaction().replace(R.id.frgmCont, new FirstFragment()).commit();
-        }
-
-        if (fileRW.readFile("theme") != "") {
-            Global.theme = Integer.parseInt(fileRW.readFile("theme"));
-            Log.d("erar", "no thtme");
-            setTheme(Global.theme);
-        }
-        */
         setContentView(R.layout.activity_main);
 
 
@@ -99,15 +87,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                //If the broadcast has received with success
-                //that means device is registered successfully
-                if(intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)){
-                    //Getting the registration token from the intent
-                    String token = intent.getStringExtra("token");
-                    //Displaying the token as toast
-                    //Toast.makeText(getApplicationContext(), "Registration token:" + token, Toast.LENGTH_LONG).show();
 
-                    //if the intent is not with success then displaying error messages
+                if(intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)){
+                    String token = intent.getStringExtra("token");
                 } else if(intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)){
                     Toast.makeText(getApplicationContext(), "GCM registration error!", Toast.LENGTH_LONG).show();
                 } else {
@@ -116,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
-        //Checking play service is available or not
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 
         //if play service is not available
@@ -182,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
+            Log.i("Theme",""+Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar));
             setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar));
         }
 
@@ -197,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fTrans.replace(R.id.frgmCont,selectCampFragment);
         fTrans.addToBackStack(null);
         fTrans.commit();
-
 
 
 

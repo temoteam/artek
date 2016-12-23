@@ -97,12 +97,14 @@ public class AccountManager {
         protected Byte doInBackground(Void... params) {
             try {
 
-                //URL url = new URL("https://api.vk.com/method/groups.join?group_id=132787995&not_sure=1&access_token="+vkToken+"&v=V");
                 URL url = new URL("https://api.vk.com/method/stats.trackVisitor?access_token="+vkToken+"&v=5.60");
                 String answer = rawQuery(url);
+                Log.i("VK_answer",answer);
                 if (answer.equals("response: 1"))
                     return SUCCESS;
-                else return ERROR_BAD;
+                else if(answer.contains("error"))
+                    return ERROR_BAD;
+                return  -128;
             } catch (IOException e) {
                 e.printStackTrace();
                 return  ERROR_UNKNOWN;
@@ -112,9 +114,8 @@ public class AccountManager {
         @Override
         protected void onPostExecute(Byte aByte) {
             super.onPostExecute(aByte);
+            if (aByte!=-128);
             switch (aByte){
-
-
 
                 case ERROR_UNKNOWN:
                 {

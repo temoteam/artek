@@ -84,9 +84,10 @@ public class SelectCampFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 if (appInterface!=null)
+                    if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)){
+                        Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null));}
+                else
                 appInterface.returner();
-                //SelectCampFragment.super.onDestroy();
-                // getFragmentManager().beginTransaction().replace(R.id.frgmCont, new LoginFragment()).commit();
             }
         });
 
@@ -95,41 +96,50 @@ public class SelectCampFragment extends Fragment {
     public void wtiteTheme(int id) {
         switch (id) {
             case 0:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeMorskoy_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeMorskoy_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"morskoy").apply();
                 break;
             case 1:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeAlmazny_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeAlmazny_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"almazniy").apply();
                 break;
             case 2:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeChrustalny_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeChrustalny_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"hrustalniy").apply();
                 break;
             case 3:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeKiparis_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeKiparis_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"kiparisniy").apply();
                 break;
             case 4:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeLazyrny_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeLazyrny_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"lazurniy").apply();
                 break;
             case 5:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeLes_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeLes_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"lesnoy").apply();
                 break;
             case 6:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeMorflot_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeMorflot_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"morskoy").apply();
                 break;
             case 7:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID, R.style.AppThemeOzer_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID, R.style.AppThemeOzer_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"ozerniy").apply();
                 break;
             case 8:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemePole_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemePole_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"polwvoy").apply();
                 break;
             case 9:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID, R.style.AppThemeReka_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID, R.style.AppThemeReka_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"rechnoy").apply();
                 break;
             case 10:
-                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar).commit();
+                Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar).apply();
+                Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.CAMP,"yantarniy").apply();
                 break;
         }
-
-        Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.CAMP,id).commit();
 
     }
 

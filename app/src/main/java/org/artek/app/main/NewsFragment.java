@@ -83,7 +83,6 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.fragment_blank, container, false);
         mListView = (ListView) result.findViewById(R.id.listView);
-        onResume();
         return result;
     }
 

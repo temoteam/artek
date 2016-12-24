@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 
 import org.artek.app.Global;
+import org.artek.app.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class AccountManager {
 
     final public static String SERVER_URL = "http://lohness.com/artek/";
     final public static String LOGIN = "login.php";
+    final public static String QR_SEND = "check_qr.php";
 
     final public static byte SUCCESS = 1;
     final public static byte ERROR_UNKNOWN = 0;
@@ -43,6 +45,10 @@ public class AccountManager {
         this.vkToken = vkToken;
         this.vkId = vkId;
         new Login().execute();
+    }
+
+    public void sendQR(String qr){
+        new SendQR().execute(qr);
     }
 
     public void getUserInfo(String token){
@@ -75,7 +81,7 @@ public class AccountManager {
     public AlertDialog.Builder generateMsg(byte result){
 
         AlertDialog.Builder ad;
-        ad = new AlertDialog.Builder(activity);
+        ad = new AlertDialog.Builder(Global.activity);
         ad.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
             }
@@ -224,6 +230,38 @@ public class AccountManager {
         }
     }
 
+    class SendQR extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                    return rawQuery(new URL(SERVER_URL+QR_SEND+"?id="+Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null)+"&qr="+params[0]));
+            } catch (IOException e) {
+                return "EI";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String string) {
+            super.onPostExecute(string);
+            AlertDialog.Builder dialog = null;
+            Log.i("qrCheck",string);
+            if (string.equals("EI")) Toast.makeText(Global.activity,"Не удалось отправить код, проверьте подключение к интернету",Toast.LENGTH_SHORT).show();
+            else if (string.contains("S")) {
+                dialog = generateMsg(SUCCESS).setMessage("Вы посетили точку '"+ string.substring(2)+"'");
+            }
+            else if (string.contains("E5")) {
+                dialog = generateMsg(ERROR_BAD).setMessage("Вы уже посещали точку '"+ string.substring(3)+"'");
+            }
+            else if (string.contains("E4")) {
+                dialog = generateMsg(ERROR_BAD).setMessage("Такой точки не существует");
+            }
+
+                if (dialog!=null)
+            dialog.show();
+        }
+    }
 
 }
 

@@ -3,7 +3,9 @@ package org.artek.app.game;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,31 +30,30 @@ import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
 import org.artek.app.Global;
 import org.artek.app.R;
+import org.artek.app.account.LoginFragment;
+import org.artek.app.account.SelectCampFragment;
 import org.artek.app.adapters.RecyclerAdapter;
 import org.artek.app.main.MainActivity;
+import org.artek.app.main.RadioFragment;
 
 public class GameActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private String name = "GameActivity";
-    final String FILENAME = "gameData";
-    final String IO_LOG_TAG = "I/O_Logs";
-    final int[] datass = {};
+
+    public static String SAVED = "saved_qr";
+
     int backButton = 0;
     int DIALOG_CONG = 11;
-    String places = "63#70";
+
 
     FragmentTransaction fTrans;
     VisitedFragment visitedFragment;
-    GameFragment gameFragment;
-    org.artek.app.game.StartGameFragment StartGameFragment;
-    org.artek.app.game.DetailSpotFragment DetailSpotFragment;
+    DetailSpotFragment detailSpotFragment;
+    RadioFragment radioFragment;
+    LoginFragment loginFragment;
+    SelectCampFragment selectCampFragment;
 
-    private RecyclerView mRecyclerView;
-
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerAdapter mAdapter;
-    FileRW fileRW;
 
 
     @Override
@@ -66,38 +68,12 @@ public class GameActivity extends AppCompatActivity
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        fileRW = new FileRW(this);
-        /*
-        if (fileRW.readFile("theme") != "") {
-            Global.theme = Integer.parseInt(fileRW.readFile("theme"));
-            setTheme(Global.theme);
-        }*/
+
         setContentView(R.layout.activity_game);
 
-        // Register the onClick listener with the implementation above
-
-
-        fileRW.writeFile("places", places);
-        //writeFile("test", "");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        StartGameFragment = new StartGameFragment();
-        fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmContGame, StartGameFragment);
-        fTrans.addToBackStack(null);
-        fTrans.commit();
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                lala();
-            }
-        });
-
-        //*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -108,12 +84,71 @@ public class GameActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
+
+                    startActivityForResult(intent, 0);
+
+                } catch (Exception e) {
+
+                    Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+                    startActivity(marketIntent);
+
+            }
+        }});
+        select(R.id.nav_visited);
     }
 
-    public void lala() {
-        Intent intent = new Intent(this, ScannerQRActivity.class);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Global.activity = this;
+    }
 
-        startActivityForResult(intent, 1);
+
+
+    public void select(int id) {
+
+        fTrans = getFragmentManager().beginTransaction();
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
+            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
+
+                if (id == R.id.nav_visited){
+
+                    if (visitedFragment==null) visitedFragment=new VisitedFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, visitedFragment);}
+
+                else if (id == R.id.nav_radio){
+                    if (radioFragment==null) radioFragment=new RadioFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, radioFragment);}
+                else if (id == R.id.nav_leaderboard){
+                    if (detailSpotFragment==null) detailSpotFragment=new DetailSpotFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, detailSpotFragment);}
+
+            } else {
+                if (loginFragment==null) loginFragment=new LoginFragment();
+                fTrans = fTrans.replace(R.id.frgmContGame,loginFragment);
+                Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT);
+            }
+        }else {
+            if (selectCampFragment==null) selectCampFragment=new SelectCampFragment();
+            fTrans = fTrans.replace(R.id.frgmContGame, selectCampFragment);
+            Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT);
+        }
+        fTrans.addToBackStack(null);
+        fTrans.commit();
+
+
+
+
+
     }
 
 
@@ -125,25 +160,23 @@ public class GameActivity extends AppCompatActivity
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            return;
-        }
-        TextView tw = (TextView) findViewById(R.id.textView2);
-        String a = data.getSerializableExtra("data").toString();
-        Integer id_building = 0;
-        try {
-            id_building = Integer.parseInt(a);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
 
+public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    if (requestCode == 0) {
+        if (resultCode == RESULT_OK) {
+            String contents = intent.getStringExtra("SCAN_RESULT");
+            FileRW fileRW = new FileRW(this);
+            String saved = fileRW.readFile(SAVED);
+            if (saved.equals("")) fileRW.writeFile(SAVED,contents);
+            else fileRW.writeFile(SAVED,saved+","+contents);
+        } else if (resultCode == RESULT_CANCELED) {
 
-        Log.d("lala", id_building.toString() + " " + a);
-        //tw.setText(a);
-        getQr(a);
+            Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.TOP, 25, 400);
+            toast.show();
+        }
     }
+}
 
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_CONG) {
@@ -206,26 +239,7 @@ public class GameActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        /*if (id == R.id.nav_game) {
-
-            fTrans = getFragmentManager().beginTransaction();
-            StartGameFragment = new StartGameFragment();
-            fTrans.replace(R.id.frgmContGame, gameFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-        } else*/ if (id == R.id.nav_visited) {
-            fTrans = getFragmentManager().beginTransaction();
-            visitedFragment = new VisitedFragment();
-            fTrans.replace(R.id.frgmContGame, visitedFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-        } else if (id == R.id.nav_leaderboard) {
-            //
-        } else if (id == R.id.nav_radio) {
-            //
-        }
+        select(item.getItemId());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -233,6 +247,7 @@ public class GameActivity extends AppCompatActivity
     }
 
     public void getQr(String scan) {
+        /*
         String content = "";
         String str = "";
 
@@ -262,13 +277,14 @@ public class GameActivity extends AppCompatActivity
                 fTrans.addToBackStack(null);
                 fTrans.commit();
 
+
             } else {
 
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Точка не найдена!", Toast.LENGTH_LONG);
                 toast.show();
             }
-        }
+        }*/
      /*   switch (scan){
             case 1:
                 fileRW.writeFile( "visited",  "");

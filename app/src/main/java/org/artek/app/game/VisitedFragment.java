@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -18,6 +19,7 @@ import com.google.android.gms.analytics.Tracker;
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
+import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
 import org.artek.app.RecyclerItemClickListener;
@@ -29,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -49,8 +52,15 @@ public class VisitedFragment extends Fragment {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
+
         return inflater.inflate(R.layout.fragment_visited, null);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getActivity(),"Для нажмите для отправки кода на сервер",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -66,25 +76,14 @@ public class VisitedFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Log.d("azaza", "click" + position);
-                        Log.d("azaza", view.toString());
                         TextView tw = (TextView)view.findViewById(R.id.tv_recycler_item);
                         String yop = tw.getText().toString();
-                        Log.d("yop", yop);
-                        fileRW.writeFile("currcardclick", yop);
-                        fTrans = getFragmentManager().beginTransaction();
-                        detailSpotFragment = new DetailSpotFragment();
-                        fTrans.replace(R.id.frgmContGame,detailSpotFragment);
-                        fTrans.addToBackStack(null);
-                        fTrans.commit();
-
-
+                        Global.accountManager.sendQR(yop);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-                        Log.d("azaza", "Long Click" + position);
                     }
                 })
         );
@@ -96,7 +95,7 @@ public class VisitedFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new RecyclerAdapter(myDataset);
@@ -108,24 +107,11 @@ public class VisitedFragment extends Fragment {
     public ArrayList<String> getDataSet() {
 
         ArrayList<String> myDataSet = new ArrayList<>();
-
-        String lala = fileRW.readFile("visited");
-       // String lalakek[] = lala.split("##");
-        String kek[] = lala.split("#");
-
-        Integer a = kek.length;
-        Log.d("lala", a.toString());
-
-        for (String v : kek) {
-            String toplol = fileRW.readFile(v);
-            String topkek[] = toplol.split("#");
-            myDataSet.add(topkek[0]);
-            // Log.d("lalala", kek[i]);
-        }
+        Scanner in = new Scanner(new FileRW(getActivity()).readFile(GameActivity.SAVED)).useDelimiter(",");
+        while (in.hasNext())
+            myDataSet.add(in.next());
 
         return myDataSet;
-
-
     }
 
 }

@@ -168,8 +168,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         fTrans = getFragmentManager().beginTransaction();
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)){
-            setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.CAMP, 0));
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)){
+            setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0));
             if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)){
                 fTrans.replace(R.id.frgmCont, newsFragment);
                 Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null));}
@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(GCMRegistrationIntentService.REGISTRATION_ERROR));
         new Updater(this);
+        Global.activity = this;
     }
     @Override
     protected void onPause() {
@@ -305,43 +306,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void laTheme(int id) {
-        switch (id) {
-            case 0:
-                this.setTheme(R.style.AppTheme2);
-                break;
-            case 1:
-                setTheme(R.style.AppThemeAlmazny_NoActionBar);
-                break;
-            case 2:
-                setTheme(R.style.AppThemeChrustalny_NoActionBar);
-                break;
-            /*case 3:
-                activity.setTheme(R.style.AppThemeKiparis_NoActionBar);
-                break;
-            case 4:
-                activity.setTheme(R.style.AppThemeLazyrny_NoActionBar);
-                break;
-            case 5:
-                activity.setTheme(R.style.AppThemeLes_NoActionBar);
-                break;
-            case 6:
-                activity.setTheme(R.style.AppThemeMorflot_NoActionBar);
-                break;
-            case 7:
-                activity.setTheme(R.style.AppThemeOzer_NoActionBar);
-                break;
-            case 8:
-                activity.setTheme(R.style.AppThemePole_NoActionBar);
-                break;
-            case 9:
-                activity.setTheme(R.style.AppThemeReka_NoActionBar);
-                break;
-            case 10:
-                activity.setTheme(R.style.AppThemeYantar_NoActionBar);
-                break;
-        }*/
-        }
-    }
 
 }

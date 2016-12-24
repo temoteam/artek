@@ -3,17 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_stat"
+            android:id="@+id/nav_allpoints"
             android:icon="@drawable/ic_stat"
-            android:title="Статистика" />
+            android:title="Список точек" />
         <item
             android:id="@+id/nav_visited"
             android:icon="@drawable/ic_visited"
-            android:title="Посещенные точки" />
+            android:title="Отсканированные коды" />
         <item
             android:id="@+id/nav_leaderboard"
             android:icon="@drawable/ic_leaderboard"
-            android:title="Таблица лидеров" />
+            android:title="Статистика" />
         <item
             android:id="@+id/nav_radio"
             android:icon="@drawable/ic_radio"

@@ -12,6 +12,7 @@ public class Global {
     public static AccountManager accountManager;
     public static User user;
     public static SharedPreferences sharedPreferences;
+    public static Activity activity;
 
 
     public static void initilizate(Activity activity) {

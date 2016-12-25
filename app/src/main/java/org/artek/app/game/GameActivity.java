@@ -12,14 +12,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -27,7 +27,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
-import org.artek.app.FileRW;
+
 import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.LoginFragment;
@@ -135,12 +135,12 @@ public class GameActivity extends AppCompatActivity
             } else {
                 if (loginFragment==null) loginFragment=new LoginFragment();
                 fTrans = fTrans.replace(R.id.frgmContGame,loginFragment);
-                Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT);
+                Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT).show();
             }
         }else {
             if (selectCampFragment==null) selectCampFragment=new SelectCampFragment();
             fTrans = fTrans.replace(R.id.frgmContGame, selectCampFragment);
-            Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT).show();
         }
         fTrans.addToBackStack(null);
         fTrans.commit();

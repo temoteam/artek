@@ -4,28 +4,21 @@ package org.artek.app.account;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
+
 import android.widget.Toast;
 
 
-import org.artek.app.FileRW;
-import org.artek.app.Global;
-import org.artek.app.R;
-import org.artek.app.game.GameActivity;
 
-import java.io.ByteArrayInputStream;
+import org.artek.app.Global;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
+
 import java.net.URL;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.FileHandler;
+
 
 public class AccountManager {
 
@@ -275,7 +268,12 @@ public class AccountManager {
             }
 
                 if (dialog!=null){
-                    reciclerInterface.remove(lastReciclerID,lastQR);
+                    dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            reciclerInterface.remove(lastReciclerID,lastQR);
+                        }
+                    });
                     dialog.show();
                 }
         }

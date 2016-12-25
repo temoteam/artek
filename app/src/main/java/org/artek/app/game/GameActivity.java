@@ -12,14 +12,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v7.widget.Toolbar;
-
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -27,12 +24,10 @@ import com.google.android.gms.analytics.Tracker;
 
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
-
 import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.LoginFragment;
 import org.artek.app.account.SelectCampFragment;
-import org.artek.app.adapters.RecyclerAdapter;
 import org.artek.app.main.MainActivity;
 import org.artek.app.main.RadioFragment;
 
@@ -75,13 +70,13 @@ public class GameActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.game_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.game_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -190,7 +185,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.game_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -238,7 +233,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         // Handle navigation view item clicks here.
         select(item.getItemId());
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.game_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

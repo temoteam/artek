@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.artek.app.Global;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
@@ -44,6 +46,7 @@ public class RadioTextFiller {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             textView.setText(values[0]);
+            Global.nowPlaying = values[0];
         }
     }
 

@@ -15,6 +15,7 @@ public class Global {
     public static Activity activity;
 
 
+
     public static void initilizate(Activity activity) {
         accountManager = new AccountManager(activity);
         sharedPreferences = activity.getSharedPreferences("artek_pref", Context.MODE_PRIVATE);

@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 
+import org.artek.app.FileRW;
 import org.artek.app.Global;
 import org.artek.app.R;
+import org.artek.app.game.GameActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -20,6 +24,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.FileHandler;
 
 public class AccountManager {
 
@@ -36,6 +42,10 @@ public class AccountManager {
     private String vkId;
 
     private Global.appInterface appInterface;
+    private ReciclerInterface reciclerInterface;
+
+    private int lastReciclerID;
+    private String lastQR;
 
     public AccountManager(Activity activity){
         this.activity = activity;
@@ -47,8 +57,10 @@ public class AccountManager {
         new Login().execute();
     }
 
-    public void sendQR(String qr){
+    public void sendQR(String qr,int id) {
         new SendQR().execute(qr);
+        lastReciclerID = id;
+        lastQR = qr;
     }
 
     public void getUserInfo(String token){
@@ -95,6 +107,10 @@ public class AccountManager {
             ad.setMessage("Проверьте подкючение к сети");
         }
         return ad;
+    }
+
+    public void setReciclerInterface(ReciclerInterface reciclerInterface) {
+        this.reciclerInterface = reciclerInterface;
     }
 
     class CheckToken extends AsyncTask<Void, Void, Byte>{
@@ -258,9 +274,15 @@ public class AccountManager {
                 dialog = generateMsg(ERROR_BAD).setMessage("Такой точки не существует");
             }
 
-                if (dialog!=null)
-            dialog.show();
+                if (dialog!=null){
+                    reciclerInterface.remove(lastReciclerID,lastQR);
+                    dialog.show();
+                }
         }
+    }
+
+    public interface ReciclerInterface{
+        public void remove(int id,String qr);
     }
 
 }

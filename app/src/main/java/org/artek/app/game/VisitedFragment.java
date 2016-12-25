@@ -21,6 +21,7 @@ import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
 import org.artek.app.Global;
 import org.artek.app.R;
+import org.artek.app.account.AccountManager;
 import org.artek.app.adapters.RecyclerAdapter;
 import org.artek.app.RecyclerItemClickListener;
 
@@ -32,10 +33,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class VisitedFragment extends Fragment {
+public class VisitedFragment extends Fragment implements AccountManager.ReciclerInterface {
 
     private String name = "Visited";
     private RecyclerView mRecyclerView;
@@ -43,8 +45,7 @@ public class VisitedFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerAdapter mAdapter;
 
-    FragmentTransaction fTrans;
-    DetailSpotFragment detailSpotFragment;
+    private ArrayList<String> qrs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +68,8 @@ public class VisitedFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Global.accountManager.setReciclerInterface((AccountManager.ReciclerInterface) this);
+
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
@@ -74,31 +77,34 @@ public class VisitedFragment extends Fragment {
 
         fileRW = new FileRW(getActivity());
 
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
+        final RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         TextView tw = (TextView)view.findViewById(R.id.tv_recycler_item);
                         String yop = tw.getText().toString();
-                        Global.accountManager.sendQR(yop);
+                        Global.accountManager.sendQR(yop,position);
+                        Log.i("Clicked Position",position+"");
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
                     }
                 })
         );
-        ArrayList<String> myDataset = getDataSet();
+
+        qrs = getDataSet();
+
+
 
         //HashMap<Integer, String> myDataset= new Map<Integer, String>();
 
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
 
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerAdapter(myDataset);
+        mAdapter = new RecyclerAdapter(qrs);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -114,4 +120,31 @@ public class VisitedFragment extends Fragment {
         return myDataSet;
     }
 
+    @Override
+    public void remove(int id,String qr) {
+        Log.i("removing",""+id);
+            String saved = fileRW.readFile(GameActivity.SAVED);
+            if (saved.indexOf(qr) == 0)
+                saved = saved.replace(qr + ",", "");
+            else
+                saved = saved.replace("," + qr, "");
+            fileRW.writeFile(GameActivity.SAVED, saved);
+        qrs.remove(id);
+        mAdapter.notifyItemRemoved(id);
+        mAdapter.notifyItemRangeChanged(0, qrs.size());
+        mRecyclerView.refreshDrawableState();
+    }
+
+
+    public void addAt(String qr) {
+
+        qrs.add(qr);
+
+        mAdapter.notifyItemRangeChanged(0, qrs.size());
+        mRecyclerView.refreshDrawableState();
+
+        String saved = fileRW.readFile(GameActivity.SAVED);
+        if (saved.equals("")) fileRW.writeFile(GameActivity.SAVED,qr);
+        else fileRW.writeFile(GameActivity.SAVED,saved+","+qr);
+    }
 }

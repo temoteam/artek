@@ -165,10 +165,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
     if (requestCode == 0) {
         if (resultCode == RESULT_OK) {
             String contents = intent.getStringExtra("SCAN_RESULT");
-            FileRW fileRW = new FileRW(this);
-            String saved = fileRW.readFile(SAVED);
-            if (saved.equals("")) fileRW.writeFile(SAVED,contents);
-            else fileRW.writeFile(SAVED,saved+","+contents);
+            visitedFragment.addAt(contents);
         } else if (resultCode == RESULT_CANCELED) {
 
             Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_LONG);

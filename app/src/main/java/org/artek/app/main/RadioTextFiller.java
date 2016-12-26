@@ -30,12 +30,12 @@ public class RadioTextFiller {
         protected Void doInBackground(Void... params) {
             while(true){
                 try {
-                    Thread.sleep(1000);
                     URL url = new URL("https://azurecom.ru/lala.php");
                     InputStream input = url.openStream();
                     Scanner in = new Scanner(input);
                     String answer = in.nextLine();
                     publishProgress(answer);
+                    Thread.sleep(1000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

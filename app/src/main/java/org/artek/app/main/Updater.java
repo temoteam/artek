@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.artek.app.ExceptionHandler;
+import org.artek.app.R;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -132,27 +133,23 @@ public class Updater {
             if (aBoolean) {
                 AlertDialog.Builder ad;
                 ad = new AlertDialog.Builder(activity);
-                ad.setTitle("Доступно обновление");  // заголовок
-                ad.setMessage("Текущая верся программы " + THIS_VERSION + ", последняя версия " + lastVertion); // сообщение
-                ad.setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
+                ad.setTitle(activity.getString(R.string.update_available));  // заголовок
+                ad.setMessage(activity.getString(R.string.current_version) + THIS_VERSION + activity.getString(R.string.last_version) + lastVertion); // сообщение
+                ad.setPositiveButton(activity.getString(R.string.update), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        /*
-                        Toast.makeText(activity.getApplicationContext(), "Началась загрузка обновления",
-                                Toast.LENGTH_SHORT).show();
-                        new InstallUpdate().execute();*/
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://lohness.com/artek/app/index.php"));
                         activity.startActivity(intent);
                     }
                 });
                 ad.setCancelable(true);
-                ad.setNegativeButton("Обновоить позже", new DialogInterface.OnClickListener() {
+                ad.setNegativeButton(activity.getString(R.string.update_later), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
 
                     }
                 });
                 ad.show();
             } else {
-                Toast.makeText(activity.getApplicationContext(), "Обновления не обнаружены",
+                Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.no_update),
                         Toast.LENGTH_SHORT).show();
             }
         }
@@ -167,7 +164,7 @@ public class Updater {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                this.dialog.setMessage("Загрузка");
+                this.dialog.setMessage(activity.getString(R.string.download));
                 this.dialog.show();
             }
 

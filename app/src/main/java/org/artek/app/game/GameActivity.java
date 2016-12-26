@@ -83,24 +83,7 @@ public class GameActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            /*    try {
 
-
-                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
-
-
-                    startActivityForResult(intent, 0);
-
-                } catch (Exception e) {
-
-                    Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
-                    Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
-                    startActivity(marketIntent);
-
-                    }
-
-                    */
 
                 Intent intent = new Intent(GameActivity.this,ScannerQRActivity.class);
                 startActivityForResult(intent, 0);
@@ -142,12 +125,12 @@ public class GameActivity extends AppCompatActivity
             } else {
                 if (loginFragment==null) loginFragment=new LoginFragment();
                 fTrans = fTrans.replace(R.id.frgmContGame,loginFragment);
-                Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.must_sign_in_for_game),Toast.LENGTH_SHORT).show();
             }
         }else {
             if (selectCampFragment==null) selectCampFragment=new SelectCampFragment();
             fTrans = fTrans.replace(R.id.frgmContGame, selectCampFragment);
-            Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.must_select_camp_to_play),Toast.LENGTH_SHORT).show();
         }
         fTrans.addToBackStack(null);
         fTrans.commit();

@@ -61,7 +61,7 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getActivity(),"Для нажмите для отправки кода на сервер",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.click_to_send), Toast.LENGTH_SHORT).show();
     }
 
     @Override

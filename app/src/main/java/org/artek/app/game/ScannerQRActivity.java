@@ -9,7 +9,10 @@ package org.artek.app.game;
         import android.widget.Toast;
 
         import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+        import com.google.android.gms.analytics.HitBuilders;
+        import com.google.android.gms.analytics.Tracker;
 
+        import org.artek.app.AnalyticsApplication;
         import org.artek.app.R;
 
 public class ScannerQRActivity extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener {
@@ -17,12 +20,17 @@ public class ScannerQRActivity extends AppCompatActivity implements QRCodeReader
 
     String scanningURL;
     private QRCodeReaderView mydecoderview;
-
+    public String name = "ScannerQR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner_qr);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},1);
 

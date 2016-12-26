@@ -55,18 +55,7 @@ public class DetailSpotFragment extends Fragment {
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        /*
-        CardView cardView = (CardView) getActivity().findViewById(R.id.card_view);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fTrans = getFragmentManager().beginTransaction();
-                VisitedFragment visitedFragment = new VisitedFragment();
-                fTrans.replace(R.id.frgmContGame, visitedFragment);
-                fTrans.addToBackStack(null);
-                fTrans.commit();
-            }
-        });*/
+
     }
 
     public String readFile(String FILENAME) {

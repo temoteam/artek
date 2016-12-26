@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/startGame"
-        android:title="Play a game"
+        android:title="@string/start_game"
         android:icon="@drawable/ic_play_game"
         app:showAsAction="always"/>
     <item

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/endGame"
-        android:title="End game"
+        android:title="@string/end_game"
         android:icon="@android:drawable/star_big_off"
         app:showAsAction="always"/>
     <item

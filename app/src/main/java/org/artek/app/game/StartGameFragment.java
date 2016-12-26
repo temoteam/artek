@@ -86,9 +86,9 @@ public class StartGameFragment extends Fragment {
         }
         int visitedAmmount =  score / 5;
         int all = 10;
-        textView.setText("Посещенно точек: " + visitedAmmount + "\n"  +
-                "Осталось точек: " + (all - visitedAmmount)+ "\n"  +
-                "Колличество очков: " + score + "\n" +
+        textView.setText(getString(R.string.visited_points) + visitedAmmount + "\n"  +
+                getString(R.string.left_points) + (all - visitedAmmount)+ "\n"  +
+                getString(R.string.score) + score + "\n" +
                 mayVisit());
 
     }
@@ -96,19 +96,17 @@ public class StartGameFragment extends Fragment {
 
         String kek = readFile("places");
         String topkek[] = kek.split("#");
-        //Log.d("kekekeke",  String.valueOf(kek.indexOf(scan)));
-        //Log.d("klololol",  scan);
         if ( Integer.parseInt(readFile("score")) == 0){
 
-            return "Вы не посетили не одной точки!";
+            return getString(R.string.no_points);
         }
         for (String v : topkek)
             if (!kek.contains(v)) {
-                String azaza[] = readFile(v).split("#");
-                String ret = "Предлагаем посетить точку " + azaza[0];
+                String points[] = readFile(v).split("#");
+                String ret = getString(R.string.let_visit) + points[0];
                return ret;
             }
-        return "Вы посетили все точки!";
+        return getString(R.string.all_points);
     }
     public String readFile(String FILENAME) {
         String content = "";

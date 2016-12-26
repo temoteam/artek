@@ -5,15 +5,15 @@
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_news"
-            android:title="Новости" />
+            android:title="@string/news" />
         <item
             android:id="@+id/nav_dictionary"
             android:icon="@drawable/ic_tips"
-            android:title="Глоссарий" />
+            android:title="@string/dictionary" />
         <item
             android:id="@+id/nav_tips"
             android:icon="@drawable/ic_dictionary"
-            android:title="Советы" />
+            android:title="@string/tips" />
 
     </group>
     <item android:title="">
@@ -22,12 +22,12 @@
             <item
                 android:id="@+id/nav_radio"
                 android:icon="@drawable/ic_radio"
-                android:title="Радио"
+                android:title="@string/radio"
                 android:gravity="bottom"/>
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
-                android:title="Настройки"
+                android:title="@string/settings"
                 android:gravity="bottom"/>
 
         </menu>

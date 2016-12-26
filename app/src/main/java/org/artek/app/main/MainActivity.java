@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)){
                     String token = intent.getStringExtra("token");
                 } else if(intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)){
-                    Toast.makeText(getApplicationContext(), "GCM registration error!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_gcm), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error occurred", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error), Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -101,13 +101,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //If play service is supported but not installed
             if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 //Displaying message that play service is not installed
-                Toast.makeText(getApplicationContext(), "Google Play Service is not install/enabled in this device!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.gps_not_installed), Toast.LENGTH_LONG).show();
                 GooglePlayServicesUtil.showErrorNotification(resultCode, getApplicationContext());
 
                 //If play service is not supported
                 //Displaying an error message
             } else {
-                Toast.makeText(getApplicationContext(), "This device does not support for Google Play Service!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.gps_not_support), Toast.LENGTH_LONG).show();
             }
 
             //If play service is available
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 } else {
-                    Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.access_file_denied) , Toast.LENGTH_SHORT).show();
                 }
                 return;
             }

@@ -95,8 +95,8 @@ public class LoginVKFragment extends Fragment {
         String token = url.substring(a + 13, b);
         a = url.indexOf("user_id=");
         String user_id = url.substring(a + 8);
-        Log.d("kek",user_id);
-        Log.d("kek", token);
+        //Log.d("vk_auth",user_id);
+        //Log.d("vk_auth", token);
 
         SharedPreferences sPref = Global.sharedPreferences;
         SharedPreferences.Editor ed = sPref.edit();
@@ -105,15 +105,7 @@ public class LoginVKFragment extends Fragment {
         ed.apply();
 
         Global.accountManager.login(token,user_id);
-        /*
-        try {
-            Global.userInfo = new httpGet("https://api.vk.com/method/users.get?access_token=" + token).execute().get();
-            Global.userInfo.put("utoken",token);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }*/
+
 
 
 
@@ -128,15 +120,14 @@ public class LoginVKFragment extends Fragment {
             //Log.d(Constants.DEBUG_TAG, "Redirecting URL " + url);
 
             if (url.startsWith("https://oauth.vk.com/blank.html") & (!url.contains("error"))) {
-                Log.d("kek","url contains callback url");
-                Log.d("kek", url);
+                Log.d("vk_auth","url contains callback url");
                 getUserData(url);
                 return true;
 
             } else if (url.contains("error")) {
                 return false;
             } else {
-                Log.d("kek","url not contains callback url");
+                Log.d("vk_auth","url not contains callback url");
                 view.loadUrl(url);
                 return true;
             }
@@ -145,7 +136,6 @@ public class LoginVKFragment extends Fragment {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            //Log.d(Constants.DEBUG_TAG, "Loading URL: " + url);
             super.onPageStarted(view, url, favicon);
 
             if (url.contains("error")) {
@@ -200,12 +190,11 @@ public class LoginVKFragment extends Fragment {
 */
                         return null;
                     } catch (JSONException e) {
-                        Log.e("GG","GG");
+
                         e.printStackTrace();
                     }
 
                 }
-                Log.i("httpAnswer", answerHTTP);
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -214,18 +203,6 @@ public class LoginVKFragment extends Fragment {
             return null;
         }
 
-
-     /*   protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            int a = answerHTTP.indexOf("first_name: ");
-            int b = answerHTTP.indexOf(",\n" + "last_name: ");
-
-
-
-            //name.setText(answerHTTP);
-        }
-
-    }*/
     }
 
 }

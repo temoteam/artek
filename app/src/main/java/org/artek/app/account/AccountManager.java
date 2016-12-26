@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 
 import org.artek.app.Global;
+import org.artek.app.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,11 +94,11 @@ public class AccountManager {
         });
 
         if (result > 0) {{
-            ad.setTitle("Успех !");
+            ad.setTitle(activity.getString(R.string.success));
         }
         } else {
-            ad.setTitle("Провалено");
-            ad.setMessage("Проверьте подкючение к сети");
+            ad.setTitle(activity.getString(R.string.failed));
+            ad.setMessage(activity.getString(R.string.not_connected));
         }
         return ad;
     }
@@ -134,18 +135,18 @@ public class AccountManager {
 
                 case ERROR_UNKNOWN:
                 {
-                    Toast.makeText(activity,"Не удалось войти вконтакте \n проверьте соединение с интернетом",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, activity.getString(R.string.not_connected),Toast.LENGTH_SHORT).show();
                 }
                 case ERROR_BAD:
                 {
-                    Toast.makeText(activity,"Не удалось войти вконтакте \n подтвердите ваши данные",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, activity.getString(R.string.account_data_not_valid),Toast.LENGTH_SHORT).show();
                     appInterface.returner();
                     Global.sharedPreferences.edit().remove(Global.SharedPreferencesTags.LAST_TOKEN);
                 }
                 case SUCCESS:
                 {
                     new CheckGroup().execute();
-                    Toast.makeText(activity,"Вы успешно вошли в систему",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, activity.getString(R.string.success_sign_in),Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -176,15 +177,15 @@ public class AccountManager {
             if (aByte==ERROR_BAD){
                 AlertDialog.Builder ad;
                 ad = new AlertDialog.Builder(activity);
-                ad.setTitle("Подпишитесь на нас в вк !");  // заголовок
-                ad.setMessage("В нашей вы будите в курсе всех обновлений \n также мы будем благодарны за вашу поддержку"); // сообщение
-                ad.setPositiveButton("Подписаться", new DialogInterface.OnClickListener() {
+                ad.setTitle(activity.getString(R.string.subscribe_us));  // заголовок
+                ad.setMessage(activity.getString(R.string.subscribe_long)); // сообщение
+                ad.setPositiveButton(activity.getString(R.string.subscribe), new DialogInterface.OnClickListener() {
                      public void onClick(DialogInterface dialog, int arg1) {
                        new SubscribeToGroup().execute();
                      }
                 });
                 ad.setCancelable(true);
-                ad.setNegativeButton("Потом", new DialogInterface.OnClickListener() {
+                ad.setNegativeButton(activity.getString(R.string.later), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
 
                   }
@@ -213,7 +214,7 @@ public class AccountManager {
         protected void onPostExecute(Byte aByte) {
             super.onPostExecute(aByte);
             if (aByte==SUCCESS){
-                Toast.makeText(activity,"Спасибо что подписались на нашу группу",Toast.LENGTH_SHORT);
+                Toast.makeText(activity, activity.getString(R.string.subscribe_thank),Toast.LENGTH_SHORT);
             }
         }
     }

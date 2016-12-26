@@ -1,11 +1,15 @@
 package org.artek.app.main;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
@@ -32,6 +36,14 @@ import org.artek.app.R;
 import org.artek.app.account.LoginFragment;
 import org.artek.app.account.SelectCampFragment;
 import org.artek.app.game.GameActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setContentView(R.layout.activity_main);
+
+        new ServerAlert(MainActivity.this).execute();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -327,4 +341,100 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+}
+
+class ServerAlert extends AsyncTask<Void, Void, String> {
+
+    private Context context;
+    HttpURLConnection urlConnection = null;
+    BufferedReader reader = null;
+    String resultJson = "";
+    private String LOG_TAG = "ServerAlert";
+
+    public ServerAlert(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    protected String doInBackground(Void... params) {
+        // получаем данные с внешнего ресурса
+
+        Log.d("alert", "async");
+        try {
+            URL url = new URL("http://lohness.com/artek/alertdata.json");
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+
+            InputStream inputStream = urlConnection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+
+            resultJson = buffer.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultJson;
+    }
+
+    @Override
+    protected void onPostExecute(String strJson) {
+        super.onPostExecute(strJson);
+        // выводим целиком полученную json-строку
+        Log.d("alert", strJson);
+
+        JSONObject dataJsonObj = null;
+
+        try {
+            dataJsonObj = new JSONObject(strJson);
+            Boolean isMsg = dataJsonObj.getBoolean("isMsg");
+            if (isMsg) {
+                final JSONObject msg = dataJsonObj.getJSONObject("msg");
+                String header = msg.getString("header");
+                String body = msg.getString("body");
+                Boolean isUrl = msg.getBoolean("isUrl");
+                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                dialog = dialog
+                        .setTitle(header)
+                        .setMessage(body + "\n" + msg.getString("url"))
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                if (isUrl) {
+                    dialog.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String url = null;
+                            try {
+                                url = msg.getString("url");
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(url));
+                                context.startActivity(i);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                dialog.setCancelable(false);
+                dialog.show();
+                Log.d("alert", header + " " + body);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

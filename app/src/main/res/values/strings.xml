@@ -53,7 +53,7 @@
     <string name="visited_points">Visited points: </string>
     <string name="left_points">Left points: </string>
     <string name="score">Your score: </string>
-    <string name="let_visit">Let's visit  </string>
+    <string name="let_visit">Let\'s visit  </string>
     <string name="no_points">You visited no points!</string>
     <string name="all_points">You visited all points!</string>
     <string name="click_to_send">Click to send code on server</string>
@@ -65,6 +65,9 @@
     <string name="update_later">Update later</string>
     <string name="no_update">No updates available</string>
     <string name="download">Downloading...</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="proceed">Proceed</string>
 
 
 </resources>

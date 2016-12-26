@@ -36,7 +36,7 @@
     <string name="start_game">Начать игру</string>
     <string name="statistics">Статистика</string>
     <string name="subscribe">Подписаться</string>
-    <string name="subscribe_long">В нашей группе вы первыми узнаете об обновлениях <b> Также мы будем благодарны вам за вашу поддержку</string>
+    <string name="subscribe_long">В нашей группе вы первыми узнаете об обновлениях \n Также мы будем благодарны вам за вашу поддержку</string>
     <string name="subscribe_thank">Спасибо!</string>
     <string name="subscribe_us">Подпишитесь на нашу группу ВКонтакте</string>
     <string name="success">Успех!</string>

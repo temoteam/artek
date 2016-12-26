@@ -54,25 +54,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
-
-
-
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        Global.initilizate(this);
 
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        Global.initilizate(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -15,8 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.artek.app.ExceptionHandler;
@@ -30,11 +29,11 @@ public class RadioFragment extends Fragment {
 
     boolean isPlaying = false;
     BroadcastReceiver service;
-    ImageView radioButton;
+    ImageButton radioButton;
 
     RadioTextFiller radioTextFiller;
     TextView name;
-    Button download;
+    ImageButton download;
 
 
     private View.OnClickListener pausePlay = new View.OnClickListener() {
@@ -43,13 +42,13 @@ public class RadioFragment extends Fragment {
             if (isPlaying) {
                 getActivity().getApplicationContext().stopService(new Intent(getActivity(), RadioService.class));
                 isPlaying = false;
-                radioButton.setImageResource(R.drawable.mute);
+                radioButton.setImageResource(R.drawable.ic_play);
                 Log.d("radio", "sendStop");
             } else {
                 //if(service!= null){getContext().unregisterReceiver(service);}
                 getActivity().getApplicationContext().startService(new Intent(getActivity(), RadioService.class));
                 isPlaying = true;
-                radioButton.setImageResource(R.drawable.speaker);
+                radioButton.setImageResource(R.drawable.ic_pause);
                 Log.d("radio","sendStart");
             }
         }
@@ -59,10 +58,10 @@ public class RadioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.fragment_radio, null);
-        download = (Button) result.findViewById(R.id.Radio_download);
-        name = (TextView) result.findViewById(R.id.Radio_text2);
+        download = (ImageButton) result.findViewById(R.id.Radio_download);
+        name = (TextView) result.findViewById(R.id.Radio_text2);/*
         TextView tw = (TextView) result.findViewById(R.id.Radio_text1);
-        tw.setText("Сейчас играет:");
+        tw.setText("Сейчас играет:");*/
         radioTextFiller = new RadioTextFiller(name);
         download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +89,7 @@ public class RadioFragment extends Fragment {
         if (isPlaying) {
             getActivity().getApplicationContext().stopService(new Intent(getActivity(), RadioService.class));
             isPlaying = false;
-            radioButton.setImageResource(R.drawable.mute);
+            radioButton.setImageResource(R.drawable.ic_pause);
         }
     }
 
@@ -99,7 +98,7 @@ public class RadioFragment extends Fragment {
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
-        radioButton = (ImageView) getActivity().findViewById(R.id.Radio_start);
+        radioButton = (ImageButton) getActivity().findViewById(R.id.Radio_start);
         radioButton.setOnClickListener(pausePlay);
 
 

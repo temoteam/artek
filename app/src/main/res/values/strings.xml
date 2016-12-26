@@ -5,11 +5,11 @@
 
     <string name="title_activity_main">Artek</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <string name="action_camp">Select camp</string>
-    <string name="logo_pic">logo</string>
+    <string name="logo_pic" translatable="false">logo</string>
     <string name="login_vk">Sign in with vk</string>
     <string name="start_game">Start game</string>
     <string name="end_game">End game</string>

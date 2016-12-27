@@ -93,7 +93,7 @@ public class GameActivity extends AppCompatActivity
                 select(R.id.nav_visited);
         }});
 
-        select(R.id.nav_visited);
+        select(R.id.nav_allpoints);
     }
 
 
@@ -150,7 +150,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
     if (requestCode == 0) {
         if (resultCode == RESULT_OK) {
             String contents = intent.getStringExtra("SCAN_RESULT");
-            visitedFragment.addAt(contents);
+            visitedFragment.add(contents);
         } else if (resultCode == RESULT_CANCELED) {
 
             Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_LONG);

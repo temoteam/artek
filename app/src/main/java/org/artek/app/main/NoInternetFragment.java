@@ -10,11 +10,14 @@ import android.widget.Button;
 
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
+import org.artek.app.game.StartGameFragment;
+import org.artek.app.game.VisitedFragment;
 
 
 public class NoInternetFragment extends Fragment implements View.OnClickListener {
 
     NewsFragment newsFragment;
+    StartGameFragment vf;
     Button reload;
 
 
@@ -24,6 +27,10 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
 
     public void setNewsFragment(NewsFragment newsFragment) {
         this.newsFragment = newsFragment;
+    }
+
+    public void setVf(StartGameFragment vf) {
+        this.vf = vf;
     }
 
     @Override
@@ -39,6 +46,9 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        getActivity().getFragmentManager().beginTransaction().replace(R.id.frgmCont, newsFragment).commit();
+        if (newsFragment!=null)
+             getActivity().getFragmentManager().beginTransaction().replace(R.id.frgmCont, newsFragment).commit();
+        else
+            getActivity().getFragmentManager().beginTransaction().replace(R.id.frgmCont, vf).commit();
     }
 }

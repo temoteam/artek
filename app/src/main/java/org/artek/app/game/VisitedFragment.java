@@ -126,7 +126,7 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
     }
 
 
-    public void addAt(String qr) {
+    public void add(String qr) {
 
         qrs.add(qr);
 
@@ -137,6 +137,6 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
         if (saved.equals("")) fileRW.writeFile(GameActivity.SAVED,qr);
         else fileRW.writeFile(GameActivity.SAVED,saved+","+qr);
     }
-    
+
 
 }

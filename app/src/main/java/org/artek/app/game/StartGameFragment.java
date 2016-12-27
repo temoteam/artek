@@ -2,6 +2,7 @@ package org.artek.app.game;
 
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +17,19 @@ import com.google.android.gms.analytics.Tracker;
 
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
+import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.RecyclerItemClickListener;
 import org.artek.app.adapters.PointsReciclerAdapter;
 import org.artek.app.adapters.RecyclerAdapter;
+import org.artek.app.main.NoInternetFragment;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class StartGameFragment extends Fragment {
 
@@ -30,7 +38,13 @@ public class StartGameFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private PointsReciclerAdapter mAdapter;
 
-    private ArrayList<String> qrs;
+    private NoInternetFragment noInternetFragment;
+    StartGameFragment it;
+
+    private ArrayList<String> titles;
+    private ArrayList<String> descriptions;
+    private ArrayList<String> urls;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,13 +54,14 @@ public class StartGameFragment extends Fragment {
         }
 
         return inflater.inflate(R.layout.fragment_start_game, null);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
     }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -61,10 +76,7 @@ public class StartGameFragment extends Fragment {
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        TextView tw = (TextView)view.findViewById(R.id.tv_recycler_item);
-                        String yop = tw.getText().toString();
-                        //Global.accountManager.sendQR(yop,position);
-                        Log.i("Clicked Position",position+"");
+
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -72,28 +84,80 @@ public class StartGameFragment extends Fragment {
                 })
         );
 
-        qrs = getDataSet();
-
-
-
-        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
-
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mAdapter = new PointsReciclerAdapter(qrs);
-        mRecyclerView.setAdapter(mAdapter);
-
+        new GetContent().execute(Global.sharedPreferences.getString(Global.SharedPreferencesTags.CAMP,null));
 
     }
 
-    public ArrayList<String> getDataSet() {
-
-        ArrayList<String> myDataSet = new ArrayList<>();
-        myDataSet.add("");
-
-        return myDataSet;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        it=this;
+        titles = new ArrayList<String>();
+        descriptions = new ArrayList<String>();
+        urls = new ArrayList<String>();
     }
+
+    class GetContent extends AsyncTask<String, String, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                URL url = new URL("http://lohness.com/artek/get_achivements.php?camp="+params[0]);
+                InputStream input = url.openStream();
+                Scanner in = new Scanner(input).useDelimiter("<br />");
+                while (in.hasNext()){
+                    String scanString = in.next();
+                    Log.i("ScanString",scanString);
+                    Scanner scan = new Scanner(scanString).useDelimiter(";");
+                    Log.i("Parsing",scan.next());
+                    publishProgress(new String[]{scan.next(),scan.next(),scan.next()});
+
+
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            titles.add(values[0]);
+            Log.i("title",values[0]);
+            descriptions.add(values[1]);
+            Log.i("description",values[1]);
+            urls.add(values[2]);
+            Log.i("url",values[2]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (!aBoolean)
+            {
+                Log.i("internet connection", "NO INTERNET");
+                if (noInternetFragment==null){
+                    noInternetFragment = new NoInternetFragment();
+                    noInternetFragment.setVf(it);
+                }
+                getFragmentManager().beginTransaction().replace(R.id.frgmContGame,noInternetFragment).commit();
+            }
+            else{
+                mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
+
+                mRecyclerView.setHasFixedSize(true);
+                mLayoutManager = new LinearLayoutManager(getActivity());
+                mRecyclerView.setLayoutManager(mLayoutManager);
+
+                mAdapter = new PointsReciclerAdapter(getActivity());
+                mAdapter.init(titles,descriptions,urls);
+                mRecyclerView.setAdapter(mAdapter);
+
+            }
+        }
+        }
 
 }

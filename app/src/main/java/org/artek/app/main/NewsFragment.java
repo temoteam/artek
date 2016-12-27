@@ -171,10 +171,9 @@ public class NewsFragment extends Fragment {
             try {
 
                 mListView.setAdapter(adapter);
-                for (int i = 0; i < adapter.getCount(); i++) {
 
-                    HashMap<String, Object> hm = (HashMap<String, Object>) adapter
-                            .getItem(i);
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    HashMap<String, Object> hm = (HashMap<String, Object>) adapter.getItem(i);
                     String imgUrl = (String) hm.get("imageLogo_path");
                     ImageLoaderTask imageLoaderTask = new ImageLoaderTask();
                     HashMap<String, Object> hmDownload = new HashMap<String, Object>();
@@ -239,8 +238,7 @@ public class NewsFragment extends Fragment {
             int position = (Integer) result.get("position");
             SimpleAdapter adapter = (SimpleAdapter) mListView.getAdapter();
             if(position != 0){
-            HashMap<String, Object> hm = (HashMap<String, Object>) adapter
-                    .getItem(position);
+            HashMap<String, Object> hm = (HashMap<String, Object>) adapter.getItem(position);
             hm.put("imageLogo", path);
             adapter.notifyDataSetChanged();}
         }

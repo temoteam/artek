@@ -1,44 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.artek.app.game.StartGameFragment">
+    android:orientation="vertical"
+    tools:context=".main.MainActivity">
 
-   <!-- <Button
-        android:text="Посещенные Точки "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button31"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        android:onClick="onVisitedButtonClick" />
--->
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:layout_margin="0dp" />
 
-    <Button
-         android:text="Таблица Лидеров "
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:id="@+id/leaderboard"
-         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-         android:backgroundTint="@color/colorPrimaryDark"
-        android:layout_marginTop="88dp"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="onVisitedButtonClick (StartGameFragment)" />
 
-</RelativeLayout>
+</LinearLayout>

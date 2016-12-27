@@ -137,4 +137,6 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
         if (saved.equals("")) fileRW.writeFile(GameActivity.SAVED,qr);
         else fileRW.writeFile(GameActivity.SAVED,saved+","+qr);
     }
+    
+
 }

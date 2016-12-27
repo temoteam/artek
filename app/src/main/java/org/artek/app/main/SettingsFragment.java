@@ -38,8 +38,7 @@ public class SettingsFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Global.initilizate(getActivity());
-                Global.sharedPreferences.edit().clear().commit();
+                Global.sharedPreferences.edit().clear().apply();
                 getActivity().finish();
             }
         });

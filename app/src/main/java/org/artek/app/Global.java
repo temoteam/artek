@@ -15,13 +15,10 @@ public class Global {
 
     public static String nowPlaying;
 
-
-
     public static void initilizate(Activity activity) {
         accountManager = new AccountManager(activity);
         sharedPreferences = activity.getSharedPreferences("artek_pref", Context.MODE_PRIVATE);
     }
-
 
     public class SharedPreferencesTags{
         public final static String CAMP = "camp";

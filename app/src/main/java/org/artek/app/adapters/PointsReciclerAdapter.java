@@ -1,12 +1,11 @@
 package org.artek.app.adapters;
 
-
-import android.view.LayoutInflater;
-
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.artek.app.R;
@@ -14,19 +13,18 @@ import org.artek.app.R;
 import java.util.ArrayList;
 
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAdapter.ViewHolder> {
 
     private ArrayList<String> mDataset;
 
-    public RecyclerAdapter(ArrayList<String> dataset) {
+    public PointsReciclerAdapter(ArrayList<String> dataset) {
         mDataset = dataset;
     }
 
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+    public PointsReciclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_item, parent, false);
+                .inflate(R.layout.recicler_point_item, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -35,7 +33,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.mTextView.setText(mDataset.get(position));
+       holder.title.setText(mDataset.get(position));
+
+
 
     }
 
@@ -45,12 +45,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public TextView title;
+        public TextView description;
+        public ImageView pic;
 
         public ViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.tv_recycler_item);
+            title = (TextView) v.findViewById(R.id.title);
+            description = (TextView) v.findViewById(R.id.description);
+            pic=(ImageView) v.findViewById(R.id.logo);
         }
     }
 
 }
+
+

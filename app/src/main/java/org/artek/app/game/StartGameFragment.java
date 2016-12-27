@@ -2,8 +2,10 @@ package org.artek.app.game;
 
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,25 +16,21 @@ import com.google.android.gms.analytics.Tracker;
 
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
-import org.artek.app.FileRW;
 import org.artek.app.R;
+import org.artek.app.RecyclerItemClickListener;
+import org.artek.app.adapters.PointsReciclerAdapter;
+import org.artek.app.adapters.RecyclerAdapter;
+
+import java.util.ArrayList;
 
 public class StartGameFragment extends Fragment {
 
-    private String name = "StartGameFrgmnt";
-    private FileRW fileRW;
-    FragmentTransaction fTrans;
-    VisitedFragment visitedFragment;
+    private String name = "List";
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private PointsReciclerAdapter mAdapter;
 
-    private View.OnClickListener mCorkyListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            visitedFragment = new VisitedFragment();
-            fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmContGame, visitedFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-        }
-    };
+    private ArrayList<String> qrs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,64 +38,62 @@ public class StartGameFragment extends Fragment {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
-        //writeFile("test1","");
+
         return inflater.inflate(R.layout.fragment_start_game, null);
-
-
-
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        fileRW = new FileRW(getActivity());
-        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
-        Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Image~" + name);
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
-
-       // Button button1 = (Button) getActivity().findViewById(R.id.button31);
-       // button1.setOnClickListener(mCorkyListener);
-
-        writeText();
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        writeText();
     }
 
-    public void writeText() {
-        TextView textView = (TextView) getActivity().findViewById(R.id.textView2);
-        int score = 0;
-        if (fileRW.readFile("score") != "") {
-            score = Integer.parseInt(fileRW.readFile("score"));
-        }
-        int visitedAmmount =  score / 5;
-        int all = 10;
-        textView.setText(getString(R.string.visited_points) + visitedAmmount + "\n"  +
-                getString(R.string.left_points) + (all - visitedAmmount)+ "\n"  +
-                getString(R.string.score) + score + "\n" +
-                mayVisit());
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        final RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        TextView tw = (TextView)view.findViewById(R.id.tv_recycler_item);
+                        String yop = tw.getText().toString();
+                        //Global.accountManager.sendQR(yop,position);
+                        Log.i("Clicked Position",position+"");
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                    }
+                })
+        );
+
+        qrs = getDataSet();
+
+
+
+        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
+
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new PointsReciclerAdapter(qrs);
+        mRecyclerView.setAdapter(mAdapter);
+
 
     }
-    public String mayVisit(){
 
-        String kek = fileRW.readFile("places");
-        String topkek[] = kek.split("#");
-        if (Integer.parseInt(fileRW.readFile("score")) == 0) {
+    public ArrayList<String> getDataSet() {
 
-            return getString(R.string.no_points);
-        }
-        for (String v : topkek)
-            if (!kek.contains(v)) {
-                String points[] = fileRW.readFile(v).split("#");
-                String ret = getString(R.string.let_visit) + points[0];
-               return ret;
-            }
-        return getString(R.string.all_points);
+        ArrayList<String> myDataSet = new ArrayList<>();
+        myDataSet.add("");
+
+        return myDataSet;
     }
+
 }

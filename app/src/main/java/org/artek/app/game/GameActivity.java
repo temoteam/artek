@@ -47,6 +47,7 @@ public class GameActivity extends AppCompatActivity
     RadioFragment radioFragment;
     LoginFragment loginFragment;
     SelectCampFragment selectCampFragment;
+    StartGameFragment startGameFragment;
 
 
 
@@ -57,13 +58,12 @@ public class GameActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
-        Global.initilizate(this);
-        //checkTheme();
+
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
             Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
             setTheme(theme);
-
         }
+
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
@@ -88,21 +88,12 @@ public class GameActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent intent = new Intent(GameActivity.this,ScannerQRActivity.class);
                 startActivityForResult(intent, 0);
                 select(R.id.nav_visited);
-
-
         }});
 
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
-            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
-            setTheme(theme);
-
-        }
-
+        select(R.id.nav_visited);
     }
 
 
@@ -121,26 +112,27 @@ public class GameActivity extends AppCompatActivity
             if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
 
                 if (id == R.id.nav_visited){
-
                     if (visitedFragment==null) visitedFragment=new VisitedFragment();
                     fTrans = fTrans.replace(R.id.frgmContGame, visitedFragment);}
-
                 else if (id == R.id.nav_radio){
                     if (radioFragment==null) radioFragment=new RadioFragment();
                     fTrans = fTrans.replace(R.id.frgmContGame, radioFragment);}
                 else if (id == R.id.nav_leaderboard){
                     if (detailSpotFragment==null) detailSpotFragment=new DetailSpotFragment();
                     fTrans = fTrans.replace(R.id.frgmContGame, detailSpotFragment);}
+                else if (id == R.id.nav_allpoints){
+                    if (startGameFragment==null) startGameFragment=new StartGameFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, startGameFragment);}
 
             } else {
                 if (loginFragment==null) loginFragment=new LoginFragment();
                 fTrans = fTrans.replace(R.id.frgmContGame,loginFragment);
-                Toast.makeText(this, getString(R.string.must_sign_in_for_game),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT).show();
             }
         }else {
             if (selectCampFragment==null) selectCampFragment=new SelectCampFragment();
             fTrans = fTrans.replace(R.id.frgmContGame, selectCampFragment);
-            Toast.makeText(this,getString(R.string.must_select_camp_to_play),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT).show();
         }
         fTrans.addToBackStack(null);
         fTrans.commit();
@@ -151,13 +143,6 @@ public class GameActivity extends AppCompatActivity
 
     }
 
-
-    public void onVisitedButtonClick(View view) {
-        fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCont, visitedFragment);
-        fTrans.addToBackStack(null);
-        fTrans.commit();
-    }
 
 
 
@@ -245,54 +230,6 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.game_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void getQr(String scan) {
-        /*
-        String content = "";
-        String str = "";
-
-        String kek = fileRW.readFile("places");
-        String topkek = fileRW.readFile("visited");
-        //Log.d("kekekeke",  String.valueOf(kek.indexOf(scan)));
-        //Log.d("klololol",  scan);
-        if (topkek.contains(scan)) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Вы здесь уже были!", Toast.LENGTH_LONG);
-            toast.show();
-        } else {
-            if (kek.contains(scan)) {
-                String azaz = fileRW.readFile("visited");
-                fileRW.writeFile("visited", azaz + scan + "#");
-                Integer score = Integer.parseInt(fileRW.readFile("score"));
-                score += 5;
-                showDialog(DIALOG_CONG);
-                deleteFile("score");
-                fileRW.writeFile("score", score.toString());
-
-                String keklol[] = fileRW.readFile(scan).split("#");
-                fileRW.writeFile("currcardclick", keklol[0]);
-                fTrans = getFragmentManager().beginTransaction();
-                DetailSpotFragment = new DetailSpotFragment();
-                fTrans.replace(R.id.frgmContGame,DetailSpotFragment);
-                fTrans.addToBackStack(null);
-                fTrans.commit();
-
-
-            } else {
-
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Точка не найдена!", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }*/
-     /*   switch (scan){
-            case 1:
-                fileRW.writeFile( "visited",  "");
-
-
-
-    }*/
     }
 
 

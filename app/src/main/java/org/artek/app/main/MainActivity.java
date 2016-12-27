@@ -274,7 +274,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_camp) {
-            return true;
+            fTrans = getFragmentManager().beginTransaction();
+            fTrans.replace(R.id.frgmCont, selectCampFragment);
+            fTrans.addToBackStack(null);
+            fTrans.commit();
         }
         if (id == R.id.startGame) {
             mTracker.send(new HitBuilders.EventBuilder()

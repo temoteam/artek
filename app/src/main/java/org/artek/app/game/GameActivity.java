@@ -221,7 +221,11 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_camp) {
-            return true;
+            selectCampFragment = new SelectCampFragment();
+            fTrans = getFragmentManager().beginTransaction();
+            fTrans.replace(R.id.frgmContGame, selectCampFragment);
+            fTrans.addToBackStack(null);
+            fTrans.commit();
         }
         if (id == R.id.endGame) {
             Intent intent = new Intent(this, MainActivity.class);

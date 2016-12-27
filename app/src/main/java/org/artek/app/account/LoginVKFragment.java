@@ -1,23 +1,18 @@
 package org.artek.app.account;
 
 
-import android.content.Intent;
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,29 +22,17 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.artek.app.ExceptionHandler;
-
-import org.artek.app.R;
 import org.artek.app.Global;
+import org.artek.app.R;
 import org.artek.app.main.NewsFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
-import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class LoginVKFragment extends Fragment {
 
 

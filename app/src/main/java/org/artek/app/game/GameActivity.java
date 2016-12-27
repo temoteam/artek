@@ -3,7 +3,6 @@ package org.artek.app.game;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -58,7 +57,13 @@ public class GameActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
+        Global.initilizate(this);
+        //checkTheme();
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
+            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
+            setTheme(theme);
 
+        }
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
@@ -92,6 +97,11 @@ public class GameActivity extends AppCompatActivity
 
         }});
 
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
+            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
+            setTheme(theme);
+
+        }
 
     }
 

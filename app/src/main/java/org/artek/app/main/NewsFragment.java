@@ -34,9 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NewsFragment extends Fragment {
 
 

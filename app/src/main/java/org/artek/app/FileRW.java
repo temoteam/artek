@@ -27,15 +27,9 @@ public final class FileRW {
         this.context = activity.getApplicationContext();
         this.activity = activity;
     }
-
-    ;
-
     public FileRW(Context context) {
         this.context = this.context;
     }
-
-    ;
-
     public void writeFile(String FILENAME, String content) {
         try {
 

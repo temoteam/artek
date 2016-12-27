@@ -1,19 +1,18 @@
 package org.artek.app.game;
 
-        import android.Manifest;
-        import android.content.Intent;
-        import android.graphics.PointF;
-        import android.os.Bundle;
-        import android.support.v4.app.ActivityCompat;
-        import android.support.v7.app.AppCompatActivity;
-        import android.widget.Toast;
+import android.Manifest;
+import android.content.Intent;
+import android.graphics.PointF;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 
-        import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-        import com.google.android.gms.analytics.HitBuilders;
-        import com.google.android.gms.analytics.Tracker;
+import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
-        import org.artek.app.AnalyticsApplication;
-        import org.artek.app.R;
+import org.artek.app.AnalyticsApplication;
+import org.artek.app.R;
 
 public class ScannerQRActivity extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener {
 

@@ -2,7 +2,6 @@ package org.artek.app.game;
 
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,21 +20,12 @@ import org.artek.app.ExceptionHandler;
 import org.artek.app.FileRW;
 import org.artek.app.Global;
 import org.artek.app.R;
+import org.artek.app.RecyclerItemClickListener;
 import org.artek.app.account.AccountManager;
 import org.artek.app.adapters.RecyclerAdapter;
-import org.artek.app.RecyclerItemClickListener;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class VisitedFragment extends Fragment implements AccountManager.ReciclerInterface {
 

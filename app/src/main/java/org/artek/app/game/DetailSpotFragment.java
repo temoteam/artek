@@ -14,13 +14,9 @@ import android.widget.TextView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
+import org.artek.app.FileRW;
 import org.artek.app.R;
 import org.artek.app.adapters.RecyclerAdapter;
 
@@ -31,6 +27,7 @@ public class DetailSpotFragment extends Fragment {
 
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerAdapter mAdapter;
+    private FileRW fileRW;
 
     FragmentTransaction fTrans;
     VisitedFragment visitedFragment;
@@ -50,36 +47,13 @@ public class DetailSpotFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    getDataSet();
+        fileRW = new FileRW(getActivity());
+        getDataSet();
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
-    }
-
-    public String readFile(String FILENAME) {
-        String content = "";
-        String str = "";
-        try {
-
-            // open stream to read data
-            BufferedReader br = new BufferedReader(new InputStreamReader(getContext().openFileInput(FILENAME)));
-
-            // read data
-            while ((str = br.readLine()) != null) {
-                content = content + str;
-            }
-
-            // close stream
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content;
     }
     public void getDataSet() {
 
@@ -87,16 +61,16 @@ public class DetailSpotFragment extends Fragment {
         TextView tw = (TextView) getActivity().findViewById(R.id.tv_recycler_item1);
         TextView tw2 = (TextView) getActivity().findViewById(R.id.tv_recycler_item12);
         ImageView iw = (ImageView)getActivity().findViewById(R.id.tv_recycler_item_img);
-        switch (readFile("currcardclick")){
+        switch (fileRW.readFile("currcardclick")) {
             case "Монумент «Дружба детей мира» ":
-                String kek[] = readFile("63").split("#");
+                String kek[] = fileRW.readFile("63").split("#");
                 tw.setText(kek[0]);
                 iw.setImageResource(R.drawable.monument);
                 tw2.setText(kek[1]);
                    // myDataSet.add(readFile("63").replaceAll("#", ""));
                 break;
             case "Площадь Дружбы ":
-                String kek1[] = readFile("70").split("#");
+                String kek1[] = fileRW.readFile("70").split("#");
                 tw.setText(kek1[0]);
                 iw.setImageResource(R.drawable.ploshad);
                 tw2.setText(kek1[1]);

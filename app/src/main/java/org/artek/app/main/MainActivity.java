@@ -70,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
+        Global.initilizate(this);
+        //checkTheme();
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
+            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
+            setTheme(theme);
+
+        }
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
@@ -98,9 +105,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                if(intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)){
+                if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
                     String token = intent.getStringExtra("token");
-                } else if(intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)){
+                } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
                     Toast.makeText(getApplicationContext(), getString(R.string.error_gcm), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.error), Toast.LENGTH_LONG).show();
@@ -111,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 
         //if play service is not available
-        if(ConnectionResult.SUCCESS != resultCode) {
+        if (ConnectionResult.SUCCESS != resultCode) {
             //If play service is supported but not installed
-            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 //Displaying message that play service is not installed
                 Toast.makeText(getApplicationContext(), getString(R.string.gps_not_installed), Toast.LENGTH_LONG).show();
                 GooglePlayServicesUtil.showErrorNotification(resultCode, getApplicationContext());
@@ -147,12 +154,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         selectCampFragment = new SelectCampFragment();
 
 
-
         Global.accountManager.setAppInterface(new Global.appInterface() {
             @Override
             public void returner() {
                 fTrans = getFragmentManager().beginTransaction();
-                fTrans.replace(R.id.frgmCont,new LoginFragment());
+                fTrans.replace(R.id.frgmCont, new LoginFragment());
                 fTrans.addToBackStack(null);
                 fTrans.commit();
             }
@@ -165,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN))
                     fTrans.replace(R.id.frgmCont, newsFragment);
                 else
-                    fTrans.replace(R.id.frgmCont,new LoginFragment());
+                    fTrans.replace(R.id.frgmCont, new LoginFragment());
 
                 fTrans.addToBackStack(null);
                 fTrans.commit();
@@ -173,27 +179,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
-            Log.i("Theme",""+Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar));
-            setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID,R.style.AppThemeYantar_NoActionBar));
+            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
+            setTheme(theme);
+
         }
 
         fTrans = getFragmentManager().beginTransaction();
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)){
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
             setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0));
-            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)){
+            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
                 fTrans.replace(R.id.frgmCont, newsFragment);
-                Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null));}
-            else
-                fTrans.replace(R.id.frgmCont,new LoginFragment());}
-        else
-            fTrans.replace(R.id.frgmCont,selectCampFragment);
+                Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN, null));
+            } else
+                fTrans.replace(R.id.frgmCont, new LoginFragment());
+        } else
+            fTrans.replace(R.id.frgmCont, selectCampFragment);
         fTrans.addToBackStack(null);
         fTrans.commit();
 
 
-
     }
-
 
     @Override
     public void onBackPressed() {
@@ -237,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 } else {
-                    Toast.makeText(MainActivity.this, getString(R.string.access_file_denied) , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.access_file_denied), Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -246,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // permissions this app might request
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -341,100 +347,99 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-}
+    class ServerAlert extends AsyncTask<Void, Void, String> {
 
-class ServerAlert extends AsyncTask<Void, Void, String> {
+        private Context context;
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String resultJson = "";
+        private String LOG_TAG = "ServerAlert";
 
-    private Context context;
-    HttpURLConnection urlConnection = null;
-    BufferedReader reader = null;
-    String resultJson = "";
-    private String LOG_TAG = "ServerAlert";
-
-    public ServerAlert(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    protected String doInBackground(Void... params) {
-        // получаем данные с внешнего ресурса
-
-        Log.d("alert", "async");
-        try {
-            URL url = new URL("http://lohness.com/artek/alertdata.json");
-
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-
-            resultJson = buffer.toString();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        public ServerAlert(Context context) {
+            this.context = context;
         }
-        return resultJson;
-    }
 
-    @Override
-    protected void onPostExecute(String strJson) {
-        super.onPostExecute(strJson);
-        // выводим целиком полученную json-строку
-        Log.d("alert", strJson);
+        @Override
+        protected String doInBackground(Void... params) {
+            // получаем данные с внешнего ресурса
 
-        JSONObject dataJsonObj = null;
+            Log.d("alert", "async");
+            try {
+                URL url = new URL("http://lohness.com/artek/alertdata.json");
 
-        try {
-            dataJsonObj = new JSONObject(strJson);
-            Boolean isMsg = dataJsonObj.getBoolean("isMsg");
-            if (isMsg) {
-                final JSONObject msg = dataJsonObj.getJSONObject("msg");
-                String header = msg.getString("header");
-                String body = msg.getString("body");
-                Boolean isUrl = msg.getBoolean("isUrl");
-                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-                dialog = dialog
-                        .setTitle(header)
-                        .setMessage(body + "\n" + msg.getString("url"))
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+
+                resultJson = buffer.toString();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return resultJson;
+        }
+
+        @Override
+        protected void onPostExecute(String strJson) {
+            super.onPostExecute(strJson);
+            // выводим целиком полученную json-строку
+            Log.d("alert", strJson);
+
+            JSONObject dataJsonObj = null;
+
+            try {
+                dataJsonObj = new JSONObject(strJson);
+                Boolean isMsg = dataJsonObj.getBoolean("isMsg");
+                if (isMsg) {
+                    final JSONObject msg = dataJsonObj.getJSONObject("msg");
+                    String header = msg.getString("header");
+                    String body = msg.getString("body");
+                    Boolean isUrl = msg.getBoolean("isUrl");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                    dialog = dialog
+                            .setTitle(header)
+                            .setMessage(body + "\n" + msg.getString("url"))
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    if (isUrl) {
+                        dialog.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                String url = null;
+                                try {
+                                    url = msg.getString("url");
+                                    Intent i = new Intent(Intent.ACTION_VIEW);
+                                    i.setData(Uri.parse(url));
+                                    context.startActivity(i);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
-                if (isUrl) {
-                    dialog.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String url = null;
-                            try {
-                                url = msg.getString("url");
-                                Intent i = new Intent(Intent.ACTION_VIEW);
-                                i.setData(Uri.parse(url));
-                                context.startActivity(i);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    }
+                    dialog.setCancelable(false);
+                    dialog.show();
+                    Log.d("alert", header + " " + body);
+
                 }
-                dialog.setCancelable(false);
-                dialog.show();
-                Log.d("alert", header + " " + body);
 
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -13,6 +13,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
+import org.artek.app.Global;
 import org.artek.app.R;
 
 public class SettingsFragment extends Fragment {
@@ -37,8 +38,9 @@ public class SettingsFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                getActivity().getApplicationContext().deleteFile("first");
+                Global.initilizate(getActivity());
+                Global.sharedPreferences.edit().clear().commit();
+                getActivity().finish();
             }
         });
 

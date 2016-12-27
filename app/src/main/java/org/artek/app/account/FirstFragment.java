@@ -14,9 +14,7 @@ import org.artek.app.FileRW;
 import org.artek.app.R;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+//////////////////DEPREKATED//////////////////
 public class FirstFragment extends Fragment {
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;

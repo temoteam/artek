@@ -11,9 +11,7 @@ import android.widget.Button;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class NoInternetFragment extends Fragment implements View.OnClickListener {
 
     NewsFragment newsFragment;

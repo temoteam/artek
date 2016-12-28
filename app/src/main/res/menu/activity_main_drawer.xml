@@ -2,21 +2,45 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
+        <item android:title="Главное">
+            <menu>
+         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_news"
             android:title="@string/news" />
-        <item
+         <item
             android:id="@+id/nav_dictionary"
             android:icon="@drawable/ic_tips"
             android:title="@string/dictionary" />
-        <item
+         <item
             android:id="@+id/nav_tips"
             android:icon="@drawable/ic_dictionary"
             android:title="@string/tips" />
+            </menu>
+        </item>
 
     </group>
-    <item android:title="">
+
+    <item android:title="Игра">
+        <menu>
+
+            <item
+                android:id="@+id/nav_allpoints"
+                android:icon="@drawable/ic_stat"
+                android:title="@string/list_points" />
+            <item
+                android:id="@+id/nav_visited"
+                android:icon="@drawable/ic_visited"
+                android:title="@string/scanned_points" />
+            <item
+                android:id="@+id/nav_leaderboard"
+                android:icon="@drawable/ic_leaderboard"
+                android:title="@string/statistics" />
+
+        </menu>
+    </item>
+
+    <item android:title="Сервисы">
         <menu>
 
             <item
@@ -24,12 +48,17 @@
                 android:icon="@drawable/ic_radio"
                 android:title="@string/radio"
                 android:gravity="bottom"/>
+
+        </menu>
+    </item>
+
+    <item android:title="Настройки">
+        <menu>
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
                 android:title="@string/settings"
                 android:gravity="bottom"/>
-
         </menu>
     </item>
 

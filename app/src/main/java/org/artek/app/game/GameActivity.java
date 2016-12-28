@@ -160,18 +160,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
     }
 }
 
-    protected Dialog onCreateDialog(int id) {
-        if (id == DIALOG_CONG) {
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            // заголовок
-            //adb.setTitle(R.string.cong + FILENAME);
-            // сообщение
-            adb.setMessage("Вы открыли еще одну точку и заработали 5 очков!");
-            // создаем диалог
-            return adb.create();
-        }
-        return super.onCreateDialog(id);
-    }
+
 
     @Override
     public void onBackPressed() {

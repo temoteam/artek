@@ -67,7 +67,7 @@ public class NewsFragment extends Fragment {
         baseContext = getActivity().getBaseContext();
 
         noInternetFragment = new NoInternetFragment();
-        noInternetFragment.setNewsFragment(this);
+        noInternetFragment.setFrom(this);
 
         String strUrl = "https://api.vk.com/method/wall.get?domain=" + domain + "&count=50";
         DownloadTask downloadTask = new DownloadTask();

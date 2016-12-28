@@ -3,7 +3,7 @@
     package="org.artek.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -12,13 +12,14 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
     <permission
         android:name="org.artek.app.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission
-        android:name="org.artek.app.permission.C2D_MESSAGE" />
+
+    <uses-permission android:name="org.artek.app.permission.C2D_MESSAGE" />
 
     <application
         android:name=".AnalyticsApplication"
@@ -44,7 +45,7 @@
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
@@ -59,7 +60,7 @@
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -68,43 +69,42 @@
         <service
             android:name="com.google.android.gms.analytics.CampaignTrackingService"
             android:enabled="true" />
-
         <service
             android:name=".RadioService"
             android:enabled="true"
             android:exported="true" />
 
-    <!--
-            GCM Receiver
-        -->
-    <receiver
-        android:name="com.google.android.gms.gcm.GcmReceiver"
-        android:exported="true"
-        android:permission="com.google.android.c2dm.permission.SEND">
-        <intent-filter>
-            <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-            <category android:name="com.gnirt69.gcmexample"/>
-        </intent-filter>
-    </receiver>
+        <!--             GCM Receiver -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-    <!--
-        GCM Receiver Service
-    -->
-    <service android:name=".GCMPushReceiverService" android:exported="false">
-        <intent-filter>
-            <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-        </intent-filter>
-    </service>
+                <category android:name="com.gnirt69.gcmexample" />
+            </intent-filter>
+        </receiver>
 
-    <!--
-        GCM Registration Intent Service
-    -->
-    <service android:name=".GCMRegistrationIntentService" android:exported="false">
-        <intent-filter>
-            <action android:name="com.google.android.gms.iid.InstanceID"/>
-        </intent-filter>
-    </service>
+        <!--         GCM Receiver Service -->
+        <service
+            android:name=".GCMPushReceiverService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
 
+        <!--         GCM Registration Intent Service -->
+        <service
+            android:name=".GCMRegistrationIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".game.PointActivity"></activity>
     </application>
 
 </manifest>

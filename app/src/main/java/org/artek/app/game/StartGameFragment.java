@@ -169,7 +169,7 @@ public class StartGameFragment extends Fragment {
                 Log.i("internet connection", "NO INTERNET");
                 if (noInternetFragment==null){
                     noInternetFragment = new NoInternetFragment();
-                    noInternetFragment.setVf(it);
+                    noInternetFragment.setFrom(it);
                 }
                 getFragmentManager().beginTransaction().replace(R.id.frgmContGame,noInternetFragment).commit();
             }

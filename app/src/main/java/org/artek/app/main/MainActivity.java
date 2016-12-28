@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -19,8 +20,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -35,7 +38,11 @@ import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.LoginFragment;
 import org.artek.app.account.SelectCampFragment;
+import org.artek.app.game.DetailSpotFragment;
 import org.artek.app.game.GameActivity;
+import org.artek.app.game.ScannerQRActivity;
+import org.artek.app.game.StartGameFragment;
+import org.artek.app.game.VisitedFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,11 +59,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     DictFragment dictFragment;
     NewsFragment newsFragment;
-    MessageFragment messageFragment;
     TipsFragment tipsFragment;
-    HistoryFragment historyFragment;
     SettingsFragment settingsFragment;
+    VisitedFragment visitedFragment;
+    DetailSpotFragment detailSpotFragment;
     RadioFragment radioFragment;
+    LoginFragment loginFragment;
+    StartGameFragment startGameFragment;
+
+    FloatingActionButton fab;
+
+
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
     String name = "MainActivity";
@@ -71,12 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         Global.initilizate(this);
-        //checkTheme();
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
-            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
-            setTheme(theme);
 
-        }
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
@@ -116,42 +124,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
 
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
-
-        //if play service is not available
         if (ConnectionResult.SUCCESS != resultCode) {
-            //If play service is supported but not installed
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                //Displaying message that play service is not installed
                 Toast.makeText(getApplicationContext(), getString(R.string.gps_not_installed), Toast.LENGTH_LONG).show();
                 GooglePlayServicesUtil.showErrorNotification(resultCode, getApplicationContext());
-
-                //If play service is not supported
-                //Displaying an error message
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.gps_not_support), Toast.LENGTH_LONG).show();
             }
-
-            //If play service is available
         } else {
-            //Starting intent to register device
             Intent itent = new Intent(this, GCMRegistrationIntentService.class);
             startService(itent);
         }
 
-        // fileRW = new FileRW(this);
-        //int kekzaza = fileRW.readIntFile("theme");
 
-        // laTheme(0);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        dictFragment = new DictFragment();
-        newsFragment = new NewsFragment();
-        messageFragment = new MessageFragment();
-        tipsFragment = new TipsFragment();
-        historyFragment = new HistoryFragment();
-        settingsFragment = new SettingsFragment();
-        radioFragment = new RadioFragment();
-        selectCampFragment = new SelectCampFragment();
+
 
 
         Global.accountManager.setAppInterface(new Global.appInterface() {
@@ -164,38 +152,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        selectCampFragment.setAppInterface(new Global.appInterface() {
-            @Override
-            public void returner() {
-                fTrans = getFragmentManager().beginTransaction();
-                if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN))
-                    fTrans.replace(R.id.frgmCont, newsFragment);
-                else
-                    fTrans.replace(R.id.frgmCont, new LoginFragment());
-
-                fTrans.addToBackStack(null);
-                fTrans.commit();
-            }
-        });
-
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
             Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
             setTheme(theme);
-
         }
 
-        fTrans = getFragmentManager().beginTransaction();
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
-            setTheme(Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0));
-            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
-                fTrans.replace(R.id.frgmCont, newsFragment);
-                Global.accountManager.getUserInfo(Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN, null));
-            } else
-                fTrans.replace(R.id.frgmCont, new LoginFragment());
-        } else
-            fTrans.replace(R.id.frgmCont, selectCampFragment);
-        fTrans.addToBackStack(null);
-        fTrans.commit();
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,ScannerQRActivity.class);
+                startActivityForResult(intent, 0);
+                select(R.id.nav_visited);
+            }});
+
+        select(R.id.nav_news);
+
 
 
     }
@@ -230,25 +202,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                visitedFragment.add(contents);
+            } else if (resultCode == RESULT_CANCELED) {
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-
-        switch (requestCode) {
-
-            case 1: {
-
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-                    Toast.makeText(MainActivity.this, getString(R.string.access_file_denied), Toast.LENGTH_SHORT).show();
-                }
-                return;
+                Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.TOP, 25, 400);
+                toast.show();
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -267,28 +231,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_camp) {
             fTrans = getFragmentManager().beginTransaction();
             fTrans.replace(R.id.frgmCont, selectCampFragment);
             fTrans.addToBackStack(null);
             fTrans.commit();
         }
-        if (id == R.id.startGame) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("StartGame")
-                    .build());
-            Intent intent = new Intent(this, GameActivity.class);
-            startActivity(intent);
-            this.finish();
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -296,59 +245,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        fTrans = getFragmentManager().beginTransaction();
-
-        if (id == R.id.nav_news) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("OpenNews")
-                    .build());
-            fTrans.replace(R.id.frgmCont, newsFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-
-        } else if (id == R.id.nav_dictionary) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("OpenDictionary")
-                    .build());
-            fTrans.replace(R.id.frgmCont, dictFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-
-        } else if (id == R.id.nav_tips) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("OpenTips")
-                    .build());
-            fTrans.replace(R.id.frgmCont, tipsFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-
-        } else if (id == R.id.nav_radio) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("OpenRadio")
-                    .build());
-            fTrans.replace(R.id.frgmCont, radioFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-        } else if (id == R.id.nav_settings) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("OpenSettings")
-                    .build());
-            fTrans.replace(R.id.frgmCont, settingsFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-        }
+        select(id);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    public void select(int id) {
+
+        fTrans = getFragmentManager().beginTransaction();
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
+            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
+
+                if (id == R.id.nav_visited){
+                    if (visitedFragment==null) visitedFragment=new VisitedFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, visitedFragment);
+                    fab.show();}
+                else if (id == R.id.nav_news){
+                    if (newsFragment==null) newsFragment=new NewsFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, newsFragment);
+                    fab.hide();}
+                else if (id == R.id.nav_dictionary){
+                    if (dictFragment==null) dictFragment=new DictFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, dictFragment);
+                    fab.hide();}
+                else if (id == R.id.nav_tips){
+                    if (tipsFragment==null) tipsFragment=new TipsFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, tipsFragment);
+                    fab.hide();}
+                else if (id == R.id.nav_radio){
+                    if (radioFragment==null) radioFragment=new RadioFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, radioFragment);
+                    fab.hide();}
+                else if (id == R.id.nav_leaderboard){
+                    if (detailSpotFragment==null) detailSpotFragment=new DetailSpotFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, detailSpotFragment);
+                    fab.show();}
+                else if (id == R.id.nav_allpoints){
+                    if (startGameFragment==null) startGameFragment=new StartGameFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, startGameFragment);
+                    fab.show();}
+                else if (id == R.id.nav_settings){
+                    if (settingsFragment==null) settingsFragment=new SettingsFragment();
+                    fTrans = fTrans.replace(R.id.frgmContGame, settingsFragment);
+                    fab.hide();}
+
+            } else {
+                if (loginFragment==null) loginFragment=new LoginFragment();
+                fTrans = fTrans.replace(R.id.frgmContGame,loginFragment);
+                Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            if (selectCampFragment==null) selectCampFragment=new SelectCampFragment();
+            fTrans = fTrans.replace(R.id.frgmContGame, selectCampFragment);
+            Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT).show();
+        }
+        fTrans.addToBackStack(null);
+        fTrans.commit();
+
+
+
+
+
+    }
 
     class ServerAlert extends AsyncTask<Void, Void, String> {
 

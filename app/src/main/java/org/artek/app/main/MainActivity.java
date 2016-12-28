@@ -7,12 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,9 +38,9 @@ import org.artek.app.GCMRegistrationIntentService;
 import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.account.LoginFragment;
+import org.artek.app.account.LoginVKFragment;
 import org.artek.app.account.SelectCampFragment;
 import org.artek.app.game.DetailSpotFragment;
-import org.artek.app.game.GameActivity;
 import org.artek.app.game.ScannerQRActivity;
 import org.artek.app.game.StartGameFragment;
 import org.artek.app.game.VisitedFragment;
@@ -66,9 +67,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RadioFragment radioFragment;
     LoginFragment loginFragment;
     StartGameFragment startGameFragment;
+    LoginVKFragment loginVKFragment;
 
     FloatingActionButton fab;
-
+    private Snackbar mSnackbar;
 
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
@@ -79,7 +81,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Global.initilizate(this);
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
+            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
+            Log.d("Theme", theme.toString());
+            setTheme(theme);
+        }
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
@@ -96,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Global.initilizate(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -105,6 +111,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
 
+        if (!Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
+            mSnackbar = Snackbar
+                    .make(this.findViewById(R.id.mainview), "Для игры необходима авторизация", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Войти с вк", snackbarOnClickListener)
+                    .setActionTextColor(Color.parseColor("#ff4081")); // цвет текста у кнопки действия
+            mSnackbar.show();
+
+        }
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
 
             //When the broadcast received
@@ -152,10 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
-            Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
-            setTheme(theme);
-        }
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +183,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (loginVKFragment == null) loginVKFragment = new LoginVKFragment();
+            fTrans = getFragmentManager().beginTransaction();
+            fTrans = fTrans.replace(R.id.frgmCont, loginVKFragment);
+            fTrans.addToBackStack(null);
+            fTrans.commit();
+            mSnackbar.dismiss();
+        }
+    };
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -257,48 +279,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fTrans = getFragmentManager().beginTransaction();
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
             if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
+                // if (true){ //debug
 
                 if (id == R.id.nav_visited){
                     if (visitedFragment==null) visitedFragment=new VisitedFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, visitedFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, visitedFragment);
                     fab.show();}
                 else if (id == R.id.nav_news){
                     if (newsFragment==null) newsFragment=new NewsFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, newsFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, newsFragment);
                     fab.hide();}
                 else if (id == R.id.nav_dictionary){
                     if (dictFragment==null) dictFragment=new DictFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, dictFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, dictFragment);
                     fab.hide();}
                 else if (id == R.id.nav_tips){
                     if (tipsFragment==null) tipsFragment=new TipsFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, tipsFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, tipsFragment);
                     fab.hide();}
                 else if (id == R.id.nav_radio){
                     if (radioFragment==null) radioFragment=new RadioFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, radioFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, radioFragment);
                     fab.hide();}
                 else if (id == R.id.nav_leaderboard){
                     if (detailSpotFragment==null) detailSpotFragment=new DetailSpotFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, detailSpotFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, detailSpotFragment);
                     fab.show();}
                 else if (id == R.id.nav_allpoints){
                     if (startGameFragment==null) startGameFragment=new StartGameFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, startGameFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, startGameFragment);
                     fab.show();}
                 else if (id == R.id.nav_settings){
                     if (settingsFragment==null) settingsFragment=new SettingsFragment();
-                    fTrans = fTrans.replace(R.id.frgmContGame, settingsFragment);
+                    fTrans = fTrans.replace(R.id.frgmCont, settingsFragment);
                     fab.hide();}
 
             } else {
                 if (loginFragment==null) loginFragment=new LoginFragment();
-                fTrans = fTrans.replace(R.id.frgmContGame,loginFragment);
+                fTrans = fTrans.replace(R.id.frgmCont, loginFragment);
                 Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT).show();
             }
         }else {
             if (selectCampFragment==null) selectCampFragment=new SelectCampFragment();
-            fTrans = fTrans.replace(R.id.frgmContGame, selectCampFragment);
+            fTrans = fTrans.replace(R.id.frgmCont, selectCampFragment);
             Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT).show();
         }
         fTrans.addToBackStack(null);
@@ -362,8 +385,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             try {
                 dataJsonObj = new JSONObject(strJson);
-                Boolean isMsg = dataJsonObj.getBoolean("isMsg");
-                if (isMsg) {
+                final int isMsg = dataJsonObj.getInt("msgId");
+                if ((isMsg != 0) && Global.sharedPreferences.getInt(Global.SharedPreferencesTags.ALERT_ID, 0) != isMsg) {
                     final JSONObject msg = dataJsonObj.getJSONObject("msg");
                     String header = msg.getString("header");
                     String body = msg.getString("body");
@@ -375,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.ALERT_ID, isMsg).apply();
                                 }
                             });
                     if (isUrl) {
@@ -394,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
                         });
                     }
-                    dialog.setCancelable(false);
+                    dialog.setCancelable(true);
                     dialog.show();
                     Log.d("alert", header + " " + body);
 

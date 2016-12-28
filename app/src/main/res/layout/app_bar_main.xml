@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.artek.app.main.MainActivity">
+    tools:context="org.artek.app.main.MainActivity"
+    android:id="@+id/mainview">
 
     <include layout="@layout/content_main" />
 
@@ -30,10 +31,8 @@
         android:layout_height="75dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/camera"
+        android:src="@drawable/ic_qrcode_scan_white_48dp"
         app:backgroundTint="@color/colorAccent"
-        app:fabSize="mini" />
-
-    <include layout="@layout/content_game" />
+        app:fabSize="normal" />
 
 </android.support.design.widget.CoordinatorLayout>

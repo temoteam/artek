@@ -25,6 +25,7 @@ public class Global {
         public final static String LAST_TOKEN = "last_token";
         public final static String LAST_ID = "last_id";
         public final static String THEME_ID = "theme_id";
+        public final static String ALERT_ID = "alert_id";
     }
 
     public interface appInterface{

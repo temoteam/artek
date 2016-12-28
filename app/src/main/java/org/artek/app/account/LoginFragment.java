@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import org.artek.app.R;
@@ -31,7 +32,7 @@ public class LoginFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ImageView login_vk = (ImageView) getView().findViewById(R.id.imageButtonLoginVk);
+        Button login_vk = (Button) getView().findViewById(R.id.imageButtonLoginVk);
         login_vk.setOnClickListener(loginVK);
 
         ImageView open_artek = (ImageView) getView().findViewById(R.id.imageLogoOpenArtek);

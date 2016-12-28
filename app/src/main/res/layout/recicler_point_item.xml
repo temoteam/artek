@@ -14,55 +14,111 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         card_view:cardCornerRadius="2dp"
-        card_view:contentPadding="10dp"
+        card_view:contentPadding="0dp"
         card_view:cardElevation="2dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp">
+        android:layout_marginLeft="5dp"
+        android:padding="0dp">
 
-        <RelativeLayout
+        <!--<RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="60dp"
-                app:srcCompat="@drawable/logo"
-                android:id="@+id/logo"
-                android:layout_height="60dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
             <TextView
-                android:layout_marginLeft="5dp"
-                android:id="@+id/title"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/logo"
-                android:layout_toEndOf="@+id/logo"
-                tools:text="Название"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:fontFamily="cursive"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_marginTop="5dp"
                 android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/description"
-                android:layout_below="@+id/title"
+                android:textSize="12sp"
+                android:layout_centerVertical="true"
                 android:layout_alignLeft="@+id/title"
-                android:layout_alignStart="@+id/title"
-                android:textSize="12sp" />
+                android:layout_alignStart="@+id/title" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Название"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:fontFamily="cursive"
+                android:textSize="14sp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                app:srcCompat="@drawable/logo"
+                android:id="@+id/logo"
+                android:layout_height="wrap_content"
+                android:cropToPadding="false"
+                android:padding="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:layout_marginLeft="0dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                app:srcCompat="@drawable/logo"
+                android:id="@+id/logo"
+                android:scaleType="fitXY"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:cropToPadding="false" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Название"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:fontFamily="cursive"
+                    android:textSize="14sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/description"
+                    android:textSize="12sp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignLeft="@+id/title"
+                    android:layout_alignStart="@+id/title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 

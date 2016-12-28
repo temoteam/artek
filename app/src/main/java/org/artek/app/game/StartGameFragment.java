@@ -2,6 +2,8 @@ package org.artek.app.game;
 
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,6 +46,9 @@ public class StartGameFragment extends Fragment {
     private ArrayList<String> titles;
     private ArrayList<String> descriptions;
     private ArrayList<String> urls;
+    private ArrayList<Boolean> complited;
+
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -76,7 +81,14 @@ public class StartGameFragment extends Fragment {
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
+                        Bundle data = new Bundle();
+                        data.putString("title",titles.get(position));
+                        data.putString("description",descriptions.get(position));
+                        data.putString("url",urls.get(position));
 
+                        Intent intent = new Intent(getActivity(),PointActivity.class);
+                        intent.putExtras(data);
+                        getActivity().startActivity(intent);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -84,7 +96,10 @@ public class StartGameFragment extends Fragment {
                 })
         );
 
-        new GetContent().execute(Global.sharedPreferences.getString(Global.SharedPreferencesTags.CAMP,null));
+        HashMap<String, String> parms = new HashMap<String, String>();
+        parms.put("camp",Global.sharedPreferences.getString(Global.SharedPreferencesTags.CAMP,null));
+        parms.put("id",Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null));
+        new GetContent().execute(parms);
 
     }
 
@@ -92,17 +107,28 @@ public class StartGameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         it=this;
-        titles = new ArrayList<String>();
-        descriptions = new ArrayList<String>();
-        urls = new ArrayList<String>();
+
     }
 
-    class GetContent extends AsyncTask<String, String, Boolean> {
+    class GetContent extends AsyncTask<HashMap<String,String>, String, Boolean> {
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Загрузка данных");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            titles = new ArrayList<String>();
+            descriptions = new ArrayList<String>();
+            urls = new ArrayList<String>();
+            complited = new ArrayList<Boolean>();
+        }
+
+        @Override
+        protected Boolean doInBackground(HashMap<String,String>... params) {
             try {
-                URL url = new URL("http://lohness.com/artek/get_achivements.php?camp="+params[0]);
+                URL url = new URL("http://lohness.com/artek/get_achivements.php?camp="+params[0].get("camp")+"&id="+params[0].get("id"));
                 InputStream input = url.openStream();
                 Scanner in = new Scanner(input).useDelimiter("<br />");
                 while (in.hasNext()){
@@ -110,7 +136,7 @@ public class StartGameFragment extends Fragment {
                     Log.i("ScanString",scanString);
                     Scanner scan = new Scanner(scanString).useDelimiter(";");
                     Log.i("Parsing",scan.next());
-                    publishProgress(new String[]{scan.next(),scan.next(),scan.next()});
+                    publishProgress(new String[]{scan.next(),scan.next(),scan.next(),scan.next()});
 
 
                 }
@@ -131,6 +157,8 @@ public class StartGameFragment extends Fragment {
             Log.i("description",values[1]);
             urls.add(values[2]);
             Log.i("url",values[2]);
+            complited.add(values[3].equals("true"));
+            Log.i("complited",values[3]);
         }
 
         @Override
@@ -153,10 +181,12 @@ public class StartGameFragment extends Fragment {
                 mRecyclerView.setLayoutManager(mLayoutManager);
 
                 mAdapter = new PointsReciclerAdapter(getActivity());
-                mAdapter.init(titles,descriptions,urls);
+                mAdapter.init(titles,descriptions,urls,complited);
                 mRecyclerView.setAdapter(mAdapter);
 
             }
+
+            progressDialog.hide();
         }
         }
 

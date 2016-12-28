@@ -1,14 +1,9 @@
 package org.artek.app.adapters;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +23,7 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
     private ArrayList<String> titles;
     private ArrayList<String> descriptions;
     private ArrayList<String> urls;
+    private ArrayList<Boolean> complited;
 
     Activity activity;
 
@@ -37,10 +33,11 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         this.activity = activity;
     }
 
-    public void init(ArrayList<String> titles,ArrayList<String> descriptions,ArrayList<String> urls){
+    public void init(ArrayList<String> titles,ArrayList<String> descriptions,ArrayList<String> urls,ArrayList<Boolean> complited){
         this.titles = titles;
         this.descriptions = descriptions;
         this.urls = urls;
+        this.complited = complited;
 
 
     }
@@ -52,6 +49,7 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         return vh;
     }
 
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.title.setText(titles.get(position));
@@ -59,8 +57,9 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         if (minDescription.length()>210)
             minDescription = minDescription.substring(0,200)+"...";
         holder.description.setText(minDescription);
+        if (complited.get(position))
+            holder.cardView.setBackgroundColor(Color.parseColor("#D7FAAC"));
         Picasso.with(activity).load(urls.get(position)).into(holder.pic); //ссылка на ImageView
-     //   holder.pic.setImageBitmap(logos.get(position));
 
     }
 
@@ -73,12 +72,14 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         public TextView title;
         public TextView description;
         public ImageView pic;
+        public CardView cardView;
 
         public ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.title);
             description = (TextView) v.findViewById(R.id.description);
             pic=(ImageView) v.findViewById(R.id.logo);
+            cardView = (CardView) v.findViewById(R.id.card_view);
         }
     }
 

@@ -46,10 +46,10 @@
     <string name="subscribe">Subscribe</string>
     <string name="later">Later</string>
     <string name="subscribe_thank">Thank you!</string>
-    
+
     <string name="must_sign_in_for_game">You have to sing in to play</string>
     <string name="must_select_camp_to_play">You have to select camp to play</string>
-    
+
     <string name="visited_points">Visited points: </string>
     <string name="left_points">Left points: </string>
     <string name="score">Your score: </string>

@@ -1,5 +1,7 @@
 package org.artek.app.main;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -58,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     int backButton = 0;
 
+    Activity activity;
+
     DictFragment dictFragment;
     NewsFragment newsFragment;
     TipsFragment tipsFragment;
@@ -87,9 +92,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.d("Theme", theme.toString());
             setTheme(theme);
         }
+
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
+        activity = this;
         Global.initilizate(this);
 
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
@@ -174,11 +181,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,ScannerQRActivity.class);
                 startActivityForResult(intent, 0);
-                select(R.id.nav_visited);
             }});
 
         select(R.id.nav_news);
 
+        new Updater(this);
 
 
     }
@@ -194,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mSnackbar.dismiss();
         }
     };
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -218,9 +227,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new IntentFilter(GCMRegistrationIntentService.REGISTRATION_SUCCESS));
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(GCMRegistrationIntentService.REGISTRATION_ERROR));
-        new Updater(this);
         Global.activity = this;
-
 
     }
 
@@ -228,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
+                select(R.id.nav_visited);
                 visitedFragment.add(contents);
             } else if (resultCode == RESULT_CANCELED) {
 
@@ -241,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPause() {
         super.onPause();
-        Log.w("MainActivity", "onPause");
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 
@@ -276,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void select(int id) {
 
+        ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.INTERNET},1);
         fTrans = getFragmentManager().beginTransaction();
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
             if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {

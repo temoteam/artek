@@ -54,25 +54,12 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.title.setText(titles.get(position));
-        String description = descriptions.get(position);
-        String minDescription = "";
-        String detail = "";
-        if (minDescription.length() > 210) {
-            Log.d("PointsAdapter", "Long");
-            minDescription = description.substring(0, 200) + "...";
-
-            holder.description.setText(minDescription);
-            detail = description;
-
-            holder.detail.setText(detail);
-        } else {
-            holder.description.setText(description);
-
-            Log.d("PointsAdapter", "Short");
-        }
-        if (complited.get(position))
-            holder.cardView.setBackgroundColor(Color.parseColor("#D7FAAC"));
-        Picasso.with(activity).load(urls.get(position)).into(holder.pic); //ссылка на ImageView
+        String minDescription = descriptions.get(position);
+        if (minDescription.length()>210)
+            minDescription = minDescription.substring(0,200)+"...";
+        holder.description.setText(minDescription);
+        Picasso.with(activity).load(urls.get(position)).into(holder.pic);
+        holder.detail.setText("");
 
     }
 

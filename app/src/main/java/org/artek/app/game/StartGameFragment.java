@@ -171,7 +171,7 @@ public class StartGameFragment extends Fragment {
                     noInternetFragment = new NoInternetFragment();
                     noInternetFragment.setFrom(it);
                 }
-                getFragmentManager().beginTransaction().replace(R.id.frgmContGame,noInternetFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.frgmCont,noInternetFragment).commit();
             }
             else{
                 mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);

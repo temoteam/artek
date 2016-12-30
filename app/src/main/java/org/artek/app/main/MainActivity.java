@@ -17,6 +17,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -75,12 +76,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LoginVKFragment loginVKFragment;
 
     FloatingActionButton fab;
-    private Snackbar mSnackbar;
-
+    FragmentManager fm;
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
     String name = "MainActivity";
     Tracker mTracker;
+    private Snackbar mSnackbar;
+
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
@@ -95,6 +97,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
+        View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (loginVKFragment == null) loginVKFragment = new LoginVKFragment();
+                fTrans = getFragmentManager().beginTransaction();
+                fTrans = fTrans.replace(R.id.frgmCont, loginVKFragment);
+                fTrans.addToBackStack(null);
+                fTrans.commit();
+                mSnackbar.dismiss();
+
+            }
+        };
 
         activity = this;
         Global.initilizate(this);
@@ -190,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
     View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -270,6 +286,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -343,10 +369,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     class ServerAlert extends AsyncTask<Void, Void, String> {
 
-        private Context context;
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String resultJson = "";
+        private Context context;
         private String LOG_TAG = "ServerAlert";
 
         public ServerAlert(Context context) {

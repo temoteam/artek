@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         if (id == R.id.action_camp) {
             fTrans = getFragmentManager().beginTransaction();
-            fTrans.replace(R.id.frgmCont, selectCampFragment);
+            fTrans.replace(R.id.frgmCont, new SelectCampFragment());
             fTrans.addToBackStack(null);
             fTrans.commit();
         }

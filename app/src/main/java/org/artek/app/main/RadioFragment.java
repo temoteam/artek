@@ -119,4 +119,11 @@ public class RadioFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreate(Bundle b) {
+        super.onCreate(b);
+
+        setRetainInstance(true);
+    }
+
 }

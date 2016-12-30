@@ -53,6 +53,7 @@ public class NewsFragment extends Fragment {
         super.onCreate(savedInstanceState);
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
+        setRetainInstance(true);
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);

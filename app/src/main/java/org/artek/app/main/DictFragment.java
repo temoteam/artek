@@ -157,5 +157,12 @@ public class DictFragment extends ListFragment {
         setListAdapter(adapter);
     }
 
+    @Override
+    public void onCreate(Bundle b) {
+        super.onCreate(b);
+
+        setRetainInstance(true);
+    }
+
 
 }

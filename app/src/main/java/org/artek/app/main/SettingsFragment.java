@@ -28,6 +28,13 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle b) {
+        super.onCreate(b);
+
+        setRetainInstance(true);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();

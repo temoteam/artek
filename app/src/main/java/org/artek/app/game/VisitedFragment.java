@@ -74,7 +74,6 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
                         TextView tw = (TextView)view.findViewById(R.id.tv_recycler_item);
                         String yop = tw.getText().toString();
                         Global.accountManager.sendQR(yop,position);
-                        Log.i("Clicked Position",position+"");
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -83,10 +82,6 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
         );
 
         qrs = getDataSet();
-
-
-
-        //HashMap<Integer, String> myDataset= new Map<Integer, String>();
 
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
 
@@ -103,7 +98,7 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
     public ArrayList<String> getDataSet() {
 
         ArrayList<String> myDataSet = new ArrayList<>();
-        Scanner in = new Scanner(new FileRW(getActivity()).readFile(GameActivity.SAVED)).useDelimiter(",");
+        Scanner in = new Scanner(new FileRW(getActivity()).readFile(Global.SAVED)).useDelimiter(",");
         while (in.hasNext())
             myDataSet.add(in.next());
 
@@ -112,13 +107,12 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
 
     @Override
     public void remove(int id,String qr) {
-        Log.i("removing",""+id);
-            String saved = fileRW.readFile(GameActivity.SAVED);
+            String saved = fileRW.readFile(Global.SAVED);
             if (saved.indexOf(qr) == 0)
                 saved = saved.replace(qr + ",", "");
             else
                 saved = saved.replace("," + qr, "");
-            fileRW.writeFile(GameActivity.SAVED, saved);
+            fileRW.writeFile(Global.SAVED, saved);
         qrs.remove(id);
         mAdapter.notifyItemRemoved(id);
         mAdapter.notifyItemRangeChanged(0, qrs.size());
@@ -133,9 +127,9 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
         mAdapter.notifyItemRangeChanged(0, qrs.size());
         mRecyclerView.refreshDrawableState();
 
-        String saved = fileRW.readFile(GameActivity.SAVED);
-        if (saved.equals("")) fileRW.writeFile(GameActivity.SAVED,qr);
-        else fileRW.writeFile(GameActivity.SAVED,saved+","+qr);
+        String saved = fileRW.readFile(Global.SAVED);
+        if (saved.equals("")) fileRW.writeFile(Global.SAVED,qr);
+        else fileRW.writeFile(Global.SAVED,saved+","+qr);
     }
 
 

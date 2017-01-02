@@ -22,7 +22,6 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
 
     private ArrayList<String> titles;
     private ArrayList<String> descriptions;
-    private String detail;
     private ArrayList<String> urls;
     private ArrayList<Boolean> complited;
 
@@ -60,6 +59,8 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         holder.description.setText(minDescription);
         Picasso.with(activity).load(urls.get(position)).into(holder.pic);
         holder.detail.setText("");
+        if (complited.get(position))
+            holder.cardView.setBackgroundColor(Color.parseColor("#CFF9B2"));
 
     }
 

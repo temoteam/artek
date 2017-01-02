@@ -105,7 +105,7 @@ public class NewsFragment extends Fragment {
             br.close();
 
         } catch (Exception e) {
-            Log.d("Exception when down url", e.toString());
+
         } finally {
             iStream.close();
         }
@@ -120,7 +120,7 @@ public class NewsFragment extends Fragment {
             try {
                 data = downloadUrl(url[0]);
             } catch (Exception e) {
-                Log.d("Background Task", e.toString());
+
             }
             return data;
         }
@@ -148,7 +148,7 @@ public class NewsFragment extends Fragment {
                 NewsJSONParser newsJsonParser = new NewsJSONParser();
                 newsJsonParser.parse(jObject);
             } catch (Exception e) {
-                Log.d("JSON Exception1", e.toString());
+
             }
 
             NewsJSONParser newsJsonParser = new NewsJSONParser();
@@ -156,7 +156,7 @@ public class NewsFragment extends Fragment {
             try {
                 countries = newsJsonParser.parse(jObject);
             } catch (Exception e) {
-                Log.d("Exception", e.toString());
+
             }
 
             String[] from = {"text", "imageLogo", "details"};
@@ -186,7 +186,7 @@ public class NewsFragment extends Fragment {
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                Log.i("internet connection", "NO INTERNET");
+
                 getFragmentManager().beginTransaction().replace(R.id.frgmCont, noInternetFragment).commit();
                 onPause();
                 onStop();

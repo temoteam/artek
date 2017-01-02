@@ -14,6 +14,7 @@ import android.widget.ListView;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.Global;
 import org.artek.app.R;
+
 import org.artek.app.adapters.Camps;
 import org.artek.app.adapters.CampsAdapter;
 import org.artek.app.main.MainActivity;

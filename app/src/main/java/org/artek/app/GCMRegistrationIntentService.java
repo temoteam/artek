@@ -49,7 +49,7 @@ public class GCMRegistrationIntentService extends IntentService {
 
             //Displaying the token in the log so that we can copy it to send push notification
             //You can also extend the app by storing the token in to your server
-            Log.w("GCMRegIntentService", "token:" + token);
+
             new Login().execute();
 
             //on registration complete creating intent with success
@@ -59,7 +59,7 @@ public class GCMRegistrationIntentService extends IntentService {
             registrationComplete.putExtra("token", token);
         } catch (Exception e) {
             //If any error occurred
-            Log.w("GCMRegIntentService", "Registration error");
+
             registrationComplete = new Intent(REGISTRATION_ERROR);
         }
 
@@ -87,7 +87,7 @@ public class GCMRegistrationIntentService extends IntentService {
             InputStream input = url.openStream();
             Scanner in = new Scanner(input);
             String answer = in.nextLine();
-            Log.i ("URL IS",url+" RESULT IS: "+answer);
+
             return answer;
         }
 

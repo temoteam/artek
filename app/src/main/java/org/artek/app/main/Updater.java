@@ -46,7 +46,7 @@ public class Updater {
 
     public boolean checkForUpdates() throws IOException {
         getLastVersion();
-        Log.i("lastVertion", "" + lastVertion);
+
         return THIS_VERSION < lastVertion;
 
     }
@@ -76,7 +76,7 @@ public class Updater {
 
     private void download(String urlStr, File file) throws IOException {
         URL url = new URL(urlStr);
-        Log.i("download", urlStr);
+
         BufferedInputStream bis = new BufferedInputStream(url.openStream());
         FileOutputStream fis = new FileOutputStream(file);
         byte[] buffer = new byte[1024];
@@ -129,7 +129,7 @@ public class Updater {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            Log.i("updates", "" + aBoolean);
+
             if (aBoolean) {
                 AlertDialog.Builder ad;
                 ad = new AlertDialog.Builder(activity);
@@ -183,7 +183,6 @@ public class Updater {
             protected void onPostExecute(String aString) {
                 super.onPostExecute(aString);
                 if (aString != null) {
-                    Log.i("downloadedfile", aString + new File(aString).exists());
 
                     if (new File(aString).exists()) {
                         Intent install = new Intent(Intent.ACTION_INSTALL_PACKAGE);

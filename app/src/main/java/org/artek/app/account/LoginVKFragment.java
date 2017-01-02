@@ -38,7 +38,6 @@ public class LoginVKFragment extends Fragment {
 
 
     public LoginVKFragment() {
-        // Required empty public constructor
     }
 
 
@@ -48,19 +47,12 @@ public class LoginVKFragment extends Fragment {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_vk, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        /*
-        CookieSyncManager.createInstance(getContext());
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setAcceptCookie(false);*/
-
-
         WebView loginVkWeb = (WebView) getView().findViewById(R.id.webView);
         loginVkWeb.setWebViewClient(new VkWebViewClient());
         loginVkWeb.getSettings().setJavaScriptEnabled(true);
@@ -71,16 +63,11 @@ public class LoginVKFragment extends Fragment {
     }
 
     public void getUserData(String url) {
-        Log.e("handler", url);
-
         int a = url.indexOf("access_token");
         int b = url.indexOf("&expires_in");
         String token = url.substring(a + 13, b);
         a = url.indexOf("user_id=");
         String user_id = url.substring(a + 8);
-        //Log.d("vk_auth",user_id);
-        //Log.d("vk_auth", token);
-
         SharedPreferences sPref = Global.sharedPreferences;
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString(Global.SharedPreferencesTags.LAST_TOKEN, token);
@@ -100,17 +87,13 @@ public class LoginVKFragment extends Fragment {
     private class VkWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            //Log.d(Constants.DEBUG_TAG, "Redirecting URL " + url);
 
             if (url.startsWith("https://oauth.vk.com/blank.html") & (!url.contains("error"))) {
-                Log.d("vk_auth","url contains callback url");
                 getUserData(url);
                 return true;
-
             } else if (url.contains("error")) {
                 return false;
             } else {
-                Log.d("vk_auth","url not contains callback url");
                 view.loadUrl(url);
                 return true;
             }
@@ -134,58 +117,4 @@ public class LoginVKFragment extends Fragment {
         }
 
     }
-
-    class httpGet extends AsyncTask<String, String, HashMap<String, String>> {
-        String url, answerHTTP;
-
-
-        public httpGet(String url) {
-            this.url = url;
-        }
-
-        @Override
-        protected HashMap<String, String> doInBackground(String... params) {
-
-            HashMap<String, String> hashMap = new HashMap<String, String>();
-
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(url);
-            try {
-
-                HttpResponse response = httpclient.execute(httpGet);
-                if (response.getStatusLine().getStatusCode() == 200) {
-                    HttpEntity entity = response.getEntity();
-                    answerHTTP = EntityUtils.toString(entity);
-                    try {
-                        JSONObject jsonObject = new JSONObject(answerHTTP);
-                        JSONArray jsonArray = jsonObject.getJSONArray("response");
-/*
-                        jsonObject = jsonArray.getJSONObject(0);
-                        Log.i("Jsn",jsonObject.toString());
-                        Log.i("Jsn",jsonArray.getString(0));
-                        Log.i("Jsn",jsonArray.getString(2));
-                        Log.i("Jsn",jsonArray.getString(1));
-                        hashMap.put("first_name",jsonObject.getString("first_name"));
-                        hashMap.put("last_name",jsonObject.getString("last_name"));
-                        hashMap.put("uid",jsonObject.getString("uid"));
-
-*/
-                        return null;
-                    } catch (JSONException e) {
-
-                        e.printStackTrace();
-                    }
-
-                }
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-    }
-
 }

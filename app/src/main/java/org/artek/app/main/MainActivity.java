@@ -56,6 +56,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -76,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LoginVKFragment loginVKFragment;
 
     FloatingActionButton fab;
-    FragmentManager fm;
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
     String name = "MainActivity";
@@ -91,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Global.initilizate(this);
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.THEME_ID)) {
             Integer theme = Global.sharedPreferences.getInt(Global.SharedPreferencesTags.THEME_ID, 0);
-            Log.d("Theme", theme.toString());
             setTheme(theme);
         }
 
@@ -201,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         select(R.id.nav_news);
 
         new Updater(this);
+
+        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.OFF);
 
 
     }
@@ -383,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         protected String doInBackground(Void... params) {
             // получаем данные с внешнего ресурса
 
-            Log.d("alert", "async");
+
             try {
                 URL url = new URL("http://lohness.com/artek/alertdata.json");
 
@@ -412,8 +414,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(String strJson) {
             super.onPostExecute(strJson);
-            // выводим целиком полученную json-строку
-            Log.d("alert", strJson);
+
 
             JSONObject dataJsonObj = null;
 
@@ -453,7 +454,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     dialog.setCancelable(true);
                     dialog.show();
-                    Log.d("alert", header + " " + body);
 
                 }
 

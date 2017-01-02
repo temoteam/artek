@@ -45,7 +45,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     public void uncaughtException(Thread t, Throwable e) {
-        Log.d("bug","exeption");
+
         String timestamp = Calendar.getInstance().getTime().toString();
         final Writer result = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(result);
@@ -93,7 +93,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         @Override
         protected String doInBackground(String... params) {
 
-            Log.d("bug","first");
+
             String resultToDisplay = "";
 
 
@@ -124,7 +124,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
                         }
                         in.close();
                         String resp = str.toString();
-                        Log.i("bug", "response"+resp);
+
                     }
                     catch(IllegalStateException exc){
 
@@ -132,7 +132,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
                     }
 
 
-                    Log.d("bug","bug");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

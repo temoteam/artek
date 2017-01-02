@@ -6,17 +6,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import android.widget.Toast;
-
-
-
 import org.artek.app.Global;
 import org.artek.app.R;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.net.URL;
 import java.util.Scanner;
 
@@ -70,7 +64,6 @@ public class AccountManager {
         InputStream input = url.openStream();
         Scanner in = new Scanner(input);
         String answer = in.nextLine();
-        Log.i ("URL IS",url+" RESULT IS: "+answer);
         return answer;
     }
 
@@ -80,7 +73,6 @@ public class AccountManager {
         String answer = "";
         while (in.hasNextLine())
         answer = answer+"\n"+in.nextLine();
-        Log.i ("URL IS",url+" RESULT IS: "+answer);
         return answer;
     }
 
@@ -115,7 +107,6 @@ public class AccountManager {
 
                 URL url = new URL("https://api.vk.com/method/stats.trackVisitor?access_token="+vkToken+"&v=5.60");
                 String answer = rawQuery(url);
-                Log.i("VK_answer",answer);
                 if (answer.equals("response: 1"))
                     return SUCCESS;
                 else if(answer.contains("error"))
@@ -256,7 +247,6 @@ public class AccountManager {
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
             AlertDialog.Builder dialog = null;
-            Log.i("qrCheck",string);
             if (string.equals("EI")) Toast.makeText(Global.activity,"Не удалось отправить код, проверьте подключение к интернету",Toast.LENGTH_SHORT).show();
             else if (string.contains("S")) {
                 dialog = generateMsg(SUCCESS).setMessage("Вы посетили точку '"+ string.substring(2)+"'");
@@ -281,7 +271,7 @@ public class AccountManager {
     }
 
     public interface ReciclerInterface{
-        public void remove(int id,String qr);
+        void remove(int id,String qr);
     }
 
 }

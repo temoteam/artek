@@ -33,15 +33,12 @@ public final class FileRW {
     public void writeFile(String FILENAME, String content) {
         try {
 
-            // open stream to write data
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(context.openFileOutput(FILENAME, MODE_PRIVATE)));
-            // write data
+
             bw.write(content);
 
-            // close stream
             bw.close();
-            Log.d(IO_LOG_TAG, "File write");
-            Log.d(IO_LOG_TAG, content);
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -60,7 +57,7 @@ public final class FileRW {
 
             // read data
             while ((str = br.readLine()) != null) {
-                Log.d(IO_LOG_TAG, str);
+
                 content = content + str;
             }
 

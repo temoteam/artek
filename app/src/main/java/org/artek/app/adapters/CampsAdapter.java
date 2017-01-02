@@ -5,14 +5,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import org.artek.app.R;
-
-/**
- * Created by Sergey on 01.11.2016.
- */
 
 public class CampsAdapter extends ArrayAdapter<Camps> {
 
@@ -53,4 +51,7 @@ public class CampsAdapter extends ArrayAdapter<Camps> {
     static class CampsHolder {
         ImageView imgIcon;
     }
+
+
 }
+

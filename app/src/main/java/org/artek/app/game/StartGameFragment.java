@@ -8,11 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -23,7 +22,6 @@ import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.RecyclerItemClickListener;
 import org.artek.app.adapters.PointsReciclerAdapter;
-import org.artek.app.adapters.RecyclerAdapter;
 import org.artek.app.main.NoInternetFragment;
 
 import java.io.IOException;
@@ -133,9 +131,8 @@ public class StartGameFragment extends Fragment {
                 Scanner in = new Scanner(input).useDelimiter("<br />");
                 while (in.hasNext()){
                     String scanString = in.next();
-                    Log.i("ScanString",scanString);
                     Scanner scan = new Scanner(scanString).useDelimiter(";");
-                    Log.i("Parsing",scan.next());
+                    scan.next();
                     publishProgress(new String[]{scan.next(),scan.next(),scan.next(),scan.next()});
 
 
@@ -152,13 +149,13 @@ public class StartGameFragment extends Fragment {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             titles.add(values[0]);
-            Log.i("title",values[0]);
+
             descriptions.add(values[1]);
-            Log.i("description",values[1]);
+
             urls.add(values[2]);
-            Log.i("url",values[2]);
+
             complited.add(values[3].equals("true"));
-            Log.i("complited",values[3]);
+
         }
 
         @Override
@@ -166,7 +163,7 @@ public class StartGameFragment extends Fragment {
             super.onPostExecute(aBoolean);
             if (!aBoolean)
             {
-                Log.i("internet connection", "NO INTERNET");
+
                 if (noInternetFragment==null){
                     noInternetFragment = new NoInternetFragment();
                     noInternetFragment.setFrom(it);

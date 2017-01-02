@@ -45,14 +45,14 @@ public class RadioService extends Service  implements MediaPlayer.OnCompletionLi
     public void onCreate() {
         super.onCreate();
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        Log.d("radio","createService");
+
         mediaPlayer = new MediaPlayer();
         playMp3("http://azurecom.ru:8000/newradio");
     }
 
 
     public void onDestroy() {
-        Log.d("radio", "destroyService");
+
         mediaPlayer.stop();
         mediaPlayer.release();
         super.onDestroy();
@@ -70,7 +70,7 @@ public class RadioService extends Service  implements MediaPlayer.OnCompletionLi
             mediaPlayer.setOnPreparedListener(this);
             //mediaPlayer.prepare(); // might take long! (for buffering, etc)   //@@
             mediaPlayer.prepareAsync();
-            Log.d("radio", "startingRadio");
+
         } catch (IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

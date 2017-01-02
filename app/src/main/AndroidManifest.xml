@@ -38,9 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".game.GameActivity"
-            android:label="@string/title_activity_game" />
         <activity android:name=".game.ScannerQRActivity" />
 
         <receiver

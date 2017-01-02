@@ -12,8 +12,9 @@ public class Global {
     public static AccountManager accountManager;
     public static SharedPreferences sharedPreferences;
     public static Activity activity;
-
     public static String nowPlaying;
+
+    public static String SAVED = "qr_saves";
 
     public static void initilizate(Activity activity) {
         accountManager = new AccountManager(activity);
@@ -27,6 +28,7 @@ public class Global {
         public final static String THEME_ID = "theme_id";
         public final static String ALERT_ID = "alert_id";
     }
+
 
     public interface appInterface{
         void returner();

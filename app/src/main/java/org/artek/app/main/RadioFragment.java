@@ -43,13 +43,13 @@ public class RadioFragment extends Fragment {
                 getActivity().getApplicationContext().stopService(new Intent(getActivity(), RadioService.class));
                 isPlaying = false;
                 radioButton.setImageResource(R.drawable.ic_play);
-                Log.d("radio", "sendStop");
+
             } else {
                 //if(service!= null){getContext().unregisterReceiver(service);}
                 getActivity().getApplicationContext().startService(new Intent(getActivity(), RadioService.class));
                 isPlaying = true;
                 radioButton.setImageResource(R.drawable.ic_pause);
-                Log.d("radio","sendStart");
+
             }
         }
     };
@@ -110,7 +110,7 @@ public class RadioFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("AppService")) {
-                    Log.d("Radio", intent.getStringExtra("Data"));
+
                 }
             }
         };

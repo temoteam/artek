@@ -33,6 +33,8 @@ dependencies {
     compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:1.0.0'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'tyrantgit:explosionfield:1.0.1'
+
 
 
     /* compile fileTree(include: ['*.jar'], dir: 'libs')

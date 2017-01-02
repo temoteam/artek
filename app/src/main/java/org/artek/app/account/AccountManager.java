@@ -3,9 +3,11 @@ package org.artek.app.account;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 import org.artek.app.Global;
 import org.artek.app.R;
@@ -34,6 +36,7 @@ public class AccountManager {
 
     private int lastReciclerID;
     private String lastQR;
+    private View lastView;
 
     public AccountManager(Activity activity){
         this.activity = activity;
@@ -45,10 +48,11 @@ public class AccountManager {
         new Login().execute();
     }
 
-    public void sendQR(String qr,int id) {
+    public void sendQR(String qr,int id,View view) {
         new SendQR().execute(qr);
         lastReciclerID = id;
         lastQR = qr;
+        lastView = view;
     }
 
     public void getUserInfo(String token){
@@ -233,6 +237,17 @@ public class AccountManager {
 
     class SendQR extends AsyncTask<String, Void, String> {
 
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(activity);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Отправка");
+            progressDialog.show();
+        }
+
         @Override
         protected String doInBackground(String... params) {
 
@@ -246,6 +261,7 @@ public class AccountManager {
         @Override
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
+            progressDialog.hide();
             AlertDialog.Builder dialog = null;
             if (string.equals("EI")) Toast.makeText(Global.activity,"Не удалось отправить код, проверьте подключение к интернету",Toast.LENGTH_SHORT).show();
             else if (string.contains("S")) {
@@ -262,7 +278,7 @@ public class AccountManager {
                     dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            reciclerInterface.remove(lastReciclerID,lastQR);
+                            reciclerInterface.remove(lastReciclerID,lastQR,lastView);
                         }
                     });
                     dialog.show();
@@ -271,7 +287,7 @@ public class AccountManager {
     }
 
     public interface ReciclerInterface{
-        void remove(int id,String qr);
+        void remove(int id,String qr,View view);
     }
 
 }

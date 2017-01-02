@@ -2,6 +2,8 @@ package org.artek.app.game;
 
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,8 @@ import org.artek.app.adapters.RecyclerAdapter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import tyrantgit.explosionfield.ExplosionField;
+
 public class VisitedFragment extends Fragment implements AccountManager.ReciclerInterface {
 
     private String name = "Visited";
@@ -34,6 +38,8 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
     private FileRW fileRW;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerAdapter mAdapter;
+
+    private ExplosionField explosionField;
 
     private ArrayList<String> qrs;
 
@@ -73,7 +79,7 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
                     @Override public void onItemClick(View view, int position) {
                         TextView tw = (TextView)view.findViewById(R.id.tv_recycler_item);
                         String yop = tw.getText().toString();
-                        Global.accountManager.sendQR(yop,position);
+                        Global.accountManager.sendQR(yop,position,view);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -92,6 +98,8 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
         mAdapter = new RecyclerAdapter(qrs);
         mRecyclerView.setAdapter(mAdapter);
 
+        explosionField = ExplosionField.attach2Window(getActivity());
+
 
     }
 
@@ -106,17 +114,39 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
     }
 
     @Override
-    public void remove(int id,String qr) {
-            String saved = fileRW.readFile(Global.SAVED);
-            if (saved.indexOf(qr) == 0)
-                saved = saved.replace(qr + ",", "");
-            else
-                saved = saved.replace("," + qr, "");
-            fileRW.writeFile(Global.SAVED, saved);
+    public void remove(int id,String qr,View view) {
+
+        String saved = fileRW.readFile(Global.SAVED);
+        if (saved.indexOf(qr) == 0)
+            saved = saved.replace(qr + ",", "");
+        else
+            saved = saved.replace("," + qr, "");
+        fileRW.writeFile(Global.SAVED, saved);
         qrs.remove(id);
-        mAdapter.notifyItemRemoved(id);
-        mAdapter.notifyItemRangeChanged(0, qrs.size());
-        mRecyclerView.refreshDrawableState();
+        explosionField.explode(view);
+
+        new Remove().execute(id);
+    }
+
+    class Remove extends AsyncTask<Integer,Void,Integer>{
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return params[0];
+        }
+
+        @Override
+        protected void onPostExecute(Integer aVoid) {
+            super.onPostExecute(aVoid);
+            mAdapter.notifyItemRemoved(aVoid);
+            mAdapter.notifyItemRangeChanged(0, qrs.size());
+            mRecyclerView.refreshDrawableState();
+        }
     }
 
 

@@ -6,11 +6,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import org.artek.app.Global;
 import org.artek.app.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -19,13 +20,13 @@ import java.util.Scanner;
 
 public class AccountManager {
 
-    final public static String SERVER_URL = "http://lohness.com/artek/";
-    final public static String LOGIN = "login.php";
-    final public static String QR_SEND = "check_qr.php";
+    final private static String SERVER_URL = "http://lohness.com/artek/";
+    final private static String LOGIN = "login.php";
+    final private static String QR_SEND = "check_qr.php";
 
-    final public static byte SUCCESS = 1;
-    final public static byte ERROR_UNKNOWN = 0;
-    final public static byte ERROR_BAD = -1;
+    final private static byte SUCCESS = 1;
+    final private static byte ERROR_UNKNOWN = 0;
+    final private static byte ERROR_BAD = -1;
 
     private Activity activity;
     private String vkToken;
@@ -42,7 +43,7 @@ public class AccountManager {
         this.activity = activity;
     }
 
-    public void login(String vkToken,String vkId){
+    void login(String vkToken, String vkId) {
         this.vkToken = vkToken;
         this.vkId = vkId;
         new Login().execute();
@@ -55,7 +56,7 @@ public class AccountManager {
         lastView = view;
     }
 
-    public void getUserInfo(String token){
+    void getUserInfo(String token) {
         vkToken = token;
         new CheckToken().execute();
     }
@@ -67,8 +68,7 @@ public class AccountManager {
     private String rawQuery(URL url) throws IOException {
         InputStream input = url.openStream();
         Scanner in = new Scanner(input);
-        String answer = in.nextLine();
-        return answer;
+        return in.nextLine();
     }
 
     private String rawFullQuery(URL url) throws IOException {
@@ -80,7 +80,7 @@ public class AccountManager {
         return answer;
     }
 
-    public AlertDialog.Builder generateMsg(byte result){
+    private AlertDialog.Builder generateMsg(byte result) {
 
         AlertDialog.Builder ad;
         ad = new AlertDialog.Builder(Global.activity);
@@ -103,7 +103,11 @@ public class AccountManager {
         this.reciclerInterface = reciclerInterface;
     }
 
-    class CheckToken extends AsyncTask<Void, Void, Byte>{
+    public interface ReciclerInterface {
+        void remove(int id, String qr, View view);
+    }
+
+    private class CheckToken extends AsyncTask<Void, Void, Byte> {
 
         @Override
         protected Byte doInBackground(Void... params) {
@@ -125,7 +129,6 @@ public class AccountManager {
         @Override
         protected void onPostExecute(Byte aByte) {
             super.onPostExecute(aByte);
-            if (aByte!=-128);
             switch (aByte){
 
                 case ERROR_UNKNOWN:
@@ -136,7 +139,7 @@ public class AccountManager {
                 {
                     Toast.makeText(activity, activity.getString(R.string.account_data_not_valid),Toast.LENGTH_SHORT).show();
                     appInterface.returner();
-                    Global.sharedPreferences.edit().remove(Global.SharedPreferencesTags.LAST_TOKEN);
+                    Global.sharedPreferences.edit().remove(Global.SharedPreferencesTags.LAST_TOKEN).commit();
                 }
                 case SUCCESS:
                 {
@@ -147,7 +150,7 @@ public class AccountManager {
         }
     }
 
-    class CheckGroup extends AsyncTask<Void, Void, Byte>{
+    private class CheckGroup extends AsyncTask<Void, Void, Byte> {
 
         @Override
         protected Byte doInBackground(Void... params) {
@@ -190,7 +193,7 @@ public class AccountManager {
         }
     }
 
-    class SubscribeToGroup extends AsyncTask<Void, Void, Byte>{
+    private class SubscribeToGroup extends AsyncTask<Void, Void, Byte> {
         @Override
         protected Byte doInBackground(Void... params) {
             try {
@@ -209,12 +212,12 @@ public class AccountManager {
         protected void onPostExecute(Byte aByte) {
             super.onPostExecute(aByte);
             if (aByte==SUCCESS){
-                Toast.makeText(activity, activity.getString(R.string.subscribe_thank),Toast.LENGTH_SHORT);
+                Toast.makeText(activity, activity.getString(R.string.subscribe_thank), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    class Login extends AsyncTask<Void, Void, Byte> {
+    private class Login extends AsyncTask<Void, Void, Byte> {
 
         @Override
         protected Byte doInBackground(Void... params) {
@@ -235,7 +238,7 @@ public class AccountManager {
         }
     }
 
-    class SendQR extends AsyncTask<String, Void, String> {
+    private class SendQR extends AsyncTask<String, Void, String> {
 
         ProgressDialog progressDialog;
 
@@ -284,10 +287,6 @@ public class AccountManager {
                     dialog.show();
                 }
         }
-    }
-
-    public interface ReciclerInterface{
-        void remove(int id,String qr,View view);
     }
 
 }

@@ -17,14 +17,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -83,8 +81,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String name = "MainActivity";
     Tracker mTracker;
     private Snackbar mSnackbar;
-
-
+    View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (loginVKFragment == null) loginVKFragment = new LoginVKFragment();
+            fTrans = getFragmentManager().beginTransaction().replace(R.id.frgmCont, loginVKFragment).addToBackStack(null);
+            fTrans.commit();
+            mSnackbar.dismiss();
+        }
+    };
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
@@ -206,20 +211,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-
-
-    View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (loginVKFragment == null) loginVKFragment = new LoginVKFragment();
-            fTrans = getFragmentManager().beginTransaction();
-            fTrans = fTrans.replace(R.id.frgmCont, loginVKFragment);
-            fTrans.addToBackStack(null);
-            fTrans.commit();
-            mSnackbar.dismiss();
-        }
-    };
-
 
     @Override
     public void onBackPressed() {
@@ -377,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         private Context context;
         private String LOG_TAG = "ServerAlert";
 
-        public ServerAlert(Context context) {
+        ServerAlert(Context context) {
             this.context = context;
         }
 
@@ -394,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
 
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -416,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onPostExecute(strJson);
 
 
-            JSONObject dataJsonObj = null;
+            JSONObject dataJsonObj;
 
             try {
                 dataJsonObj = new JSONObject(strJson);
@@ -440,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         dialog.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String url = null;
+                                String url;
                                 try {
                                     url = msg.getString("url");
                                     Intent i = new Intent(Intent.ACTION_VIEW);

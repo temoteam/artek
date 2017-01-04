@@ -6,7 +6,6 @@ package org.artek.app;
 
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -75,11 +74,12 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    public class SendLOG extends AsyncTask<String, String, String> {
+    private class SendLOG extends AsyncTask<String, String, String> {
 
         String filename;
         String stacktrace;
-        public SendLOG(String filename, String stacktrace) {
+
+        SendLOG(String filename, String stacktrace) {
             this.filename = filename;
             this.stacktrace = stacktrace;
         }
@@ -101,7 +101,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost("http://lohness.com/artek/log/upload.php");
-                List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                List<NameValuePair> nvps = new ArrayList<>();
                 nvps.add(new BasicNameValuePair("filename", filename));
                 nvps.add(new BasicNameValuePair("stacktrace", stacktrace));
 
@@ -111,16 +111,13 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
                     HttpEntity response = httpClient.execute(httpPost).getEntity();
 
                     try{
-                        InputStream in = (InputStream) response.getContent();
-                        //Header contentEncoding = Response.getFirstHeader("Content-Encoding");
-                    /*if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-                        in = new GZIPInputStream(in);
-                    }*/
+                        InputStream in = response.getContent();
+
                         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                         StringBuilder str = new StringBuilder();
-                        String line = null;
+                        String line;
                         while((line = reader.readLine()) != null){
-                            str.append(line + "\n");
+                            str.append(line).append("\n");
                         }
                         in.close();
                         String resp = str.toString();

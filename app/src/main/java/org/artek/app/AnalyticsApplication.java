@@ -26,13 +26,16 @@ public class AnalyticsApplication extends Application {
     private static Tracker tracker;
     private static GoogleAnalytics analytics;
 
+    @SuppressWarnings("unused") // Method is unused in codebase; kept here for reference.
+    public static GoogleAnalytics analytics() {
+        return analytics;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         analytics = GoogleAnalytics.getInstance(this);
 
-        // TODO: Replace the tracker-id with your app one from https://www.google.com/analytics/web/
         tracker = analytics.newTracker("UA-73930415-4");
 
         // Provide unhandled exceptions reports. Do that first after creating the tracker
@@ -55,10 +58,5 @@ public class AnalyticsApplication extends Application {
             tracker = analytics.newTracker(R.xml.global_tracker);
         }
         return tracker;
-    }
-
-    @SuppressWarnings("unused") // Method is unused in codebase; kept here for reference.
-    public static GoogleAnalytics analytics() {
-        return analytics;
     }
 }

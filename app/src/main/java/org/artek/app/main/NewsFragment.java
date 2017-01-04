@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,8 +95,8 @@ public class NewsFragment extends Fragment {
             iStream = urlConnection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     iStream));
-            StringBuffer sb = new StringBuffer();
-            String line = "";
+            StringBuilder sb = new StringBuilder();
+            String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
@@ -105,9 +104,11 @@ public class NewsFragment extends Fragment {
             br.close();
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
-            iStream.close();
+            if (iStream != null) {
+                iStream.close();
+            }
         }
         return data;
     }
@@ -120,7 +121,7 @@ public class NewsFragment extends Fragment {
             try {
                 data = downloadUrl(url[0]);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             return data;
         }
@@ -148,7 +149,7 @@ public class NewsFragment extends Fragment {
                 NewsJSONParser newsJsonParser = new NewsJSONParser();
                 newsJsonParser.parse(jObject);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
 
             NewsJSONParser newsJsonParser = new NewsJSONParser();
@@ -156,14 +157,13 @@ public class NewsFragment extends Fragment {
             try {
                 countries = newsJsonParser.parse(jObject);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
 
             String[] from = {"text", "imageLogo", "details"};
             int[] to = {R.id.textView, R.id.imageView, R.id.textView2};
-            SimpleAdapter adapter = new SimpleAdapter(baseContext,
+            return new SimpleAdapter(baseContext,
                     countries, R.layout.item_news, from, to);
-            return adapter;
         }
 
         @Override
@@ -177,7 +177,7 @@ public class NewsFragment extends Fragment {
                     HashMap<String, Object> hm = (HashMap<String, Object>) adapter.getItem(i);
                     String imgUrl = (String) hm.get("imageLogo_path");
                     ImageLoaderTask imageLoaderTask = new ImageLoaderTask();
-                    HashMap<String, Object> hmDownload = new HashMap<String, Object>();
+                    HashMap<String, Object> hmDownload = new HashMap<>();
                     hm.put("imageLogo_path", imgUrl);
                     hm.put("position", i);
                     imageLoaderTask.execute(hm);
@@ -202,7 +202,7 @@ public class NewsFragment extends Fragment {
         protected HashMap<String, Object> doInBackground(
                 HashMap<String, Object>... hm) {
 
-            InputStream iStream = null;
+            InputStream iStream;
             String imgUrl = (String) hm[0].get("imageLogo_path");
             int position = (Integer) hm[0].get("position");
 
@@ -222,7 +222,7 @@ public class NewsFragment extends Fragment {
                 fOutStream.flush();
                 fOutStream.close();
 
-                HashMap<String, Object> hmBitmap = new HashMap<String, Object>();
+                HashMap<String, Object> hmBitmap = new HashMap<>();
                 hmBitmap.put("imageLogo", tmpFile.getPath());
                 hmBitmap.put("position", position);
                 return hmBitmap;

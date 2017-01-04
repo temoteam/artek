@@ -6,7 +6,6 @@ import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.google.android.gms.analytics.HitBuilders;
@@ -19,9 +18,8 @@ public class ScannerQRActivity extends AppCompatActivity implements QRCodeReader
 
 
     String scanningURL;
-    private QRCodeReaderView mydecoderview;
     String name = "QR";
-
+    private QRCodeReaderView mydecoderview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

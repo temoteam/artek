@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.artek.app.ExceptionHandler;
@@ -23,7 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class Updater {
+class Updater {
 
     private final int THIS_VERSION = 2;
     private final String LAST_API_FILE_PACH = "http://lohness.com/artek/update/update.txt";
@@ -34,7 +33,7 @@ public class Updater {
     private Activity activity;
 
 
-    public Updater(Activity activity) {
+    Updater(Activity activity) {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
@@ -44,14 +43,14 @@ public class Updater {
     }
 
 
-    public boolean checkForUpdates() throws IOException {
+    private boolean checkForUpdates() throws IOException {
         getLastVersion();
 
         return THIS_VERSION < lastVertion;
 
     }
 
-    public String getUpdate() throws IOException {
+    private String getUpdate() throws IOException {
 
         File update = new File(updateFile);
         if (update.exists())
@@ -64,7 +63,7 @@ public class Updater {
     }
 
 
-    public String getUpdate(Context context) {
+    private String getUpdate(Context context) {
         File update = new File(Environment.DIRECTORY_DOWNLOADS + "/update.apk");
         if (update.exists())
             update.delete();
@@ -93,7 +92,7 @@ public class Updater {
         r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "update.apk");
         r.allowScanningByMediaScanner();
         r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        DownloadManager dm = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
+        DownloadManager dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         long i = dm.enqueue(r);
         try {
             Thread.sleep(60000);
@@ -113,7 +112,7 @@ public class Updater {
 
     }
 
-    class CheckerForUpdates extends AsyncTask<Void, Void, Boolean> {
+    private class CheckerForUpdates extends AsyncTask<Void, Void, Boolean> {
 
 
         @Override

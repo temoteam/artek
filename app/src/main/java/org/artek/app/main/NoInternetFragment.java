@@ -10,8 +10,6 @@ import android.widget.Button;
 
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
-import org.artek.app.game.StartGameFragment;
-import org.artek.app.game.VisitedFragment;
 
 
 public class NoInternetFragment extends Fragment implements View.OnClickListener {

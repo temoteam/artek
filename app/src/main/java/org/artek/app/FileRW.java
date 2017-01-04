@@ -2,7 +2,6 @@ package org.artek.app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,7 +27,7 @@ public final class FileRW {
         this.activity = activity;
     }
     public FileRW(Context context) {
-        this.context = this.context;
+        this.context = context;
     }
     public void writeFile(String FILENAME, String content) {
         try {
@@ -49,7 +48,7 @@ public final class FileRW {
 
     public String readFile(String FILENAME) {
         String content = "";
-        String str = "";
+        String str;
         try {
 
             // open stream to read data

@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -35,7 +34,7 @@ public class GCMRegistrationIntentService extends IntentService {
 
     private void registerGCM() {
         //Registration complete intent initially null
-        Intent registrationComplete = null;
+        Intent registrationComplete;
 
         //Register token is also null
         //we will get the token on successfull registration
@@ -75,10 +74,10 @@ public class GCMRegistrationIntentService extends IntentService {
         protected Byte doInBackground(Void... params) {
 
             try {
-                rawQuery(new URL("http://lohness.com/artek/notify/addClient.php?token="+token)).equals("S");
+                rawQuery(new URL("http://lohness.com/artek/notify/addClient.php?token=" + token));
 
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
             return 0;
         }
@@ -86,9 +85,7 @@ public class GCMRegistrationIntentService extends IntentService {
         private String rawQuery(URL url) throws IOException {
             InputStream input = url.openStream();
             Scanner in = new Scanner(input);
-            String answer = in.nextLine();
-
-            return answer;
+            return in.nextLine();
         }
 
         @Override

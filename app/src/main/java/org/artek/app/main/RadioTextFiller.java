@@ -1,13 +1,11 @@
 package org.artek.app.main;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.TextView;
 
 import org.artek.app.Global;
 
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -15,15 +13,16 @@ import java.util.Scanner;
  * Created by AlexS on 25.12.2016.
  */
 
-public class RadioTextFiller {
-    TextView textView;
-    public RadioTextFiller(TextView textView){
+class RadioTextFiller {
+    private TextView textView;
+
+    RadioTextFiller(TextView textView) {
         this.textView=textView;
         TextUpdating textUpdating = new TextUpdating();
         textUpdating.execute();
     }
 
-    class TextUpdating extends AsyncTask<Void, String, Void> {
+    private class TextUpdating extends AsyncTask<Void, String, Void> {
 
 
         @Override

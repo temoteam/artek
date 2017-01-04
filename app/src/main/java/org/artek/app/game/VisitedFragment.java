@@ -2,12 +2,10 @@ package org.artek.app.game;
 
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +62,7 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Global.accountManager.setReciclerInterface((AccountManager.ReciclerInterface) this);
+        Global.accountManager.setReciclerInterface(this);
 
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
@@ -128,6 +126,18 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
         new Remove().execute(id);
     }
 
+    public void add(String qr) {
+
+        qrs.add(qr);
+
+        mAdapter.notifyItemRangeChanged(0, qrs.size());
+        mRecyclerView.refreshDrawableState();
+
+        String saved = fileRW.readFile(Global.SAVED);
+        if (saved.equals("")) fileRW.writeFile(Global.SAVED, qr);
+        else fileRW.writeFile(Global.SAVED, saved + "," + qr);
+    }
+
     class Remove extends AsyncTask<Integer,Void,Integer>{
 
         @Override
@@ -147,19 +157,6 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
             mAdapter.notifyItemRangeChanged(0, qrs.size());
             mRecyclerView.refreshDrawableState();
         }
-    }
-
-
-    public void add(String qr) {
-
-        qrs.add(qr);
-
-        mAdapter.notifyItemRangeChanged(0, qrs.size());
-        mRecyclerView.refreshDrawableState();
-
-        String saved = fileRW.readFile(Global.SAVED);
-        if (saved.equals("")) fileRW.writeFile(Global.SAVED,qr);
-        else fileRW.writeFile(Global.SAVED,saved+","+qr);
     }
 
 

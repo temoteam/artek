@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,11 @@ import java.util.ArrayList;
 
 public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAdapter.ViewHolder> {
 
+    private Activity activity;
     private ArrayList<String> titles;
     private ArrayList<String> descriptions;
     private ArrayList<String> urls;
     private ArrayList<Boolean> complited;
-
-    Activity activity;
 
 
 
@@ -45,8 +43,7 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
     @Override
     public PointsReciclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recicler_point_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
 
@@ -69,14 +66,14 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         return titles.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public TextView description;
-        public TextView detail;
-        public ImageView pic;
-        public CardView cardView;
+        TextView description;
+        TextView detail;
+        ImageView pic;
+        CardView cardView;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.title);
             description = (TextView) v.findViewById(R.id.description);

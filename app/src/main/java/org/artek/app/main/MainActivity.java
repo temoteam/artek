@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -23,10 +24,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -57,6 +63,10 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.microedition.khronos.opengles.GL;
+
+import static android.os.Build.ID;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -74,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LoginFragment loginFragment;
     StartGameFragment startGameFragment;
     LoginVKFragment loginVKFragment;
+
+    CallBack callBack;
 
     FloatingActionButton fab;
     FragmentTransaction fTrans;
@@ -340,6 +352,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (settingsFragment==null) settingsFragment=new SettingsFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, settingsFragment);
                     fab.hide();}
+                else if (id == R.id.nav_callback){
+                    if (callBack==null) callBack = new CallBack(this);
+                    callBack.startCallBack();}
+
 
             } else {
                 if (loginFragment==null) loginFragment=new LoginFragment();
@@ -354,11 +370,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fTrans.addToBackStack(null);
         fTrans.commit();
 
-
-
-
-
     }
+
+
 
     class ServerAlert extends AsyncTask<Void, Void, String> {
 

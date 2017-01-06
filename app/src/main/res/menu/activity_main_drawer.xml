@@ -62,5 +62,11 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/nav_callback"
+        android:icon="@drawable/ic_menu_msg"
+        android:title="Письмо разработчикам"
+        android:gravity="bottom"/>
+
 
 </menu>

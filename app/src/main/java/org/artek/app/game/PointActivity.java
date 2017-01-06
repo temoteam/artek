@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.artek.app.R;
 
@@ -28,6 +30,8 @@ public class PointActivity extends AppCompatActivity {
 
         title.setText(data.getString("title"));
         description.setText(data.getString("description"));
-        Picasso.with(this).load(data.getString("url")).into(logo);
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
+        imageLoader.displayImage(data.getString("url"), logo);
     }
 }

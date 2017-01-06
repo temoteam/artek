@@ -1,7 +1,9 @@
 package org.artek.app.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,10 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.artek.app.R;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 
@@ -24,6 +29,9 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
     private ArrayList<String> descriptions;
     private ArrayList<String> urls;
     private ArrayList<Boolean> complited;
+
+    private ImageLoader imageLoader;
+
 
 
 
@@ -36,7 +44,8 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         this.descriptions = descriptions;
         this.urls = urls;
         this.complited = complited;
-
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(activity));
 
     }
 
@@ -54,7 +63,7 @@ public class PointsReciclerAdapter extends RecyclerView.Adapter<PointsReciclerAd
         if (minDescription.length()>210)
             minDescription = minDescription.substring(0,200)+"...";
         holder.description.setText(minDescription);
-        Picasso.with(activity).load(urls.get(position)).into(holder.pic);
+        imageLoader.displayImage(urls.get(position), holder.pic);
         holder.detail.setText("");
         if (complited.get(position))
             holder.cardView.setBackgroundColor(Color.parseColor("#CFF9B2"));

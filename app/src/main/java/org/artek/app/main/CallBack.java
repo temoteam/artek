@@ -3,6 +3,8 @@ package org.artek.app.main;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,25 +15,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.artek.app.Global;
 import org.artek.app.R;
 
-import java.io.BufferedReader;
+
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 public class CallBack {
 
@@ -99,32 +95,82 @@ public class CallBack {
 
     private void endCallBack(String text) {
         if (type == 0) {
-            new SendVK().execute(new String[]{Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null),text});
+            new Send2VK().execute(new String[]{Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null),text});
         }   else if (type == 1){
-            //тут отправка на сервер
+            new Send2Server().execute(new String[]{Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,"noid"),text});
         }
     }
 
-    private class SendVK extends AsyncTask<String,Void,Boolean>{
-
+    private class Send2VK extends AsyncTask<String,Void,Boolean>{
         @Override
         protected Boolean doInBackground(String... params) {
-            try {
-                List<NameValuePair> data = new ArrayList<NameValuePair>();
-                data.add(new BasicNameValuePair("access_token", params[0]));
-                data.add(new BasicNameValuePair("peer_id", "-132787995"));
-                data.add(new BasicNameValuePair("message", params[1]));
-                data.add(new BasicNameValuePair("charset", "utf-8"));
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost http = new HttpPost("https://api.vk.com/method/messages.send?v=5.60");
-                http.setEntity(new UrlEncodedFormEntity(data));
-                httpclient.execute(http, new BasicResponseHandler());
 
+            try {
+                String urlParameters = "v=5.60&access_token="+params[0]+"&peer_id=-132787995&message="+params[1];
+                byte[] postData = urlParameters.getBytes(Charset.forName("UTF-8"));
+                int    postDataLength = postData.length;
+                String request = "https://api.vk.com/method/messages.send";
+                URL url = new URL(request);
+                HttpURLConnection conn= (HttpURLConnection) url.openConnection();
+                conn.setDoOutput( true );
+                conn.setInstanceFollowRedirects( false );
+                conn.setRequestMethod( "POST" );
+                conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestProperty( "charset", "utf-8");
+                conn.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+                conn.setUseCaches( false );
+                DataOutputStream wr = new DataOutputStream( conn.getOutputStream()) ;
+                wr.write( postData );
+                if (conn.getResponseCode()==200)
+                    return true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return false;
         }
+
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean)
+                Toast.makeText(activity,"Сообщение успешно доставлено",Toast.LENGTH_SHORT);
+        }
     }
+
+    private class Send2Server extends AsyncTask<String,Void,Boolean>{
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                String urlParameters = "id=" + params[0] + "&msg=" + params[1];
+                byte[] postData = urlParameters.getBytes(Charset.forName("UTF-8"));
+                int postDataLength = postData.length;
+                String request = "http://lohness.com/artek/msg/send.php";
+                URL url = new URL(request);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setInstanceFollowRedirects(false);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestProperty("charset", "utf-8");
+                conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                conn.setUseCaches(false);
+                DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+                wr.write(postData);
+                if (conn.getResponseCode() == 200)
+                    return true;
+
+            }
+            catch (Exception e){e.printStackTrace();}
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean)
+                Toast.makeText(activity,"Сообщение успешно доставлено",Toast.LENGTH_SHORT);
+        }
+    }
+
 }

@@ -24,7 +24,7 @@ import java.util.Scanner;
 
 class Updater {
 
-    private final int THIS_VERSION = 2;
+    private final int THIS_VERSION = 3;
     private final String LAST_API_FILE_PACH = "http://lohness.com/artek/update/update.txt";
     private int lastVertion;
     private String updateFile;

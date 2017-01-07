@@ -9,11 +9,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -24,15 +24,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -63,10 +58,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.microedition.khronos.opengles.GL;
-
-import static android.os.Build.ID;
-
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -85,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     StartGameFragment startGameFragment;
     LoginVKFragment loginVKFragment;
 
-    CallBack callBack;
+    Callback callBack;
 
     FloatingActionButton fab;
     FragmentTransaction fTrans;
@@ -128,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
+
         activity = this;
         Global.initilizate(this);
 
@@ -168,6 +160,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
                     String token = intent.getStringExtra("token");
+                    SharedPreferences sPref = Global.sharedPreferences;
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putString(Global.SharedPreferencesTags.GOOGLE_TOKEN, token);
+                    ed.apply();
                 } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
                     Toast.makeText(getApplicationContext(), getString(R.string.error_gcm), Toast.LENGTH_LONG).show();
                 } else {
@@ -353,8 +349,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     fTrans = fTrans.replace(R.id.frgmCont, settingsFragment);
                     fab.hide();}
                 else if (id == R.id.nav_callback){
-                    if (callBack==null) callBack = new CallBack(this);
-                    callBack.startCallBack();}
+                    if (callBack == null) callBack = new Callback();
+                    fTrans = fTrans.replace(R.id.frgmCont, callBack);
+                    fab.hide();
+                }
 
 
             } else {

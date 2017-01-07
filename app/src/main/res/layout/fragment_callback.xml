@@ -1,0 +1,49 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.artek.app.main.Callback">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <Spinner
+            android:id="@+id/spinnerMethodReq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/typeProblem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/callbackMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.00"
+            android:hint="Ваше сообщение"
+            android:inputType="textMultiLine" />
+
+        <CheckBox
+            android:id="@+id/attachLogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Прикрепить логи" />
+
+        <Button
+            android:id="@+id/attachScreenshot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Прикрепить скриншот" />
+
+        <Button
+            android:id="@+id/sendCallback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Отправить" />
+    </LinearLayout>
+</FrameLayout>

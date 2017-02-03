@@ -176,7 +176,7 @@ public class Callback extends Fragment {
                 }
                 SyncHttpClient client = new SyncHttpClient();
 
-                client.post(getContext(), "http://lohness.com/artek/msg/send.php", request, new AsyncHttpResponseHandler() {
+                client.post(getContext(), getString(R.string.main_domain) + "/artek/msg/send.php", request, new AsyncHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         System.out.print("Failed..");

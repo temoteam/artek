@@ -5,6 +5,7 @@ package org.artek.app;
  */
 
 
+import android.content.res.Resources;
 import android.os.AsyncTask;
 
 import org.apache.http.HttpEntity;
@@ -53,6 +54,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         printWriter.close();
         String filename = timestamp + ".stacktrace";
 
+
         writeToFile(stacktrace, filename);
 
 
@@ -100,7 +102,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
             try {
 
                 DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost("http://lohness.com/artek/log/upload.php");
+                HttpPost httpPost = new HttpPost(Resources.getSystem().getString(R.string.main_domain) + "/artek/log/upload.php");
                 List<NameValuePair> nvps = new ArrayList<>();
                 nvps.add(new BasicNameValuePair("filename", filename));
                 nvps.add(new BasicNameValuePair("stacktrace", stacktrace));

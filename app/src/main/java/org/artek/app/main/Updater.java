@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -25,7 +26,7 @@ import java.util.Scanner;
 class Updater {
 
     private final int THIS_VERSION = 3;
-    private final String LAST_API_FILE_PACH = "http://lohness.com/artek/update/update.txt";
+    private final String LAST_API_FILE_PATCH = Resources.getSystem().getString(R.string.main_domain) + "/artek/update/update.txt";
     private int lastVertion;
     private String updateFile;
     private String updateURL;
@@ -34,6 +35,7 @@ class Updater {
 
 
     Updater(Activity activity) {
+
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
@@ -105,7 +107,7 @@ class Updater {
 
 
     private void getLastVersion() throws IOException {
-        URL url = new URL(LAST_API_FILE_PACH);
+        URL url = new URL(LAST_API_FILE_PATCH);
         Scanner in = new Scanner(url.openStream());
         lastVertion = in.nextInt();
         updateURL = in.next();
@@ -136,7 +138,7 @@ class Updater {
                 ad.setMessage(activity.getString(R.string.current_version) + THIS_VERSION + activity.getString(R.string.last_version) + lastVertion); // сообщение
                 ad.setPositiveButton(activity.getString(R.string.update), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://lohness.com/artek/app/index.php"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.main_domain) + "/artek/app/index.php"));
                         activity.startActivity(intent);
                     }
                 });

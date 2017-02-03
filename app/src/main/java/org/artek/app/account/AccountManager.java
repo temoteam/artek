@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ import java.util.Scanner;
 
 public class AccountManager {
 
-    final private static String SERVER_URL = "http://lohness.com/artek/";
+    final private static String SERVER_URL = Resources.getSystem().getString(R.string.main_domain) + "/artek/";
     final private static String LOGIN = "login.php";
     final private static String QR_SEND = "check_qr.php";
 

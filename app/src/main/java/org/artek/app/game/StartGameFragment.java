@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,14 +32,12 @@ import java.util.Scanner;
 
 public class StartGameFragment extends Fragment {
 
+    StartGameFragment it;
     private String name = "List";
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private PointsReciclerAdapter mAdapter;
-
     private NoInternetFragment noInternetFragment;
-    StartGameFragment it;
-
     private ArrayList<String> titles;
     private ArrayList<String> descriptions;
     private ArrayList<String> urls;
@@ -126,14 +123,14 @@ public class StartGameFragment extends Fragment {
         @Override
         protected Boolean doInBackground(HashMap<String,String>... params) {
             try {
-                URL url = new URL("http://lohness.com/artek/get_achivements.php?camp="+params[0].get("camp")+"&id="+params[0].get("id"));
+                URL url = new URL("https://azurecom.ru/artek/get_achivements.php?camp=" + params[0].get("camp") + "&id=" + params[0].get("id"));
                 InputStream input = url.openStream();
                 Scanner in = new Scanner(input).useDelimiter("<br />");
                 while (in.hasNext()){
                     String scanString = in.next();
                     Scanner scan = new Scanner(scanString).useDelimiter(";");
                     scan.next();
-                    publishProgress(new String[]{scan.next(),scan.next(),scan.next(),scan.next()});
+                    publishProgress(scan.next(), scan.next(), scan.next(), scan.next());
 
 
                 }

@@ -12,7 +12,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -24,7 +23,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,21 +48,22 @@ import org.artek.app.game.VisitedFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private final OkHttpClient client = new OkHttpClient();
     int backButton = 0;
-
     Activity activity;
-
     DictFragment dictFragment;
     NewsFragment newsFragment;
     TipsFragment tipsFragment;
@@ -75,9 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LoginFragment loginFragment;
     StartGameFragment startGameFragment;
     LoginVKFragment loginVKFragment;
-
-    Callback callBack;
-
+    org.artek.app.main.Callback callBack;
     FloatingActionButton fab;
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
@@ -123,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         activity = this;
         Global.initilizate(this);
 
+        checkServerAlert();
+
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
 
-        new ServerAlert(MainActivity.this).execute();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -190,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         Global.accountManager.setAppInterface(new Global.appInterface() {
             @Override
             public void returner() {
@@ -202,14 +200,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ScannerQRActivity.class);
+                Intent intent = new Intent(MainActivity.this, ScannerQRActivity.class);
                 startActivityForResult(intent, 0);
-            }});
+            }
+        });
 
         select(R.id.nav_news);
 
@@ -248,20 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                select(R.id.nav_visited);
-                visitedFragment.add(contents);
-            } else if (resultCode == RESULT_CANCELED) {
 
-                Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.TOP, 25, 400);
-                toast.show();
-            }
-        }
-    }
 
     @Override
     protected void onPause() {
@@ -310,159 +295,128 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void select(int id) {
 
-        ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.INTERNET},1);
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, 1);
         fTrans = getFragmentManager().beginTransaction();
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
             if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
                 // if (true){ //debug
 
-                if (id == R.id.nav_visited){
-                    if (visitedFragment==null) visitedFragment=new VisitedFragment();
+                if (id == R.id.nav_visited) {
+                    if (visitedFragment == null) visitedFragment = new VisitedFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, visitedFragment);
-                    fab.show();}
-                else if (id == R.id.nav_news){
-                    if (newsFragment==null) newsFragment=new NewsFragment();
+                    fab.show();
+                } else if (id == R.id.nav_news) {
+                    if (newsFragment == null) newsFragment = new NewsFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, newsFragment);
-                    fab.hide();}
-                else if (id == R.id.nav_dictionary){
-                    if (dictFragment==null) dictFragment=new DictFragment();
+                    fab.hide();
+                } else if (id == R.id.nav_dictionary) {
+                    if (dictFragment == null) dictFragment = new DictFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, dictFragment);
-                    fab.hide();}
-                else if (id == R.id.nav_tips){
-                    if (tipsFragment==null) tipsFragment=new TipsFragment();
+                    fab.hide();
+                } else if (id == R.id.nav_tips) {
+                    if (tipsFragment == null) tipsFragment = new TipsFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, tipsFragment);
-                    fab.hide();}
-                else if (id == R.id.nav_radio){
-                    if (radioFragment==null) radioFragment=new RadioFragment();
+                    fab.hide();
+                } else if (id == R.id.nav_radio) {
+                    if (radioFragment == null) radioFragment = new RadioFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, radioFragment);
-                    fab.hide();}
-                else if (id == R.id.nav_leaderboard){
-                    if (detailSpotFragment==null) detailSpotFragment=new DetailSpotFragment();
+                    fab.hide();
+                } else if (id == R.id.nav_leaderboard) {
+                    if (detailSpotFragment == null) detailSpotFragment = new DetailSpotFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, detailSpotFragment);
-                    fab.show();}
-                else if (id == R.id.nav_allpoints){
-                    if (startGameFragment==null) startGameFragment=new StartGameFragment();
+                    fab.show();
+                } else if (id == R.id.nav_allpoints) {
+                    if (startGameFragment == null) startGameFragment = new StartGameFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, startGameFragment);
-                    fab.show();}
-                else if (id == R.id.nav_settings){
-                    if (settingsFragment==null) settingsFragment=new SettingsFragment();
+                    fab.show();
+                } else if (id == R.id.nav_settings) {
+                    if (settingsFragment == null) settingsFragment = new SettingsFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, settingsFragment);
-                    fab.hide();}
-                else if (id == R.id.nav_callback){
-                    if (callBack == null) callBack = new Callback();
+                    fab.hide();
+                } else if (id == R.id.nav_callback) {
                     fTrans = fTrans.replace(R.id.frgmCont, callBack);
                     fab.hide();
                 }
 
 
             } else {
-                if (loginFragment==null) loginFragment=new LoginFragment();
+                if (loginFragment == null) loginFragment = new LoginFragment();
                 fTrans = fTrans.replace(R.id.frgmCont, loginFragment);
-                Toast.makeText(this,"Для игры необходима авторизация",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Для игры необходима авторизация", Toast.LENGTH_SHORT).show();
             }
-        }else {
-            if (selectCampFragment==null) selectCampFragment=new SelectCampFragment();
+        } else {
+            if (selectCampFragment == null) selectCampFragment = new SelectCampFragment();
             fTrans = fTrans.replace(R.id.frgmCont, selectCampFragment);
-            Toast.makeText(this,"Для игры необходимо выбрать лагерь",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Для игры необходимо выбрать лагерь", Toast.LENGTH_SHORT).show();
         }
         fTrans.addToBackStack(null);
         fTrans.commit();
 
     }
 
+    private void checkServerAlert() {
+        Request request = new Request.Builder()
+                .url(getString(R.string.main_domain) + "artek/alertdata.json")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
 
 
-    class ServerAlert extends AsyncTask<Void, Void, String> {
-
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String resultJson = "";
-        private Context context;
-        private String LOG_TAG = "ServerAlert";
-
-        ServerAlert(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            // получаем данные с внешнего ресурса
-
-
-            try {
-                URL url = new URL("http://lohness.com/artek/alertdata.json");
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuilder buffer = new StringBuilder();
-
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line);
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
                 }
 
-                resultJson = buffer.toString();
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return resultJson;
-        }
+                JSONObject dataJsonObj;
 
-        @Override
-        protected void onPostExecute(String strJson) {
-            super.onPostExecute(strJson);
-
-
-            JSONObject dataJsonObj;
-
-            try {
-                dataJsonObj = new JSONObject(strJson);
-                final int isMsg = dataJsonObj.getInt("msgId");
-                if ((isMsg != 0) && Global.sharedPreferences.getInt(Global.SharedPreferencesTags.ALERT_ID, 0) != isMsg) {
-                    final JSONObject msg = dataJsonObj.getJSONObject("msg");
-                    String header = msg.getString("header");
-                    String body = msg.getString("body");
-                    Boolean isUrl = msg.getBoolean("isUrl");
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-                    dialog = dialog
-                            .setTitle(header)
-                            .setMessage(body + "\n" + msg.getString("url"))
-                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                try {
+                    dataJsonObj = new JSONObject(response.body().toString());
+                    final int isMsg = dataJsonObj.getInt("msgId");
+                    if ((isMsg != 0) && Global.sharedPreferences.getInt(Global.SharedPreferencesTags.ALERT_ID, 0) != isMsg) {
+                        final JSONObject msg = dataJsonObj.getJSONObject("msg");
+                        String header = msg.getString("header");
+                        String body = msg.getString("body");
+                        Boolean isUrl = msg.getBoolean("isUrl");
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                        dialog = dialog
+                                .setTitle(header)
+                                .setMessage(body + "\n" + msg.getString("url"))
+                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.ALERT_ID, isMsg).apply();
+                                    }
+                                });
+                        if (isUrl) {
+                            dialog.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.ALERT_ID, isMsg).apply();
+                                    String url;
+                                    try {
+                                        url = msg.getString("url");
+                                        Intent i = new Intent(Intent.ACTION_VIEW);
+                                        i.setData(Uri.parse(url));
+                                        startActivity(i);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
-                    if (isUrl) {
-                        dialog.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String url;
-                                try {
-                                    url = msg.getString("url");
-                                    Intent i = new Intent(Intent.ACTION_VIEW);
-                                    i.setData(Uri.parse(url));
-                                    context.startActivity(i);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                        }
+                        dialog.setCancelable(true);
+                        dialog.show();
+
                     }
-                    dialog.setCancelable(true);
-                    dialog.show();
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    }
                 }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
+
+        );
     }
 }

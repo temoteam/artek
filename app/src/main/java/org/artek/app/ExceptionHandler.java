@@ -6,34 +6,27 @@ package org.artek.app;
 
 
 import android.content.res.Resources;
-import android.os.AsyncTask;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
+    private final OkHttpClient client = new OkHttpClient();
     private Thread.UncaughtExceptionHandler defaultUEH;
-
-
     private String url;
 
     /*
@@ -56,9 +49,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
 
         writeToFile(stacktrace, filename);
-
-
-            new SendLOG(filename, stacktrace).execute();
+        sendLog(filename, stacktrace);
 
 
         defaultUEH.uncaughtException(t, e);
@@ -76,80 +67,28 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    private class SendLOG extends AsyncTask<String, String, String> {
+    private void sendLog(String filename, String message) {
+        RequestBody formBody = new FormBody.Builder()
+                .add("filename", filename)
+                .add("stacktrace", message)
+                .build();
+        Request request = new Request.Builder()
+                .url(Resources.getSystem().getString(R.string.main_domain) + "/artek/log/upload.php")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .post(formBody)
+                .build();
 
-        String filename;
-        String stacktrace;
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
 
-        SendLOG(String filename, String stacktrace) {
-            this.filename = filename;
-            this.stacktrace = stacktrace;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-
-        @Override
-        protected String doInBackground(String... params) {
-
-
-            String resultToDisplay = "";
-
-
-            try {
-
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(Resources.getSystem().getString(R.string.main_domain) + "/artek/log/upload.php");
-                List<NameValuePair> nvps = new ArrayList<>();
-                nvps.add(new BasicNameValuePair("filename", filename));
-                nvps.add(new BasicNameValuePair("stacktrace", stacktrace));
-
-                try {
-                    httpPost.setEntity(
-                            new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-                    HttpEntity response = httpClient.execute(httpPost).getEntity();
-
-                    try{
-                        InputStream in = response.getContent();
-
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                        StringBuilder str = new StringBuilder();
-                        String line;
-                        while((line = reader.readLine()) != null){
-                            str.append(line).append("\n");
-                        }
-                        in.close();
-                        String resp = str.toString();
-
-                    }
-                    catch(IllegalStateException exc){
-
-                        exc.printStackTrace();
-                    }
-
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            } catch (Exception e) {
-
-                System.out.println(e.getMessage());
-
-                return e.getMessage();
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
 
             }
-            return resultToDisplay;
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-        }
+        });
     }
+
 }

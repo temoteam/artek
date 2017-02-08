@@ -49,8 +49,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -120,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         activity = this;
         Global.initilizate(this);
 
-        checkServerAlert();
+        //checkServerAlert();
 
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
@@ -180,8 +178,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), getString(R.string.gps_not_support), Toast.LENGTH_LONG).show();
             }
         } else {
-            Intent itent = new Intent(this, GCMRegistrationIntentService.class);
-            startService(itent);
+            Intent intent = new Intent(this, GCMRegistrationIntentService.class);
+            startService(intent);
         }
 
 
@@ -211,9 +209,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         select(R.id.nav_news);
 
-        new Updater(this);
+        //new Updater(this);
 
-        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.OFF);
+        //Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.OFF);
 
 
     }
@@ -282,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onSaveInstanceState(outState);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -369,11 +366,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
+                String message = response.body().string();
+                //System.out.print(message);
                 JSONObject dataJsonObj;
 
                 try {
-                    dataJsonObj = new JSONObject(response.body().toString());
+                    dataJsonObj = new JSONObject(message);
                     final int isMsg = dataJsonObj.getInt("msgId");
                     if ((isMsg != 0) && Global.sharedPreferences.getInt(Global.SharedPreferencesTags.ALERT_ID, 0) != isMsg) {
                         final JSONObject msg = dataJsonObj.getJSONObject("msg");

@@ -8,6 +8,7 @@ package org.artek.app;
 import android.content.res.Resources;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,7 +49,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         String filename = timestamp + ".stacktrace";
 
 
-        writeToFile(stacktrace, filename);
+        //writeToFile(stacktrace, filename);
         sendLog(filename, stacktrace);
 
 
@@ -57,8 +58,9 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private void writeToFile(String stacktrace, String filename) {
         try {
-            BufferedWriter bos = new BufferedWriter(new FileWriter(
-                    "logs/" + filename));
+
+            BufferedWriter bos = new BufferedWriter(new FileWriter(new File(
+                    "logs/" + filename)));
             bos.write(stacktrace);
             bos.flush();
             bos.close();

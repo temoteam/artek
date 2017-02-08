@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Artek</string>
 
-    <string name="main_domain">https://azurecom.ru</string>
+    <string name="main_domain">https://azurecom.ru/</string>
     <string name="title_activity_login">Sign in</string>
 
 
@@ -66,13 +66,11 @@
     <string name="update">Update</string>
     <string name="update_later">Update later</string>
     <string name="no_update">No updates available</string>
-    <string name="download">Downloading...</string>
+    <string name="download">Downloading…</string>
 
     <string name="cancel">Cancel</string>
     <string name="proceed">Proceed</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

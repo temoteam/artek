@@ -4,10 +4,10 @@ package org.artek.app.game;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,27 +24,28 @@ import org.artek.app.adapters.PointsReciclerAdapter;
 import org.artek.app.main.NoInternetFragment;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class StartGameFragment extends Fragment {
 
+    private final OkHttpClient client = new OkHttpClient();
     StartGameFragment it;
     private String name = "List";
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private PointsReciclerAdapter mAdapter;
     private NoInternetFragment noInternetFragment;
     private ArrayList<String> titles;
     private ArrayList<String> descriptions;
     private ArrayList<String> urls;
     private ArrayList<Boolean> complited;
-
     private ProgressDialog progressDialog;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,10 +92,10 @@ public class StartGameFragment extends Fragment {
                 })
         );
 
-        HashMap<String, String> parms = new HashMap<String, String>();
+        HashMap<String, String> parms = new HashMap<>();
         parms.put("camp",Global.sharedPreferences.getString(Global.SharedPreferencesTags.CAMP,null));
         parms.put("id",Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null));
-        new GetContent().execute(parms);
+        getData(parms);
 
     }
 
@@ -105,83 +106,83 @@ public class StartGameFragment extends Fragment {
 
     }
 
-    class GetContent extends AsyncTask<HashMap<String,String>, String, Boolean> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Загрузка данных");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-            titles = new ArrayList<String>();
-            descriptions = new ArrayList<String>();
-            urls = new ArrayList<String>();
-            complited = new ArrayList<Boolean>();
-        }
+    private void getData(HashMap<String, String> params) {
 
-        @Override
-        protected Boolean doInBackground(HashMap<String,String>... params) {
-            try {
-                URL url = new URL("https://azurecom.ru/artek/get_achivements.php?camp=" + params[0].get("camp") + "&id=" + params[0].get("id"));
-                InputStream input = url.openStream();
-                Scanner in = new Scanner(input).useDelimiter("<br />");
-                while (in.hasNext()){
-                    String scanString = in.next();
-                    Scanner scan = new Scanner(scanString).useDelimiter(";");
-                    scan.next();
-                    publishProgress(scan.next(), scan.next(), scan.next(), scan.next());
+        final Request request = new Request.Builder()
+                .url(getString(R.string.main_domain) + "/artek/get_achivements.php?camp=" + params.get("camp") + "&id=" + params.get("id"))
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Загрузка данных");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        titles = new ArrayList<>();
+        descriptions = new ArrayList<>();
+        urls = new ArrayList<>();
+        complited = new ArrayList<>();
 
 
-                }
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            titles.add(values[0]);
-
-            descriptions.add(values[1]);
-
-            urls.add(values[2]);
-
-            complited.add(values[3].equals("true"));
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            if (!aBoolean)
-            {
-
-                if (noInternetFragment==null){
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (noInternetFragment == null) {
                     noInternetFragment = new NoInternetFragment();
                     noInternetFragment.setFrom(it);
                 }
-                getFragmentManager().beginTransaction().replace(R.id.frgmCont,noInternetFragment).commit();
+                progressDialog.cancel();
+                getFragmentManager().beginTransaction().replace(R.id.frgmCont, noInternetFragment).commit();
             }
-            else{
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String responseString = response.body().string();
+                String[] points = responseString.split("<br />");
+
+                for (int i = 1; i < points.length; ++i) {
+                    String[] point = points[i].split(";");
+
+
+                    titles.add(point[0]);
+                    descriptions.add(point[1]);
+                    urls.add(point[2]);
+                    complited.add(point[3].equals("true"));
+                }
+
+
                 mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
+                Log.d("po", "1");
 
                 mRecyclerView.setHasFixedSize(true);
-                mLayoutManager = new LinearLayoutManager(getActivity());
+
+                Log.d("po", "2");
+                mLayoutManager = new LinearLayoutManager(getContext());
+
+                Log.d("po", "3");
                 mRecyclerView.setLayoutManager(mLayoutManager);
 
+                Log.d("po", "4");
+
                 mAdapter = new PointsReciclerAdapter(getActivity());
-                mAdapter.init(titles,descriptions,urls,complited);
+
+                Log.d("po", "5");
+                mAdapter.init(titles, descriptions, urls, complited);
+
+                Log.d("po", "6");
                 mRecyclerView.setAdapter(mAdapter);
 
+                Log.d("po", "7");
+                progressDialog.cancel();
+
+                Log.d("po", "8");
+
+
+            }
             }
 
-            progressDialog.hide();
-        }
-        }
+        );
+    }
 
 }

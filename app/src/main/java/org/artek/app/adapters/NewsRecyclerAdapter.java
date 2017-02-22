@@ -18,11 +18,20 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import org.artek.app.Global;
 import org.artek.app.R;
+import org.artek.app.main.NewsFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import tyrantgit.explosionfield.ExplosionField;
 
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.ViewHolder> {
@@ -31,11 +40,15 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     private ImageLoader imageLoader;
     private Activity activity;
 
+    private static OkHttpClient client;
+
     public NewsRecyclerAdapter(List<HashMap<String, String>> countries, Activity activity) {
         this.countries = countries;
         this.activity = activity;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(activity));
+        client= new OkHttpClient();
+
     }
 
     @Override
@@ -51,6 +64,9 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HashMap<String, String> content = countries.get(position);
+
+        holder.wallid = content.get("id");
+        holder.position = position;
 
         String text = content.get("text");
         if (text.length()>150)
@@ -70,11 +86,8 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        String wallid;
-
-
-
-
+        public String wallid;
+        public int position;
         public CardView cw;
         public ImageView logo;
         public TextView text;
@@ -88,7 +101,60 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             cw = (CardView) v.findViewById(R.id.cw);
             logo = (ImageView) v.findViewById(R.id.img);
             like = (ImageView) v.findViewById(R.id.imageView2);
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = "https://api.vk.com/method/likes.add?access_token="+ Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null)+"&v=5.62&item_id="+wallid+"&owner_id=-44235988&type=post";
+                    final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
+
+
+                    client.newCall(request).enqueue(new okhttp3.Callback() {
+                                                        @Override
+                                                        public void onFailure(Call call, IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                        @Override
+                                                        public void onResponse(Call call, Response response) throws IOException {
+                                                            String message = response.body().string();
+                                                            if (message.contains("{\"response\":{\"likes\"")){
+                                                                likes.setText(""+(Integer.parseInt(likes.getText().toString())+1));
+                                                            }
+
+                                                        }
+                                                    }
+
+                    );
+                }
+            });
             repost = (ImageView) v.findViewById(R.id.imageView3);
+            repost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = "https://api.vk.com/method/wall.repost?access_token="+ Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null)+"&v=5.62&object=wall-44235988_"+wallid;
+                    final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
+
+
+                    client.newCall(request).enqueue(new okhttp3.Callback() {
+                                                        @Override
+                                                        public void onFailure(Call call, IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                        @Override
+                                                        public void onResponse(Call call, Response response) throws IOException {
+                                                            String message = response.body().string();
+                                                            Log.i(request.toString(),message);
+                                                            if (message.contains("{\"response\":{\"success")){
+                                                                reposts.setText(""+(Integer.parseInt(reposts.getText().toString())+1));
+                                                            }
+
+                                                        }
+                                                    }
+
+                    );
+                }
+            });
             text = (TextView) v.findViewById(R.id.description);
             likes = (TextView) v.findViewById(R.id.likes);
             reposts = (TextView) v.findViewById(R.id.reposts);

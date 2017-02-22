@@ -69,6 +69,8 @@ public class NewsJSONParser {
             country.put("reposts",jNews.getJSONObject("reposts").getString("count"));
             country.put("text", textName);
             country.put("img", imageLogo);
+            country.put("id",jNews.getString("id"));
+
 
         } catch (JSONException e) {
             e.printStackTrace();

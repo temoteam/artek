@@ -1,6 +1,8 @@
 package org.artek.app.main;
 
 
+import android.util.Log;
+
 import org.artek.app.R;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +14,7 @@ import java.util.List;
 
 public class NewsJSONParser {
 
-    public List<HashMap<String, Object>> parse(JSONObject jObject) {
+    public List<HashMap<String, String>> parse(JSONObject jObject) {
 
         JSONArray jArrayNews = null;
         try {
@@ -23,16 +25,17 @@ public class NewsJSONParser {
         return getArrayNews(jArrayNews);
     }
 
-    private List<HashMap<String, Object>> getArrayNews(JSONArray jArrayNews) {
+    private List<HashMap<String, String>> getArrayNews(JSONArray jArrayNews) {
         int arrayNewsCount = jArrayNews.length();
-        List<HashMap<String, Object>> arrayNewsList = new ArrayList<HashMap<String, Object>>();
-        HashMap<String, Object> news = null;
+        List<HashMap<String, String>> arrayNewsList = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> news = null;
 
         for (int i = 0; i < arrayNewsCount; i++) {
             try {
                 if (i == 0) {
                     i++;
                 }
+
                 news = getNews((JSONObject) jArrayNews.get(i));
                 arrayNewsList.add(news);
             } catch (JSONException e) {
@@ -42,13 +45,12 @@ public class NewsJSONParser {
         return arrayNewsList;
     }
 
-    private HashMap<String, Object> getNews(JSONObject jNews) {
+    private HashMap<String, String> getNews(JSONObject jNews) {
 
-        HashMap<String, Object> country = new HashMap<String, Object>();
+        HashMap<String, String> country = new HashMap<String, String>();
+
         String textName = "";
         String imageLogo = "";
-        String likes = "";
-        String reposts = "";
 
         try {
             String tempName;
@@ -62,15 +64,11 @@ public class NewsJSONParser {
             } catch (Exception e) {
                 imageLogo = "http://ufland.moy.su/camera_a.gif";
             }
-            likes = jNews.getJSONObject("likes").getString("count");
-            reposts = jNews.getJSONObject("reposts").getString("count");
-            String details = "Share: " + reposts + "                Like: "
-                    + likes;
 
+            country.put("likes",jNews.getJSONObject("likes").getString("count"));
+            country.put("reposts",jNews.getJSONObject("reposts").getString("count"));
             country.put("text", textName);
-            country.put("imageLogo", R.drawable.logo);
-            country.put("imageLogo_path", imageLogo);
-            country.put("details", details);
+            country.put("img", imageLogo);
 
         } catch (JSONException e) {
             e.printStackTrace();

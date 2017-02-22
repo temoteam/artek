@@ -71,7 +71,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <!--             GCM Receiver -->
+        <!-- GCM Receiver -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -83,7 +83,7 @@
             </intent-filter>
         </receiver>
 
-        <!--         GCM Receiver Service -->
+        <!-- GCM Receiver Service -->
         <service
             android:name=".GCMPushReceiverService"
             android:exported="false">
@@ -92,7 +92,7 @@
             </intent-filter>
         </service>
 
-        <!--         GCM Registration Intent Service -->
+        <!-- GCM Registration Intent Service -->
         <service
             android:name=".GCMRegistrationIntentService"
             android:exported="false">
@@ -101,7 +101,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".game.PointActivity"></activity>
+        <activity android:name=".game.PointActivity" />
+        <activity android:name=".main.WallActivity"></activity>
     </application>
 
 </manifest>

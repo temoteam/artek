@@ -37,12 +37,14 @@ public class NewsFragment extends Fragment {
 
 
     private final OkHttpClient client = new OkHttpClient();
-    String owner_id = "-44235988";
+    private String owner_id = "-44235988";
     private boolean lol = true;
-    RecyclerView rw;
-    Context baseContext;
-    NoInternetFragment noInternetFragment;
+    private RecyclerView rw;
+    private Context baseContext;
+    private NoInternetFragment noInternetFragment;
     private String name = "News";
+    private RecyclerView.LayoutManager layoutManager;
+    private NewsRecyclerAdapter newsRecyclerAdapter = null;
 
 
     public NewsFragment() {
@@ -53,25 +55,30 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
         setRetainInstance(true);
+        layoutManager = new LinearLayoutManager(getActivity());
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         baseContext = getActivity().getBaseContext();
-        noInternetFragment = new NoInternetFragment();
-        noInternetFragment.setFrom(this);
-        String strUrl = "https://api.vk.com/method/wall.get?owner_id=" + owner_id + "&count=100";
-        downloadTask(strUrl);
+        Log.i("news","resumed");
+
+        if (rw.getLayoutManager()==null)
+            rw.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        if (newsRecyclerAdapter==null)
+             downloadTask("https://api.vk.com/method/wall.get?owner_id=" + owner_id + "&count=100");
+        else
+            rw.setAdapter(newsRecyclerAdapter);
     }
+
 
 
     @Override
@@ -79,7 +86,8 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.fragment_news, container, false);
         rw = (RecyclerView) result.findViewById(R.id.recycler);
-        rw.setLayoutManager(new LinearLayoutManager(getActivity()));
+        noInternetFragment = new NoInternetFragment();
+        noInternetFragment.setFrom(this);
         return result;
     }
 
@@ -141,9 +149,10 @@ public class NewsFragment extends Fragment {
         @Override
         protected void onPostExecute(List<HashMap<String, String>> hashMaps) {
             super.onPostExecute(hashMaps);
-            NewsRecyclerAdapter nra = new NewsRecyclerAdapter(hashMaps,getActivity());
-            Log.i("Parser","post "+hashMaps.size());
-            rw.setAdapter(nra);
+            newsRecyclerAdapter = new NewsRecyclerAdapter(hashMaps,getActivity());
+            //rw.setLayoutManager(layoutManager);
+            rw.setAdapter(newsRecyclerAdapter);
+            Log.i("downloadtask","finished");
         }
     }
 

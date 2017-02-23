@@ -3,6 +3,7 @@ package org.artek.app.adapters;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,8 +42,11 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     private List<HashMap<String, String>> countries ;
     private ImageLoader imageLoader;
     private Activity activity;
-
+    private static Animation click;
     private static OkHttpClient client;
+
+    final int minColor = 200;
+    final int maxColor = 255;
 
     public NewsRecyclerAdapter(List<HashMap<String, String>> countries, Activity activity) {
         this.countries = countries;
@@ -48,6 +54,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(activity));
         client= new OkHttpClient();
+        click = AnimationUtils.loadAnimation(activity, R.anim.click);
 
     }
 
@@ -75,6 +82,8 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         holder.likes.setText(content.get("likes"));
         holder.reposts.setText(content.get("reposts"));
 
+        holder.cw.setBackgroundColor(Color.rgb(minColor + (int)(Math.random() * ((maxColor - minColor) + 1)),minColor + (int)(Math.random() * ((maxColor - minColor) + 1)),minColor + (int)(Math.random() * ((maxColor - minColor) + 1))));
+
         imageLoader.displayImage(content.get("img"), holder.logo);
 
     }
@@ -96,18 +105,20 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         public ImageView like;
         public ImageView repost;
 
+
+
         public ViewHolder(View v) {
             super(v);
             cw = (CardView) v.findViewById(R.id.cw);
+
             logo = (ImageView) v.findViewById(R.id.img);
             like = (ImageView) v.findViewById(R.id.imageView2);
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    like.startAnimation(click);
                     String url = "https://api.vk.com/method/likes.add?access_token="+ Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null)+"&v=5.62&item_id="+wallid+"&owner_id=-44235988&type=post";
                     final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
-
-
                     client.newCall(request).enqueue(new okhttp3.Callback() {
                                                         @Override
                                                         public void onFailure(Call call, IOException e) {
@@ -131,10 +142,9 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             repost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    repost.startAnimation(click);
                     String url = "https://api.vk.com/method/wall.repost?access_token="+ Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN,null)+"&v=5.62&object=wall-44235988_"+wallid;
                     final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
-
-
                     client.newCall(request).enqueue(new okhttp3.Callback() {
                                                         @Override
                                                         public void onFailure(Call call, IOException e) {

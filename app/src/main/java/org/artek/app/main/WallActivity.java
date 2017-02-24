@@ -200,6 +200,7 @@ public class WallActivity extends AppCompatActivity {
 
             }catch(Exception e){
                 e.printStackTrace();
+                activity.finish();
             }
             return null;
         }
@@ -248,8 +249,10 @@ public class WallActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(RecyclerCommentsAdapter recyclerCommentsAdapter) {
             super.onPostExecute(recyclerCommentsAdapter);
-            recyclerCommentsAdapter.init(imageLoader);
-            comments.setAdapter(recyclerCommentsAdapter);
+            if (recyclerCommentsAdapter!=null) {
+                recyclerCommentsAdapter.init(imageLoader);
+                comments.setAdapter(recyclerCommentsAdapter);
+            }
         }
     }
 }

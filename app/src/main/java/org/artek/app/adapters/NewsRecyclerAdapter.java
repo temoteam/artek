@@ -2,8 +2,10 @@ package org.artek.app.adapters;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.main.NewsFragment;
+import org.artek.app.main.WallActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     private List<HashMap<String, String>> countries ;
     private ImageLoader imageLoader;
-    private Activity activity;
+    private static Activity activity;
     private static Animation click;
     private static OkHttpClient client;
 
@@ -74,6 +77,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
         holder.wallid = content.get("id");
         holder.position = position;
+        holder.content = content;
 
         String text = content.get("text");
         if (text.length()>150)
@@ -95,6 +99,8 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        HashMap<String, String> content;
+
         public String wallid;
         public int position;
         public CardView cw;
@@ -104,7 +110,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         public TextView reposts;
         public ImageView like;
         public ImageView repost;
-
 
 
         public ViewHolder(View v) {
@@ -168,6 +173,25 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             text = (TextView) v.findViewById(R.id.description);
             likes = (TextView) v.findViewById(R.id.likes);
             reposts = (TextView) v.findViewById(R.id.reposts);
+
+            View.OnClickListener open = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle data = new Bundle();
+                    data.putString("wallid",wallid);
+                    data.putString("ownerid","-44235988");
+                    data.putString("img",content.get("img"));
+                    data.putString("likes",content.get("likes"));
+                    data.putString("reposts",content.get("reposts"));
+                    data.putString("text",content.get("text"));
+                    Intent intent = new Intent(activity, WallActivity.class);
+                    intent.putExtras(data);
+                    activity.startActivity(intent);
+                }
+            };
+
+            logo.setOnClickListener(open);
+            text.setOnClickListener(open);
         }
     }
 

@@ -59,14 +59,16 @@
                 android:icon="@drawable/ic_settings"
                 android:title="@string/settings"
                 android:gravity="bottom"/>
+
+            <item
+                android:id="@+id/nav_callback"
+                android:icon="@drawable/ic_menu_msg"
+                android:title="Письмо разработчикам"
+                android:gravity="bottom"/>
         </menu>
     </item>
 
-    <item
-        android:id="@+id/nav_callback"
-        android:icon="@drawable/ic_menu_msg"
-        android:title="Письмо разработчикам"
-        android:gravity="bottom"/>
+
 
 
 </menu>

@@ -29,6 +29,10 @@ public class Global {
         public final static String CAMP = "camp";
         public final static String LAST_TOKEN = "last_token";
         public final static String LAST_ID = "last_id";
+        public final static String FIRST_NAME = "first_name";
+        public final static String LAST_NAME = "last_name";
+        public final static String AVA_URL = "ava_img_url";
+        public final static String STATUS = "user_status";
         public final static String THEME_ID = "theme_id";
         public final static String ALERT_ID = "alert_id";
         public final static String GOOGLE_TOKEN = "google_token";

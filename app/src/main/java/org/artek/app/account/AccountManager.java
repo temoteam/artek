@@ -128,7 +128,7 @@ public class AccountManager {
     private void checkToken() {
 
         final Request request = new Request.Builder()
-                .url("https://api.vk.com/method/groups.isMember?access_token=" + vkToken + "&v=5.60&group_id=132787995")
+                .url("https://api.vk.com/method/groups.stats.trackVisitor?access_token=" + vkToken + "&v=5.60")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
@@ -142,7 +142,7 @@ public class AccountManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String answer = response.body().string();
-                if (answer.equals("response: 1")) {
+                if (answer.contains("response")) {
                     checkGroup();
                     Toast.makeText(activity, activity.getString(R.string.success_sign_in), Toast.LENGTH_SHORT).show();
                 } else if (answer.contains("error")) {

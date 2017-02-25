@@ -23,15 +23,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
@@ -45,10 +50,12 @@ import org.artek.app.game.DetailSpotFragment;
 import org.artek.app.game.ScannerQRActivity;
 import org.artek.app.game.StartGameFragment;
 import org.artek.app.game.VisitedFragment;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -74,10 +81,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LoginVKFragment loginVKFragment;
     org.artek.app.main.Callback callBack;
     FloatingActionButton fab;
+    ImageView ava;
+    TextView title;
+    TextView email;
     FragmentTransaction fTrans;
     SelectCampFragment selectCampFragment;
     String name = "MainActivity";
     Tracker mTracker;
+    ImageLoader imageLoader;
     private Snackbar mSnackbar;
     View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
@@ -133,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -186,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        ava = (ImageView) headerLayout.findViewById(R.id.imageView);
+        title = (TextView) headerLayout.findViewById(R.id.name);
+        email = (TextView) headerLayout.findViewById(R.id.email);
+
 
         Global.accountManager.setAppInterface(new Global.appInterface() {
             @Override
@@ -208,6 +225,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         select(R.id.nav_news);
+
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
+
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.FIRST_NAME)){
+            title.setText(Global.sharedPreferences.getString(Global.SharedPreferencesTags.FIRST_NAME,"") + " " + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_NAME,""));
+            email.setText(Global.sharedPreferences.getString(Global.SharedPreferencesTags.STATUS,""));
+            imageLoader.displayImage(Global.sharedPreferences.getString(Global.SharedPreferencesTags.AVA_URL,"http://scontent.cdninstagram.com/t51.2885-19/s150x150/14693871_1109195849129674_3114733999868608512_a.jpg"),ava);
+        }
+
+        getUserInfo();
 
         //new Updater(this);
 
@@ -288,6 +316,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getUserInfo(){
+        final Request request = new Request.Builder()
+                .url("https://api.vk.com/method/users.get?v=5.62&fields=photo_200,status&user_ids=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null))
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String answer = response.body().string();
+                    Log.i("user","https://api.vk.com/method/users.get?v=5.62&fields=photo_200,status&user_ids=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null));
+                    Log.i("user",answer);
+                    JSONObject jUser = new JSONObject(answer).getJSONArray("response").getJSONObject(0);
+                    Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.FIRST_NAME,jUser.getString("first_name"))
+                            .putString(Global.SharedPreferencesTags.LAST_NAME,jUser.getString("last_name"))
+                            .putString(Global.SharedPreferencesTags.AVA_URL,jUser.getString("photo_200"))
+                            .putString(Global.SharedPreferencesTags.STATUS,jUser.getString("status")).apply();
+
+
+                }
+                catch (Exception e){e.printStackTrace();}
+            }
+        });
+
     }
 
     public void select(int id) {

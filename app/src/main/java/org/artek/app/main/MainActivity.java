@@ -50,15 +50,14 @@ import org.artek.app.game.DetailSpotFragment;
 import org.artek.app.game.ScannerQRActivity;
 import org.artek.app.game.StartGameFragment;
 import org.artek.app.game.VisitedFragment;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.CertificatePinner;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -110,6 +109,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         super.onCreate(savedInstanceState);
+        String hostname = "azurecom.ru";
+        CertificatePinner certificatePinner = new CertificatePinner.Builder()
+                .add(hostname, "sha256/fnLO5hIDtJQ6IyUbDbnq6lYrSaOJUufcCK9s01WmfFY=")
+                .build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .certificatePinner(certificatePinner)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(getString(R.string.main_domain))
+                .build();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String a = e.toString();
+                if (a.contains("SSLHandshakeException")) {
+                    finish();
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+            }
+        });
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
@@ -349,6 +373,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
     }
+
 
     public void select(int id) {
 

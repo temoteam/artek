@@ -261,9 +261,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getUserInfo();
 
-        //new Updater(this);
 
-        //Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.OFF);
 
 
     }

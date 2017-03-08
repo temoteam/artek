@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -27,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -165,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -386,7 +391,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     fTrans = fTrans.replace(R.id.frgmCont, visitedFragment);
                     fab.show();
                 } else if (id == R.id.nav_news) {
-                    if (newsFragment == null) newsFragment = new NewsFragment();
+                    if (newsFragment == null){ newsFragment = new NewsFragment();
+                        Log.i("lala","haha");
+                        }
                     fTrans = fTrans.replace(R.id.frgmCont, newsFragment);
                     fab.hide();
                 } else if (id == R.id.nav_dictionary) {

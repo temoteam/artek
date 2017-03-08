@@ -1,16 +1,22 @@
 package org.artek.app.main;
 
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -40,11 +46,17 @@ public class NewsFragment extends Fragment {
     private String owner_id = "-44235988";
     private boolean lol = true;
     private RecyclerView rw;
-    private Context baseContext;
+
     private NoInternetFragment noInternetFragment;
     private String name = "News";
     private RecyclerView.LayoutManager layoutManager;
     private NewsRecyclerAdapter newsRecyclerAdapter = null;
+
+    private AppBarLayout appBar;
+    private FrameLayout fl;
+
+    private float scale;
+
 
 
     public NewsFragment() {
@@ -61,12 +73,15 @@ public class NewsFragment extends Fragment {
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        fl = (FrameLayout) getActivity().findViewById(R.id.frgmCont);
+        appBar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
     }
+
+
 
     @Override
     public void onResume() {
         super.onResume();
-        baseContext = getActivity().getBaseContext();
         Log.i("news","resumed");
 
         if (rw.getLayoutManager()==null)
@@ -88,6 +103,39 @@ public class NewsFragment extends Fragment {
         rw = (RecyclerView) result.findViewById(R.id.recycler);
         noInternetFragment = new NoInternetFragment();
         noInternetFragment.setFrom(this);
+        rw.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                float alpha = appBar.getAlpha();
+                if (dy > 0) {
+                    if (alpha>=0)
+                        alpha= (float) (alpha-0.03);
+                    appBar.setAlpha(alpha);
+
+
+                } else {
+                  //  toolbar.setAlpha(1);
+                    if (alpha<=1)
+                        alpha= (float) (alpha+0.03);
+                    appBar.setAlpha(alpha);
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    // Do something
+                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    // Do something
+                } else {
+                    // Do something
+                }
+            }
+        });
         return result;
     }
 
@@ -119,6 +167,7 @@ public class NewsFragment extends Fragment {
 
         );
     }
+
 
 
 

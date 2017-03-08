@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,9 +8,10 @@
     tools:context="org.artek.app.main.MainActivity"
     android:id="@+id/mainview">
 
-    <include layout="@layout/content_main" />
+
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -25,14 +26,25 @@
     </android.support.design.widget.AppBarLayout>
 
 
+    <FrameLayout
+
+        android:id="@+id/frgmCont"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="60dp"
         android:layout_height="75dp"
+        android:layout_margin="10dp"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_qrcode_scan_white_48dp"
         app:backgroundTint="@color/colorAccent"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-</android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>

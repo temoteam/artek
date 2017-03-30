@@ -47,15 +47,19 @@ public class RecyclerCommentsAdapter extends RecyclerView.Adapter<RecyclerCommen
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.i("filling","start");
         HashMap<String,String> comment = data.get(position);
+        Log.i("map",comment.toString());
         holder.text.setText(comment.get("text"));
+        Log.i("filling","settext");
         if (comment.containsKey("name"))
             holder.name.setText(comment.get("name"));
         else
             holder.name.setText("NONAME");
+        Log.i("filling","tesname");
         if (comment.containsKey("img"))
             imageLoader.displayImage(comment.get("img"),holder.ava);
         else
             holder.ava.setImageResource(R.drawable.artek);
+        Log.i("filling","setimg");
     }
 
     @Override

@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SelectCampFragment selectCampFragment;
     String name = "MainActivity";
     Tracker mTracker;
-    ImageLoader imageLoader;
+    public static ImageLoader imageLoader;
     private Snackbar mSnackbar;
     View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
         ava = (ImageView) headerLayout.findViewById(R.id.imageView);
-        title = (TextView) headerLayout.findViewById(R.id.name);
+        title = (TextView) headerLayout.findViewById(R.id.text);
         email = (TextView) headerLayout.findViewById(R.id.email);
 
 

@@ -18,14 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class RecyclerCommentsAdapter extends RecyclerView.Adapter<RecyclerCommentsAdapter.ViewHolder> {
+public class RecyclerTipsAdapter extends RecyclerView.Adapter<RecyclerTipsAdapter.ViewHolder> {
 
     private List<HashMap<String,String>> data;
 
 
     private ImageLoader imageLoader;
 
-    public RecyclerCommentsAdapter(List<HashMap<String,String>> data) {
+    public RecyclerTipsAdapter(List<HashMap<String,String>> data) {
         this.data = data;
     }
 
@@ -34,10 +34,10 @@ public class RecyclerCommentsAdapter extends RecyclerView.Adapter<RecyclerCommen
     }
 
     @Override
-    public RecyclerCommentsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+    public RecyclerTipsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                 int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_item_comment, parent, false);
+                .inflate(R.layout.recycler_item_tip, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -45,7 +45,6 @@ public class RecyclerCommentsAdapter extends RecyclerView.Adapter<RecyclerCommen
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.i("filling","start");
         HashMap<String,String> comment = data.get(position);
         holder.text.setText(comment.get("text"));
         if (comment.containsKey("name"))
@@ -61,6 +60,7 @@ public class RecyclerCommentsAdapter extends RecyclerView.Adapter<RecyclerCommen
     @Override
     public int getItemCount() {
         return data.size();
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

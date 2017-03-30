@@ -20,7 +20,7 @@ import java.util.List;
 
 public class RecyclerTipsAdapter extends RecyclerView.Adapter<RecyclerTipsAdapter.ViewHolder> {
 
-    private List<HashMap<String,String>> data;
+    public static List<HashMap<String,String>> data;
 
 
     private ImageLoader imageLoader;

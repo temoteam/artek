@@ -113,6 +113,7 @@ public class TipsFragment extends Fragment {
     class TipsGet extends AsyncTask<Void,RecyclerTipsAdapter,Boolean>{
 
         List<HashMap<String,String>> data;
+        boolean needNew = true;
 
         public TipsGet(){
 
@@ -126,10 +127,18 @@ public class TipsFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            data = new ArrayList<>();
+            if (RecyclerTipsAdapter.data==null)
+                data = new ArrayList<>();
+            else {
+                data = RecyclerTipsAdapter.data;
+                data.clear();
+                needNew = false;
+            }
             try {
                 Scanner in = new Scanner(new URL("https://azurecom.ru/artek/get_tips.php").openConnection().getInputStream());
                 JSONArray jsonArray = new JSONArray(in.nextLine());
+
+                String ids = "";
 
                 for (int i = 0;i<jsonArray.length();i++){
                     JSONObject jTip = jsonArray.getJSONObject(i);
@@ -139,16 +148,82 @@ public class TipsFragment extends Fragment {
                     tip.put("mark",jTip.getString("mark"));
                     tip.put("liked",jTip.getString("liked"));
                     tip.put("dliked",jTip.getString("dliked"));
+                    if (ids.equals(""))
+                        ids = tip.get("fromid");
+                    else
+                        ids+=","+tip.get("fromid");
                     data.add(tip);
                 }
 
+                if (needNew)
                 publishProgress(new RecyclerTipsAdapter(data));
+
+
+                List<NameValuePair> pairs = new ArrayList<>();
+                pairs.add(new BasicNameValuePair("v","5.62"));
+                pairs.add(new BasicNameValuePair("fields","photo_200"));
+                pairs.add(new BasicNameValuePair("user_ids",ids));
+
+                JSONArray jArrayUsers = new JSONObject(getQuery(pairs,new URL("https://api.vk.com/method/users.get"))).getJSONArray("response");
+                for (int i = 0;i<jArrayUsers.length();i++) {
+                    JSONObject jUser = jArrayUsers.getJSONObject(i);
+                    String id = jUser.getString("id");
+                    for (int j = 0; j < data.size(); j++) {
+                        HashMap<String, String> tip = data.get(j);
+                        if (id.equals(tip.get("fromid"))){
+                        tip.put("name", jUser.getString("first_name") + " " + jUser.getString("last_name"));
+                        tip.put("img", jUser.getString("photo_200"));
+                        }
+                    }
+
+                }
+
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
                 publishProgress(null);
                 return false;
             }
+        }
+
+        private String getQuery(List<NameValuePair> params,URL url) throws Exception{
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            for (NameValuePair pair : params)
+            {
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+            }
+
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(result.toString());
+            writer.flush();
+            writer.close();
+            os.close();
+            conn.connect();
+            Scanner in = new Scanner(conn.getInputStream());
+            String res = "";
+            while (in.hasNextLine()){
+                if (res.equals("")) res = in.nextLine();
+                else res = res + " " + in.nextLine();
+            }
+            return res;
         }
 
         @Override
@@ -164,6 +239,8 @@ public class TipsFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aVoid) {
             super.onPostExecute(aVoid);
+            if (aVoid)
+                rw.getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -171,6 +248,12 @@ public class TipsFragment extends Fragment {
         String text;
         public SendTip(String text){
             this.text = text;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new TipsGet().execute();
         }
 
         @Override

@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import org.artek.app.ExceptionHandler;
+import org.artek.app.Global;
 import org.artek.app.R;
 
 import java.io.BufferedInputStream;
@@ -26,7 +27,7 @@ import java.util.Scanner;
 class Updater {
 
     private final int THIS_VERSION = 3;
-    private final String LAST_API_FILE_PATCH = Resources.getSystem().getString(R.string.main_domain) + "/artek/update/update.txt";
+    private final String LAST_API_FILE_PATCH = Global.server + "artek/update/update.txt";
     private int lastVertion;
     private String updateFile;
     private String updateURL;
@@ -138,7 +139,7 @@ class Updater {
                 ad.setMessage(activity.getString(R.string.current_version) + THIS_VERSION + activity.getString(R.string.last_version) + lastVertion); // сообщение
                 ad.setPositiveButton(activity.getString(R.string.update), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.main_domain) + "/artek/app/index.php"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Global.server + "artek/app/index.php"));
                         activity.startActivity(intent);
                     }
                 });

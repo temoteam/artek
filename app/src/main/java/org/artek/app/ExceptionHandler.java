@@ -75,7 +75,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
                 .add("stacktrace", message)
                 .build();
         Request request = new Request.Builder()
-                .url(Resources.getSystem().getString(R.string.main_domain) + "/artek/log/upload.php")
+                .url(Global.server + "xartek/log/upload.php")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .post(formBody)
                 .build();

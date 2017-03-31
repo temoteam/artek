@@ -22,7 +22,6 @@ class RadioTextFiller {
 
     RadioTextFiller(TextView textView) {
         this.textView=textView;
-        textView.getRootView().getContext().getString(R.string.main_domain);
         textUpdater();
     }
 
@@ -30,7 +29,7 @@ class RadioTextFiller {
     private void textUpdater() {
 
         final Request request = new Request.Builder()
-                .url(textView.getRootView().getContext().getString(R.string.main_domain) + "lala.php")
+                .url(Global.server + "lala.php")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 

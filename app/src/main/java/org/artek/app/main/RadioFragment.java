@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.artek.app.ExceptionHandler;
+import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.RadioService;
 
@@ -69,7 +70,7 @@ public class RadioFragment extends Fragment {
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         1);
                 String filename = (String) name.getText();
-                DownloadManager.Request r = new DownloadManager.Request(Uri.parse("https://azurecom.ru/radio/"+filename+".mp3"));
+                DownloadManager.Request r = new DownloadManager.Request(Uri.parse(Global.server+"radio/"+filename+".mp3"));
                 r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
                 r.allowScanningByMediaScanner();
                 r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);

@@ -14,6 +14,8 @@ public class Global {
     public static Activity activity;
     public static String nowPlaying;
 
+    public static String server = "http://debug.azurecom.ru/";
+
     public static String SAVED = "qr_saves";
 
     public static void initilizate(Activity activity) {

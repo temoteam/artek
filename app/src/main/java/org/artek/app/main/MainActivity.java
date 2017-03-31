@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
 
         Request request = new Request.Builder()
-                .url(getString(R.string.main_domain))
+                .url(Global.server)
                 .build();
         client.newCall(request).enqueue(new okhttp3.Callback() {
 
@@ -436,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void checkServerAlert() {
         Request request = new Request.Builder()
-                .url(getString(R.string.main_domain) + "artek/alertdata.json")
+                .url(Global.server + "artek/alertdata.json")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 

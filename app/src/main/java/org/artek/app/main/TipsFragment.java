@@ -135,7 +135,7 @@ public class TipsFragment extends Fragment {
                 needNew = false;
             }
             try {
-                Scanner in = new Scanner(new URL("https://azurecom.ru/artek/get_tips.php").openConnection().getInputStream());
+                Scanner in = new Scanner(new URL(Global.server+"artek/get_tips.php").openConnection().getInputStream());
                 JSONArray jsonArray = new JSONArray(in.nextLine());
 
                 String ids = "";
@@ -263,7 +263,7 @@ public class TipsFragment extends Fragment {
                 params.add(new BasicNameValuePair("id", Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null)));
                 params.add(new BasicNameValuePair("text", text));
 
-                URL url = new URL("https://azurecom.ru/artek/add_tip.php");
+                URL url = new URL(Global.server+"artek/add_tip.php");
 
                 StringBuilder result = new StringBuilder();
                 boolean first = true;

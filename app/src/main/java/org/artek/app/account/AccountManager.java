@@ -43,7 +43,7 @@ public class AccountManager {
 
     public AccountManager(Activity activity){
         this.activity = activity;
-        SERVER_URL = activity.getString(R.string.main_domain) + "/artek/";
+        SERVER_URL = Global.server + "artek/";
     }
 
     void login(String vkToken, String vkId) {

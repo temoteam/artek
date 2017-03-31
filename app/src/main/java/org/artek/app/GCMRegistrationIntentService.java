@@ -74,7 +74,7 @@ public class GCMRegistrationIntentService extends IntentService {
         protected Byte doInBackground(Void... params) {
 
             try {
-                rawQuery(new URL(getString(R.string.main_domain) + "/artek/notify/addClient.php?token=" + token));
+                rawQuery(new URL(Global.server + "artek/notify/addClient.php?token=" + token));
 
             } catch (IOException e) {
                 e.printStackTrace();

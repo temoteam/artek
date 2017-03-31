@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Artek</string>
-
-    <string name="main_domain">https://azurecom.ru/</string>
     <string name="title_activity_login">Sign in</string>
 
 

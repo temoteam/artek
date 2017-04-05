@@ -145,9 +145,9 @@ public class TipsFragment extends Fragment {
                     HashMap<String,String> tip = new HashMap<String,String>();
                     tip.put("text",jTip.getString("text"));
                     tip.put("fromid",jTip.getString("fromid"));
-                    tip.put("mark",jTip.getString("mark"));
-                    tip.put("liked",jTip.getString("liked"));
-                    tip.put("dliked",jTip.getString("dliked"));
+                    tip.put("rate",jTip.getString("rating"));
+                    tip.put("id",jTip.getString("id"));
+
                     if (ids.equals(""))
                         ids = tip.get("fromid");
                     else
@@ -231,7 +231,7 @@ public class TipsFragment extends Fragment {
             super.onProgressUpdate(values);
             if (values!=null) {
                 Log.i("setted","true");
-                values[0].init(MainActivity.imageLoader);
+                values[0].init(MainActivity.imageLoader,getActivity());
                 rw.setAdapter(values[0]);
             }
         }

@@ -123,7 +123,7 @@ public class StartGameFragment extends Fragment {
         @Override
         protected Boolean doInBackground(HashMap<String, String>... params) {
             try {
-                URL url = new URL("http://lohness.com/artek/get_achivements.php?camp=" + params[0].get("camp") + "&id=" + params[0].get("id"));
+                URL url = new URL(Global.server+"artek/get_achivements.php?camp=" + params[0].get("camp") + "&id=" + params[0].get("id"));
                 InputStream input = url.openStream();
                 Scanner in = new Scanner(input).useDelimiter("<br />");
                 while (in.hasNext()) {
@@ -146,13 +146,9 @@ public class StartGameFragment extends Fragment {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             titles.add(values[0]);
-
             descriptions.add(values[1]);
-
             urls.add(values[2]);
-
             complited.add(values[3].equals("true"));
-
         }
 
         @Override

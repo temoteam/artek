@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#006064</color>
     <color name="colorAccent">#ff4081</color>
 
-    <color name="colorPrimaryMorskoy">#002d62</color>
+    <color name="colorPrimaryMorskoy">#3F51B5</color>
+    <color name="colorDarkMorskoy">#303F9F</color>
 
-    <color name="colorPrimaryLazyrnoi">#3dbd9a</color>
+    <color name="colorDarkLazyrnoi">#00BCD4</color>
+    <color name="colorPrimaryLazyrnoi">#0097A7</color>
 
-    <color name="colorPrimaryChrystalny">#0055a5</color>
+    <color name="colorPrimaryChrystalny">#673AB7</color>
+    <color name="colorDarkChrystalny">#512DA8</color>
 
-    <color name="colorPrimaryAlmazny">#5bc8d8</color>
+    <color name="colorPrimaryAlmazny">#00BCD4</color>
+    <color name="colorDarkAlmazny">#0097A7</color>
 
-    <color name="colorPrimaryKiparisny">#6d4a9e</color>
+    <color name="colorPrimaryKiparisny">#9C27B0</color>
+    <color name="colorDarkKiparisny">#7B1FA2</color>
 
-    <color name="colorPrimaryLes">#85c440</color>
+    <color name="colorPrimaryLes">#4CAF50</color>
+    <color name="colorDarkLes">#388E3C</color>
 
-    <color name="colorPrimaryMorflot">#4f91cd</color>
+    <color name="colorPrimaryMorflot">#2196F3</color>
+    <color name="colorDarkMorflot">#1976D2</color>
 
-    <color name="colorPrimaryOzerniy">#fdbf26</color>
+    <color name="colorPrimaryOzerniy">#FFEB3B</color>
+    <color name="colorDarkOzerniy">#FBC02D</color>
 
     <color name="colorPrimaryPolevoy">#f68c2b</color>
+    <color name="colorDarkPolevoy">#F57C00</color>
 
-    <color name="colorPrimaryRechnoy">#97c0e6</color>
+    <color name="colorPrimaryRechnoy">#00BCD4</color>
+    <color name="colorDarkRechnoy">#0097A7</color>
 
-    <color name="colorPrimaryYantarny">#ee2f2e</color>
+    <color name="colorPrimaryYantarny">#F44336</color>
+    <color name="colorDarkYantarny">#D32F2F</color>
 
 </resources>

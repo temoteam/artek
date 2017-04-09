@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (!Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
             mSnackbar = Snackbar
-                    .make(this.findViewById(R.id.mainview), "Для игры необходима авторизация", Snackbar.LENGTH_INDEFINITE)
+                    .make(this.findViewById(R.id.mainview), "Для работы необходима авторизация", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Войти с вк", snackbarOnClickListener)
                     .setActionTextColor(Color.parseColor("#ff4081")); // цвет текста у кнопки действия
             mSnackbar.show();
@@ -278,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (backButton == 0) {
             backButton++;
+            Toast.makeText(getApplicationContext(), getString(R.string.exit_press_again), Toast.LENGTH_LONG).show();
         } else {
             super.onBackPressed();
         }
@@ -425,9 +426,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
             } else {
-                if (loginFragment == null) loginFragment = new LoginFragment();
-                fTrans = fTrans.replace(R.id.frgmCont, loginFragment);
-                Toast.makeText(this, "Для игры необходима авторизация", Toast.LENGTH_SHORT).show();
+                //if (loginFragment == null) loginFragment = new LoginFragment();
+                //fTrans = fTrans.replace(R.id.frgmCont, loginFragment);
+                //Toast.makeText(this, "Для игры необходима авторизация", Toast.LENGTH_SHORT).show();
             }
         } else {
             if (selectCampFragment == null) selectCampFragment = new SelectCampFragment();

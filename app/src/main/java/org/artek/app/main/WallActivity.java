@@ -2,8 +2,8 @@ package org.artek.app.main;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,10 +24,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -46,14 +44,10 @@ import okhttp3.Response;
 
 public class WallActivity extends AppCompatActivity {
 
-    private Bundle data;
-
-    private Activity activity;
-
     private static Animation click;
-
     private static OkHttpClient client;
-
+    private Bundle data;
+    private Activity activity;
     private ImageView img;
     private ImageView like;
     private ImageView repost;
@@ -92,57 +86,66 @@ public class WallActivity extends AppCompatActivity {
         ownerId = data.getString("ownerid");
 
         imageLoader.displayImage(data.getString("img"), img);
-        like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                like.startAnimation(click);
-                String url = "https://api.vk.com/method/likes.add?access_token=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN, null) + "&v=5.62&item_id=" + wallId + "&owner_id="+ownerId+"&type=post";
-                final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
-                client.newCall(request).enqueue(new okhttp3.Callback() {
-                                                    @Override
-                                                    public void onFailure(Call call, IOException e) {
-                                                        e.printStackTrace();
-                                                    }
-
-                                                    @Override
-                                                    public void onResponse(Call call, Response response) throws IOException {
-                                                        String message = response.body().string();
-                                                        if (message.contains("{\"response\":{\"likes\"")) {
-                                                            likes.setText("" + (Integer.parseInt(likes.getText().toString()) + 1));
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    like.startAnimation(click);
+                    String url = "https://api.vk.com/method/likes.add?access_token=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN, null) + "&v=5.62&item_id=" + wallId + "&owner_id=" + ownerId + "&type=post";
+                    final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
+                    client.newCall(request).enqueue(new okhttp3.Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            e.printStackTrace();
                                                         }
 
-                                                    }
-                                                }
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String message = response.body().string();
+                            if (message.contains("{\"response\":{\"likes\"")) {
+                                likes.setText("" + (Integer.parseInt(likes.getText().toString()) + 1));
+                            }
 
-                );
-            }
-        });
-        repost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                repost.startAnimation(click);
-                String url = "https://api.vk.com/method/wall.repost?access_token=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN, null) + "&v=5.62&object=wall"+ownerId+"_" + wallId;
-                final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
-                client.newCall(request).enqueue(new okhttp3.Callback() {
-                                                    @Override
-                                                    public void onFailure(Call call, IOException e) {
-                                                        e.printStackTrace();
+                        }
                                                     }
 
-                                                    @Override
-                                                    public void onResponse(Call call, Response response) throws IOException {
-                                                        String message = response.body().string();
-                                                        Log.i(request.toString(), message);
-                                                        if (message.contains("{\"response\":{\"success")) {
-                                                            reposts.setText("" + (Integer.parseInt(reposts.getText().toString()) + 1));
+                    );
+                }
+            });
+            repost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    repost.startAnimation(click);
+                    String url = "https://api.vk.com/method/wall.repost?access_token=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_TOKEN, null) + "&v=5.62&object=wall" + ownerId + "_" + wallId;
+                    final Request request = new Request.Builder().url(url).addHeader("Content-Type", "application/x-www-form-urlencoded").build();
+                    client.newCall(request).enqueue(new okhttp3.Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            e.printStackTrace();
                                                         }
 
-                                                    }
-                                                }
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String message = response.body().string();
+                            Log.i(request.toString(), message);
+                            if (message.contains("{\"response\":{\"success")) {
+                                reposts.setText("" + (Integer.parseInt(reposts.getText().toString()) + 1));
+                            }
 
-                );
-            }
-        });
+                        }
+                                                    }
+
+                    );
+                }
+            });
+        } else {
+            like.setEnabled(false);
+            like.setClickable(false);
+            like.setFocusable(false);
+            repost.setEnabled(false);
+            repost.setClickable(false);
+            repost.setFocusable(false);
+        }
 
         likes.setText(data.getString("likes"));
         reposts.setText(data.getString("reposts"));

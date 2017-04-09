@@ -3,9 +3,11 @@ package org.artek.app.game;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.PointF;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.google.android.gms.analytics.HitBuilders;
@@ -19,6 +21,7 @@ public class ScannerQRActivity extends AppCompatActivity implements QRCodeReader
 
     String scanningURL;
     String name = "QR";
+    boolean hasCamera = false;
     private QRCodeReaderView mydecoderview;
 
     @Override
@@ -33,10 +36,16 @@ public class ScannerQRActivity extends AppCompatActivity implements QRCodeReader
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},1);
-
-
-        mydecoderview = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
-        mydecoderview.setOnQRCodeReadListener(this);
+        int numCameras = Camera.getNumberOfCameras();
+        if (numCameras > 0) {
+            hasCamera = true;
+        }
+        if (hasCamera) {
+            mydecoderview = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
+            mydecoderview.setOnQRCodeReadListener(this);
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.no_camera), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

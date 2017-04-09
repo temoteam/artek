@@ -1,6 +1,8 @@
 package org.artek.app.main;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,16 @@ public class ArtekDetiFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog = dialog
+                .setTitle("Тестовый функционал")
+                .setMessage("В данный момент мы активно работает над добалением этого функционала в приложения, ожидайте обновлений")
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
 
         View v = inflater.inflate(R.layout.fragment_artekdeti, container, false);
         wv = (WebView) v.findViewById(R.id.deti_wv);

@@ -53,5 +53,8 @@
     <string name="cancel">Отмена</string>
     <string name="proceed">Перейти</string>
     <string name="navigation_drawer_open">дравер открыт</string>
-    <string name="artekdeti">Артек дети</string>
+    <string name="navigation_drawer_close">дравер закрыт</string>
+    <string name="no_camera">Необходимо наличие камеры!</string>
+    <string name="exit_press_again">Для выхода нажмите еще раз</string>
+    <string name="artekdeti">Артек Дети</string>
 </resources>

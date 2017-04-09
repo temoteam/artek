@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -40,7 +39,6 @@ public class LoginVKFragment extends Fragment {
         WebView loginVkWeb = (WebView) getView().findViewById(R.id.webView);
         loginVkWeb.setWebViewClient(new VkWebViewClient());
         loginVkWeb.getSettings().setJavaScriptEnabled(true);
-        WebSettings ws = loginVkWeb.getSettings();
         loginVkWeb.loadUrl("https://oauth.vk.com/authorize?client_id=5376108&display=mobile&scope=friends,photos,audio,video,status,notes,wall,groups,messages,offline&redirect_uri=https://oauth.vk.com/blank.html&response_type=token&v=5.59");
     }
 

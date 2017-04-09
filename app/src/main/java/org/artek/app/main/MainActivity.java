@@ -65,6 +65,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static ImageLoader imageLoader;
     private final OkHttpClient client = new OkHttpClient();
     int backButton = 0;
     Activity activity;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LoginFragment loginFragment;
     StartGameFragment startGameFragment;
     LoginVKFragment loginVKFragment;
+    ArtekDetiFragment artekDetiFragment;
     org.artek.app.main.Callback callBack;
     FloatingActionButton fab;
     ImageView ava;
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SelectCampFragment selectCampFragment;
     String name = "MainActivity";
     Tracker mTracker;
-    public static ImageLoader imageLoader;
     private Snackbar mSnackbar;
     View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
@@ -379,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fTrans = getFragmentManager().beginTransaction();
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
             if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
-                // if (true){ //debug
+                //   if (true){ //debug
 
                 if (id == R.id.nav_visited) {
                     if (visitedFragment == null) visitedFragment = new VisitedFragment();
@@ -412,6 +413,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else if (id == R.id.nav_settings) {
                     if (settingsFragment == null) settingsFragment = new SettingsFragment();
                     fTrans = fTrans.replace(R.id.frgmCont, settingsFragment);
+                    fab.hide();
+                } else if (id == R.id.nav_artekdeti) {
+                    if (artekDetiFragment == null) artekDetiFragment = new ArtekDetiFragment();
+                    fTrans = fTrans.replace(R.id.frgmCont, artekDetiFragment);
                     fab.hide();
                 } else if (id == R.id.nav_callback) {
                     fTrans = fTrans.replace(R.id.frgmCont, callBack);

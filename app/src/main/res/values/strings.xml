@@ -15,6 +15,7 @@
     <string name="end_game">End game</string>
     <string name="title_activity_game">Game</string>
     <string name="radio">Radio</string>
+    <string name="artekdeti">Artek Deti</string>
     <string name="dictionary">Dictionary</string>
     <string name="tips">Tips</string>
     <string name="news">News</string>
@@ -68,6 +69,9 @@
 
     <string name="cancel">Cancel</string>
     <string name="proceed">Proceed</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

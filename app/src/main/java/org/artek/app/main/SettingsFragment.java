@@ -1,7 +1,6 @@
 package org.artek.app.main;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import org.artek.app.ExceptionHandler;
 import org.artek.app.Global;
 import org.artek.app.R;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends ArtekFragment {
     private String name = "Settings";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +29,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-
+        super.init(false);
         setRetainInstance(true);
     }
 

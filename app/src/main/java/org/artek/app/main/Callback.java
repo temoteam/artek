@@ -1,7 +1,7 @@
 package org.artek.app.main;
 
 
-import android.app.Fragment;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -32,7 +32,7 @@ import cz.msebera.android.httpclient.Header;
 import static android.app.Activity.RESULT_OK;
 
 
-public class Callback extends Fragment {
+public class Callback extends ArtekFragment {
 
     private static final int PICKFILE_RESULT_CODE = 1;
     EditText callbackMessage;
@@ -52,7 +52,7 @@ public class Callback extends Fragment {
 
 
     public Callback() {
-
+        super.init(true);
     }
 
 
@@ -60,6 +60,7 @@ public class Callback extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_callback, container, false);
     }
 
@@ -74,7 +75,7 @@ public class Callback extends Fragment {
         sendCallback = (Button) getActivity().findViewById(R.id.sendCallback);
 
 
-        ArrayAdapter<String> adapterMethodsReq = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, methodsReq);
+        ArrayAdapter<String> adapterMethodsReq = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, methodsReq);
         adapterMethodsReq.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
@@ -90,7 +91,7 @@ public class Callback extends Fragment {
             }
         });
 
-        ArrayAdapter<String> adapterTypesProblem = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, typesProblem);
+        ArrayAdapter<String> adapterTypesProblem = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, typesProblem);
         adapterTypesProblem.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 

@@ -2,7 +2,6 @@ package org.artek.app.main;
 
 import android.Manifest;
 import android.app.DownloadManager;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,7 @@ import org.artek.app.RadioService;
 import static android.content.Context.DOWNLOAD_SERVICE;
 
 
-public class RadioFragment extends Fragment {
+public class RadioFragment extends ArtekFragment {
 
     boolean isPlaying = false;
     BroadcastReceiver service;
@@ -34,6 +33,7 @@ public class RadioFragment extends Fragment {
     RadioTextFiller radioTextFiller;
     TextView name;
     ImageButton download;
+
 
 
     private View.OnClickListener pausePlay = new View.OnClickListener() {
@@ -122,7 +122,7 @@ public class RadioFragment extends Fragment {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-
+        super.init(false);
         setRetainInstance(true);
     }
 

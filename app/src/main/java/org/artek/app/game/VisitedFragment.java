@@ -1,7 +1,6 @@
 package org.artek.app.game;
 
 
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,13 +22,14 @@ import org.artek.app.R;
 import org.artek.app.RecyclerItemClickListener;
 import org.artek.app.account.AccountManager;
 import org.artek.app.adapters.RecyclerAdapter;
+import org.artek.app.main.ArtekFragment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import tyrantgit.explosionfield.ExplosionField;
 
-public class VisitedFragment extends Fragment implements AccountManager.ReciclerInterface {
+public class VisitedFragment extends ArtekFragment implements AccountManager.ReciclerInterface {
 
     private String name = "Visited";
     private RecyclerView mRecyclerView;
@@ -50,6 +50,10 @@ public class VisitedFragment extends Fragment implements AccountManager.Recicler
 
         return inflater.inflate(R.layout.fragment_visited, null);
 
+    }
+
+    public VisitedFragment(){
+        super.init(true);
     }
 
     @Override

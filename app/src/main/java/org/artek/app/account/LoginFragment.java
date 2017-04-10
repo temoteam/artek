@@ -1,7 +1,6 @@
 package org.artek.app.account;
 
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,18 +11,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.artek.app.R;
+import org.artek.app.main.ArtekFragment;
 
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends ArtekFragment {
 
     public LoginFragment() {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        super.init(false);
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 

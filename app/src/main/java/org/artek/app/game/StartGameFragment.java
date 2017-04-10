@@ -1,7 +1,6 @@
 package org.artek.app.game;
 
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,6 +20,7 @@ import org.artek.app.Global;
 import org.artek.app.R;
 import org.artek.app.RecyclerItemClickListener;
 import org.artek.app.adapters.PointsReciclerAdapter;
+import org.artek.app.main.ArtekFragment;
 import org.artek.app.main.NoInternetFragment;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class StartGameFragment extends Fragment {
+public class StartGameFragment extends ArtekFragment {
 
     StartGameFragment it;
     private String name = "List";
@@ -53,7 +53,12 @@ public class StartGameFragment extends Fragment {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
 
+
         return inflater.inflate(R.layout.fragment_start_game, null);
+    }
+
+    public StartGameFragment(){
+        super.init(true);
     }
 
     @Override

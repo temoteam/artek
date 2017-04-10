@@ -1,7 +1,6 @@
 package org.artek.app.account;
 
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,9 +16,10 @@ import org.artek.app.R;
 
 import org.artek.app.adapters.Camps;
 import org.artek.app.adapters.CampsAdapter;
+import org.artek.app.main.ArtekFragment;
 import org.artek.app.main.MainActivity;
 
-public class SelectCampFragment extends Fragment {
+public class SelectCampFragment extends ArtekFragment {
 
     Global.appInterface appInterface;
 
@@ -38,6 +38,7 @@ public class SelectCampFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.init(false);
     }
 
     public void setAppInterface(Global.appInterface appInterface) {

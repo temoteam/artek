@@ -2,6 +2,11 @@ package org.artek.app.main;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -9,12 +14,24 @@ import com.google.android.gms.analytics.Tracker;
 
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
+import org.artek.app.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class DictFragment extends ListFragment {
+public class DictFragment extends ArtekFragment {
+
+    ListView list;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View result = inflater.inflate(R.layout.fragment_dict, null);
+        list = (ListView) result.findViewById(R.id.list);
+        return result;
+    }
+
     private String name = "Dictionary";
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -154,7 +171,7 @@ public class DictFragment extends ListFragment {
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), myArrList, android.R.layout.simple_list_item_2,
                 new String[]{"Name", "Des"},
                 new int[]{android.R.id.text1, android.R.id.text2});
-        setListAdapter(adapter);
+        list.setAdapter(adapter);
     }
 
     @Override

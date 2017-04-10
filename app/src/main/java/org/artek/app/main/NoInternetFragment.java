@@ -1,7 +1,7 @@
 package org.artek.app.main;
 
 
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +12,9 @@ import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
 
 
-public class NoInternetFragment extends Fragment implements View.OnClickListener {
+public class NoInternetFragment extends ArtekFragment implements View.OnClickListener {
 
-    Fragment from;
+    ArtekFragment from;
     Button reload;
 
 
@@ -22,7 +22,7 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
-    public void setFrom(Fragment from) {
+    public void setFrom(ArtekFragment from) {
         this.from = from;
     }
 
@@ -34,6 +34,7 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
         View result = inflater.inflate(R.layout.fragment_no_internet, container, false);
         reload = (Button) result.findViewById(R.id.reload);
         reload.setOnClickListener(this);
+        super.init(false);
         return result;
     }
 

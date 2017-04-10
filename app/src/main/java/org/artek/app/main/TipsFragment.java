@@ -1,7 +1,6 @@
 package org.artek.app.main;
 
 
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,12 +42,17 @@ import javax.net.ssl.HttpsURLConnection;
 import cz.msebera.android.httpclient.NameValuePair;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
-public class TipsFragment extends Fragment {
+public class TipsFragment extends ArtekFragment {
 
     RecyclerView rw;
     FloatingActionButton fab;
     View.OnClickListener fabListener;
     EditText et;
+
+    public TipsFragment(){
+        super.init(true);
+    }
+
 
 
 
@@ -64,6 +68,7 @@ public class TipsFragment extends Fragment {
         createListners();
         fab.setOnClickListener(fabListener);
         new TipsGet().execute();
+
         return result;
     }
 

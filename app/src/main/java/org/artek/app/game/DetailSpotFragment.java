@@ -1,7 +1,7 @@
 package org.artek.app.game;
 
 
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +13,13 @@ import com.google.android.gms.analytics.Tracker;
 import org.artek.app.AnalyticsApplication;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.R;
+import org.artek.app.main.ArtekFragment;
 
-public class DetailSpotFragment extends Fragment {
+public class DetailSpotFragment extends ArtekFragment {
+
+    public DetailSpotFragment(){
+        super.init(true);
+    }
 
     private String name = "DetailedSpot";
 

@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -89,16 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SelectCampFragment selectCampFragment;
     String name = "MainActivity";
     Tracker mTracker;
-    private Snackbar mSnackbar;
-    View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (loginVKFragment == null) loginVKFragment = new LoginVKFragment();
-            fTrans = getFragmentManager().beginTransaction().replace(R.id.frgmCont, loginVKFragment).addToBackStack(null);
-            fTrans.commit();
-            mSnackbar.dismiss();
-        }
-    };
+
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
@@ -137,18 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
-        View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (loginVKFragment == null) loginVKFragment = new LoginVKFragment();
-                fTrans = getFragmentManager().beginTransaction();
-                fTrans = fTrans.replace(R.id.frgmCont, loginVKFragment);
-                fTrans.addToBackStack(null);
-                fTrans.commit();
-                mSnackbar.dismiss();
 
-            }
-        };
 
 
         activity = this;
@@ -176,14 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
 
-        if (!Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
-            mSnackbar = Snackbar
-                    .make(this.findViewById(R.id.mainview), "Для работы необходима авторизация", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Войти с вк", snackbarOnClickListener)
-                    .setActionTextColor(Color.parseColor("#ff4081")); // цвет текста у кнопки действия
-            mSnackbar.show();
 
-        }
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
 
             //When the broadcast received
@@ -379,61 +351,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, 1);
         fTrans = getFragmentManager().beginTransaction();
+        ArtekFragment artekFragment = null;
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
-            if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
-                //   if (true){ //debug
-
                 if (id == R.id.nav_visited) {
                     if (visitedFragment == null) visitedFragment = new VisitedFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, visitedFragment);
+                    artekFragment=visitedFragment;
                     fab.show();
                 } else if (id == R.id.nav_news) {
                     if (newsFragment == null) newsFragment = new NewsFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, newsFragment);
+                    artekFragment=newsFragment;
                     fab.hide();
                 } else if (id == R.id.nav_dictionary) {
                     if (dictFragment == null) dictFragment = new DictFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, dictFragment);
+                    artekFragment=dictFragment;
                     fab.hide();
                 } else if (id == R.id.nav_tips) {
                     if (tipsFragment == null) tipsFragment = new TipsFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, tipsFragment);
+                    artekFragment=tipsFragment;
                     fab.hide();
                 } else if (id == R.id.nav_radio) {
                     if (radioFragment == null) radioFragment = new RadioFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, radioFragment);
+                    artekFragment=radioFragment;
                     fab.hide();
                 } else if (id == R.id.nav_leaderboard) {
                     if (detailSpotFragment == null) detailSpotFragment = new DetailSpotFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, detailSpotFragment);
+                    artekFragment= detailSpotFragment;
                     fab.show();
                 } else if (id == R.id.nav_allpoints) {
                     if (startGameFragment == null) startGameFragment = new StartGameFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, startGameFragment);
+                    artekFragment= startGameFragment;
                     fab.show();
                 } else if (id == R.id.nav_settings) {
                     if (settingsFragment == null) settingsFragment = new SettingsFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, settingsFragment);
+                    artekFragment= settingsFragment;
                     fab.hide();
                 } else if (id == R.id.nav_artekdeti) {
                     if (artekDetiFragment == null) artekDetiFragment = new ArtekDetiFragment();
-                    fTrans = fTrans.replace(R.id.frgmCont, artekDetiFragment);
+                    artekFragment=  artekDetiFragment;
                     fab.hide();
                 } else if (id == R.id.nav_callback) {
-                    fTrans = fTrans.replace(R.id.frgmCont, callBack);
+                    artekFragment= callBack;
                     fab.hide();
                 }
 
-
-            } else {
-                //if (loginFragment == null) loginFragment = new LoginFragment();
-                //fTrans = fTrans.replace(R.id.frgmCont, loginFragment);
-                //Toast.makeText(this, "Для игры необходима авторизация", Toast.LENGTH_SHORT).show();
-            }
+                Log.i("vkNeed",artekFragment.isNeedVK()+"");
+                if (artekFragment.isNeedVK()) {
+                    if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
+                        fTrans = fTrans.replace(R.id.frgmCont, artekFragment);
+                    } else {
+                        if (loginFragment == null) loginFragment = new LoginFragment();
+                        fTrans = fTrans.replace(R.id.frgmCont, loginFragment);
+                        Toast.makeText(this, "Для использования этого необходима авторизация", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    fTrans = fTrans.replace(R.id.frgmCont, artekFragment);
+                }
         } else {
             if (selectCampFragment == null) selectCampFragment = new SelectCampFragment();
             fTrans = fTrans.replace(R.id.frgmCont, selectCampFragment);
-            Toast.makeText(this, "Для игры необходимо выбрать лагерь", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Необходимо выбрать лагерь", Toast.LENGTH_SHORT).show();
         }
         fTrans.addToBackStack(null);
         fTrans.commit();

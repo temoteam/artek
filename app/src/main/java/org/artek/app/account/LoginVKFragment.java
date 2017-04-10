@@ -1,7 +1,7 @@
 package org.artek.app.account;
 
 
-import android.app.Fragment;
+
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,9 +14,10 @@ import android.webkit.WebViewClient;
 import org.artek.app.ExceptionHandler;
 import org.artek.app.Global;
 import org.artek.app.R;
+import org.artek.app.main.ArtekFragment;
 import org.artek.app.main.NewsFragment;
 
-public class LoginVKFragment extends Fragment {
+public class LoginVKFragment extends ArtekFragment {
 
 
 
@@ -30,6 +31,7 @@ public class LoginVKFragment extends Fragment {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
+        super.init(false);
         return inflater.inflate(R.layout.fragment_login_vk, container, false);
     }
 

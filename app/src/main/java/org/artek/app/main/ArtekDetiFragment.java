@@ -1,7 +1,6 @@
 package org.artek.app.main;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import android.webkit.WebViewClient;
 import org.artek.app.R;
 
 
-public class ArtekDetiFragment extends Fragment {
+public class ArtekDetiFragment extends ArtekFragment {
 
     WebView wv;
 
@@ -26,6 +25,7 @@ public class ArtekDetiFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.init(false);
 
     }
 

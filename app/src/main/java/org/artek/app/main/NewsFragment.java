@@ -1,7 +1,7 @@
 package org.artek.app.main;
 
 
-import android.app.Fragment;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,14 +33,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends ArtekFragment {
 
 
     private final OkHttpClient client = new OkHttpClient();
     private String owner_id = "-44235988";
     private boolean lol = true;
     private RecyclerView rw;
-    private Context baseContext;
     private NoInternetFragment noInternetFragment;
     private String name = "News";
     private RecyclerView.LayoutManager layoutManager;
@@ -54,6 +53,7 @@ public class NewsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.init(false);
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         setRetainInstance(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -66,7 +66,6 @@ public class NewsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        baseContext = getActivity().getBaseContext();
         Log.i("news","resumed");
 
         if (rw.getLayoutManager()==null)

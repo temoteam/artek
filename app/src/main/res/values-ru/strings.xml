@@ -8,7 +8,7 @@
     <string name="all_points">Вы побывали на всех точках</string>
     <string name="click_to_send">Нажмите, чтобы отправить код на сервер</string>
     <string name="cong">Поздравляем</string>
-    <string name="current_version">"Текущая версия: "</string>
+    <string name="current_version">Текущая версия: 0.5-rc</string>
     <string name="dictionary">Глоссарий</string>
     <string name="download">Загрузка...</string>
     <string name="end_game">Закончить игру</string>
@@ -63,4 +63,32 @@
     <string name="navdrawer_services_section">Сервисы</string>
     <string name="navdrawer_settings_section">Настройки</string>
     <string name="feedback">Письмо разработчикам</string>
+    <string name="loading">Загрузка данных</string>
+    <string name="about">О приложении</string>
+
+    <string name="version">Версия приложения</string>
+
+
+    <string name="developer">Разработчики</string>
+    <string name="developer_lol">Шведчиков Алексей</string>
+    <string name="developer_lol_summary">dev@temoteam.ru</string>
+    <string name="developer_lol_link">https://vk.com/alexsvdk</string>
+    <string name="developer_lala">Несененко Срергей</string>
+    <string name="developer_lala_summary">dev@temoteam.ru</string>
+    <string name="developer_lala_link">https://vk.com/id241199506</string>
+    <string name="developer_kek">Шинкарев Андрей</string>
+    <string name="developer_kek_summary">dev@temoteam.ru</string>
+    <string name="developer_kek_link">https://vk.com/rooh1622</string>
+    <string name="temoteam">Темотим</string>
+    <string name="developer_site">Сайт разработчика</string>
+    <string name="developer_site_link" translatable="false">https://temoteam.ru</string>
+    <string name="developer_github_repo">GitHub репозиторий</string>
+    <string name="developer_github_repo_summary" translatable="false">temoteam/artek</string>
+    <string name="developer_github_repo_link" translatable="false">https://github.com/temoteam/artek</string>
+    <string name="developer_google_play">Приложение в Google Play</string>
+    <string name="developer_google_play_link" translatable="false">https://github.com/temoteam/artek</string>
+    <string name="developer_vkontakte">Группа Вконтакте</string>
+    <string name="developer_vkontakte_summary" translatable="false">vk.com/temoteam</string>
+    <string name="developer_vkontakte_link" translatable="false">https://vk.com/temoteam</string>
+
 </resources>

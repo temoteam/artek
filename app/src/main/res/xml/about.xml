@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen
+        android:summary="@string/current_version"
+        android:title="@string/version">
+
+    </PreferenceScreen>
+    <PreferenceCategory android:title="@string/developer">
+
+        <PreferenceScreen
+            android:summary="@string/developer_lol_summary"
+            android:title="@string/developer_lol">
+
+            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@@string/developer_lol_link" />
+            </intent>
+
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:summary="@string/developer_lala_summary"
+            android:title="@string/developer_lala">
+
+            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@string/developer_lala_link" />
+            </intent>
+
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:summary="@string/developer_kek_summary"
+            android:title="@string/developer_kek">
+
+            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@string/developer_kek_link" />
+            </intent>
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/temoteam">
+
+        <PreferenceScreen
+            android:summary="@string/developer_github_repo_summary"
+            android:title="@string/developer_github_repo">
+
+            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@string/developer_github_repo_link" />
+            </intent>
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="@string/developer_vkontakte_summary"
+            android:title="@string/developer_vkontakte">
+
+            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@string/developer_vkontakte_link" />
+            </intent>
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="@string/developer_site_link"
+            android:title="@string/developer_site">
+
+            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@string/developer_site_link" />
+            </intent>
+
+        </PreferenceScreen>
+
+        <PreferenceScreen android:title="@string/developer_google_play">
+
+            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@string/developer_google_play_link" />
+            </intent>
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+</PreferenceScreen>

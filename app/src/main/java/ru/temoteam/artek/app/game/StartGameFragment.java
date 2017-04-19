@@ -24,6 +24,7 @@ import java.util.Scanner;
 import ru.temoteam.artek.app.AnalyticsApplication;
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.RecyclerItemClickListener;
 import ru.temoteam.artek.app.adapters.PointsReciclerAdapter;
 import ru.temoteam.artek.app.main.ArtekFragment;
@@ -115,7 +116,7 @@ public class StartGameFragment extends ArtekFragment {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Загрузка данных");
+            progressDialog.setMessage(getString(R.string.loading));
             progressDialog.setCancelable(false);
             progressDialog.show();
             titles = new ArrayList<String>();

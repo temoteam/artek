@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NewsFragment newsFragment;
     TipsFragment tipsFragment;
     SettingsFragment settingsFragment;
+    AboutFragment aboutFragment;
     VisitedFragment visitedFragment;
     DetailSpotFragment detailSpotFragment;
     RadioFragment radioFragment;
@@ -126,8 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
 
-
-
         activity = this;
         Global.initilizate(this);
 
@@ -151,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, ru.temoteam.artek.app.R.string.navigation_drawer_open, ru.temoteam.artek.app.R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
 
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -224,15 +222,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
 
-        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.FIRST_NAME)){
-            title.setText(Global.sharedPreferences.getString(Global.SharedPreferencesTags.FIRST_NAME,"") + " " + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_NAME,""));
-            email.setText(Global.sharedPreferences.getString(Global.SharedPreferencesTags.STATUS,""));
-            imageLoader.displayImage(Global.sharedPreferences.getString(Global.SharedPreferencesTags.AVA_URL,"http://scontent.cdninstagram.com/t51.2885-19/s150x150/14693871_1109195849129674_3114733999868608512_a.jpg"),ava);
+        if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.FIRST_NAME)) {
+            title.setText(Global.sharedPreferences.getString(Global.SharedPreferencesTags.FIRST_NAME, "") + " " + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_NAME, ""));
+            email.setText(Global.sharedPreferences.getString(Global.SharedPreferencesTags.STATUS, ""));
+            imageLoader.displayImage(Global.sharedPreferences.getString(Global.SharedPreferencesTags.AVA_URL, "http://scontent.cdninstagram.com/t51.2885-19/s150x150/14693871_1109195849129674_3114733999868608512_a.jpg"), ava);
         }
 
         getUserInfo();
-
-
 
 
     }
@@ -265,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Global.activity = this;
 
     }
-
 
 
     @Override
@@ -312,9 +307,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void getUserInfo(){
+    public void getUserInfo() {
         final Request request = new Request.Builder()
-                .url("https://api.vk.com/method/users.get?v=5.62&fields=photo_200,status&user_ids=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null))
+                .url("https://api.vk.com/method/users.get?v=5.62&fields=photo_200,status&user_ids=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID, null))
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
@@ -328,17 +323,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String answer = response.body().string();
-                    Log.i("user","https://api.vk.com/method/users.get?v=5.62&fields=photo_200,status&user_ids=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null));
-                    Log.i("user",answer);
+                    Log.i("user", "https://api.vk.com/method/users.get?v=5.62&fields=photo_200,status&user_ids=" + Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID, null));
+                    Log.i("user", answer);
                     JSONObject jUser = new JSONObject(answer).getJSONArray("response").getJSONObject(0);
-                    Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.FIRST_NAME,jUser.getString("first_name"))
-                            .putString(Global.SharedPreferencesTags.LAST_NAME,jUser.getString("last_name"))
-                            .putString(Global.SharedPreferencesTags.AVA_URL,jUser.getString("photo_200"))
-                            .putString(Global.SharedPreferencesTags.STATUS,jUser.getString("status")).apply();
+                    Global.sharedPreferences.edit().putString(Global.SharedPreferencesTags.FIRST_NAME, jUser.getString("first_name"))
+                            .putString(Global.SharedPreferencesTags.LAST_NAME, jUser.getString("last_name"))
+                            .putString(Global.SharedPreferencesTags.AVA_URL, jUser.getString("photo_200"))
+                            .putString(Global.SharedPreferencesTags.STATUS, jUser.getString("status")).apply();
 
 
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                catch (Exception e){e.printStackTrace();}
             }
         });
 
@@ -352,60 +348,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ArtekFragment artekFragment = null;
         if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.CAMP)) {
             if (id == ru.temoteam.artek.app.R.id.nav_visited) {
-                    if (visitedFragment == null) visitedFragment = new VisitedFragment();
-                    artekFragment=visitedFragment;
-                    fab.show();
+                if (visitedFragment == null) visitedFragment = new VisitedFragment();
+                artekFragment = visitedFragment;
+                fab.show();
             } else if (id == ru.temoteam.artek.app.R.id.nav_news) {
-                    if (newsFragment == null) newsFragment = new NewsFragment();
-                    artekFragment=newsFragment;
-                    fab.hide();
+                if (newsFragment == null) newsFragment = new NewsFragment();
+                artekFragment = newsFragment;
+                fab.hide();
             } else if (id == ru.temoteam.artek.app.R.id.nav_dictionary) {
-                    if (dictFragment == null) dictFragment = new DictFragment();
-                    artekFragment=dictFragment;
-                    fab.hide();
+                if (dictFragment == null) dictFragment = new DictFragment();
+                artekFragment = dictFragment;
+                fab.hide();
             } else if (id == ru.temoteam.artek.app.R.id.nav_tips) {
-                    if (tipsFragment == null) tipsFragment = new TipsFragment();
-                    artekFragment=tipsFragment;
-                    fab.hide();
+                if (tipsFragment == null) tipsFragment = new TipsFragment();
+                artekFragment = tipsFragment;
+                fab.hide();
             } else if (id == ru.temoteam.artek.app.R.id.nav_radio) {
-                    if (radioFragment == null) radioFragment = new RadioFragment();
-                    artekFragment=radioFragment;
-                    fab.hide();
+                if (radioFragment == null) radioFragment = new RadioFragment();
+                artekFragment = radioFragment;
+                fab.hide();
             } else if (id == ru.temoteam.artek.app.R.id.nav_leaderboard) {
-                    if (detailSpotFragment == null) detailSpotFragment = new DetailSpotFragment();
-                    artekFragment= detailSpotFragment;
-                    fab.show();
+                if (detailSpotFragment == null) detailSpotFragment = new DetailSpotFragment();
+                artekFragment = detailSpotFragment;
+                fab.show();
             } else if (id == ru.temoteam.artek.app.R.id.nav_allpoints) {
-                    if (startGameFragment == null) startGameFragment = new StartGameFragment();
-                    artekFragment= startGameFragment;
-                    fab.show();
+                if (startGameFragment == null) startGameFragment = new StartGameFragment();
+                artekFragment = startGameFragment;
+                fab.show();
             } else if (id == ru.temoteam.artek.app.R.id.nav_settings) {
-                    if (settingsFragment == null) settingsFragment = new SettingsFragment();
-                    artekFragment= settingsFragment;
-                    fab.hide();
+                if (settingsFragment == null) settingsFragment = new SettingsFragment();
+                artekFragment = settingsFragment;
+                fab.hide();
+            } else if (id == ru.temoteam.artek.app.R.id.nav_about) {
+                if (aboutFragment == null) aboutFragment = new AboutFragment();
+                fab.hide();
+
+                fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, aboutFragment);
+                fTrans.addToBackStack(null);
+                fTrans.commit();
+                return;
+
             } else if (id == ru.temoteam.artek.app.R.id.nav_artekdeti) {
-                    if (artekDetiFragment == null) artekDetiFragment = new ArtekDetiFragment();
-                    artekFragment=  artekDetiFragment;
-                    fab.hide();
-            } else if (id == ru.temoteam.artek.app.R.id.nav_callback)  {
+                if (artekDetiFragment == null) artekDetiFragment = new ArtekDetiFragment();
+                artekFragment = artekDetiFragment;
+                fab.hide();
+            } else if (id == ru.temoteam.artek.app.R.id.nav_callback) {
                 if (callBack == null) callBack = new ru.temoteam.artek.app.main.Callback();
-                    artekFragment= callBack;
-                    fab.hide();
-                }
+                artekFragment = callBack;
+                fab.hide();
+            }
 
 
-                if (artekFragment.isNeedVK()) {
-                    if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
-                        fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, artekFragment);
-                    } else {
-                        if (loginFragment == null) loginFragment = new LoginFragment();
-                        fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, loginFragment);
-                        Toast.makeText(this, "Для использования этого необходима авторизация", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else {
+            if (artekFragment.isNeedVK()) {
+                if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
                     fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, artekFragment);
+                } else {
+                    if (loginFragment == null) loginFragment = new LoginFragment();
+                    fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, loginFragment);
+                    Toast.makeText(this, "Для использования этого необходима авторизация", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, artekFragment);
+            }
         } else {
             if (selectCampFragment == null) selectCampFragment = new SelectCampFragment();
             fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, selectCampFragment);
@@ -424,61 +428,61 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                }
+                                            @Override
+                                            public void onFailure(Call call, IOException e) {
+                                                e.printStackTrace();
+                                            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String message = response.body().string();
-                //System.out.print(message);
-                JSONObject dataJsonObj;
+                                            @Override
+                                            public void onResponse(Call call, Response response) throws IOException {
+                                                String message = response.body().string();
+                                                //System.out.print(message);
+                                                JSONObject dataJsonObj;
 
-                try {
-                    dataJsonObj = new JSONObject(message);
-                    final int isMsg = dataJsonObj.getInt("msgId");
-                    if ((isMsg != 0) && Global.sharedPreferences.getInt(Global.SharedPreferencesTags.ALERT_ID, 0) != isMsg) {
-                        final JSONObject msg = dataJsonObj.getJSONObject("msg");
-                        String header = msg.getString("header");
-                        String body = msg.getString("body");
-                        Boolean isUrl = msg.getBoolean("isUrl");
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                        dialog = dialog
-                                .setTitle(header)
-                                .setMessage(body + "\n" + msg.getString("url"))
-                                .setNegativeButton(ru.temoteam.artek.app.R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.ALERT_ID, isMsg).apply();
-                                    }
-                                });
-                        if (isUrl) {
-                            dialog.setPositiveButton(ru.temoteam.artek.app.R.string.proceed, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String url;
-                                    try {
-                                        url = msg.getString("url");
-                                        Intent i = new Intent(Intent.ACTION_VIEW);
-                                        i.setData(Uri.parse(url));
-                                        startActivity(i);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                        }
-                        dialog.setCancelable(true);
-                        dialog.show();
+                                                try {
+                                                    dataJsonObj = new JSONObject(message);
+                                                    final int isMsg = dataJsonObj.getInt("msgId");
+                                                    if ((isMsg != 0) && Global.sharedPreferences.getInt(Global.SharedPreferencesTags.ALERT_ID, 0) != isMsg) {
+                                                        final JSONObject msg = dataJsonObj.getJSONObject("msg");
+                                                        String header = msg.getString("header");
+                                                        String body = msg.getString("body");
+                                                        Boolean isUrl = msg.getBoolean("isUrl");
+                                                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                                                        dialog = dialog
+                                                                .setTitle(header)
+                                                                .setMessage(body + "\n" + msg.getString("url"))
+                                                                .setNegativeButton(ru.temoteam.artek.app.R.string.cancel, new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialog, int which) {
+                                                                        Global.sharedPreferences.edit().putInt(Global.SharedPreferencesTags.ALERT_ID, isMsg).apply();
+                                                                    }
+                                                                });
+                                                        if (isUrl) {
+                                                            dialog.setPositiveButton(ru.temoteam.artek.app.R.string.proceed, new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    String url;
+                                                                    try {
+                                                                        url = msg.getString("url");
+                                                                        Intent i = new Intent(Intent.ACTION_VIEW);
+                                                                        i.setData(Uri.parse(url));
+                                                                        startActivity(i);
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                        dialog.setCancelable(true);
+                                                        dialog.show();
 
-                    }
+                                                    }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    }
-                }
-            }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
 
         );
     }

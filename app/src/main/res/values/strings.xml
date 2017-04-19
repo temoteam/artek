@@ -60,7 +60,7 @@
     <string name="click_to_send">Click to send code on server</string>
 
     <string name="update_available">Update available!</string>
-    <string name="current_version">Current version is</string>
+    <string name="current_version">Current version is 0.5-rc</string>
     <string name="last_version">, Last version</string>
     <string name="update">Update</string>
     <string name="update_later">Update later</string>
@@ -77,6 +77,37 @@
     <string name="navdrawer_services_section">Services</string>
     <string name="navdrawer_settings_section">Settings</string>
     <string name="feedback">Leave feedback</string>
+    <string name="loading">Loading</string>
+
+    <string name="version">App version</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="developer">Developers</string>
+    <string name="developer_lol">Шведчиков Алексей</string>
+    <string name="developer_lol_summary">dev@temoteam.ru</string>
+    <string name="developer_lol_link">https://vk.com/alexsvdk</string>
+    <string name="developer_lala">Несененко Срергей</string>
+    <string name="developer_lala_summary">dev@temoteam.ru</string>
+    <string name="developer_lala_link">https://vk.com/id241199506</string>
+    <string name="developer_kek">Shinkarev Andrey</string>
+    <string name="developer_kek_summary">dev@temoteam.ru</string>
+    <string name="developer_kek_link">https://vk.com/rooh1622</string>
+    <string name="temoteam" translatable="false">Temoteam</string>
+    <string name="developer_site">Developer website</string>
+    <string name="developer_site_link" translatable="false">https://temoteam.ru</string>
+    <string name="developer_github_repo">GitHub repository</string>
+    <string name="developer_github_repo_summary" translatable="false">temoteam/artek</string>
+    <string name="developer_github_repo_link" translatable="false">https://github.com/temoteam/artek</string>
+    <string name="developer_google_play">Google Play application webpage</string>
+    <string name="developer_google_play_link" translatable="false">https://github.com/temoteam/artek</string>
+    <string name="developer_vkontakte">VK community</string>
+    <string name="developer_vkontakte_summary" translatable="false">vk.com/temoteam</string>
+    <string name="developer_vkontakte_link" translatable="false">https://vk.com/temoteam</string>
+
+    <string name="about">About</string>
 
 
 </resources>

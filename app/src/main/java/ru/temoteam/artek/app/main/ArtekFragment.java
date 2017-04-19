@@ -3,7 +3,7 @@ package ru.temoteam.artek.app.main;
 import android.app.Fragment;
 
 public abstract class ArtekFragment extends Fragment{
-    private boolean needVK;
+    private boolean needVK = false;
 
 
     public void init(boolean needVK){

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.main.ArtekFragment;
 
 
@@ -42,7 +43,7 @@ public class LoginFragment extends ArtekFragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        title = getString(R.string.login_vk);
         Button login_vk = (Button) getView().findViewById(ru.temoteam.artek.app.R.id.imageButtonLoginVk);
         login_vk.setOnClickListener(loginVK);
 

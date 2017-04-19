@@ -33,6 +33,7 @@ public class ArtekDetiFragment extends ArtekFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        title = getString(R.string.artekdeti);
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog = dialog
                 .setTitle("Тестовый функционал")

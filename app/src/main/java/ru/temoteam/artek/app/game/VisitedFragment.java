@@ -21,6 +21,7 @@ import ru.temoteam.artek.app.AnalyticsApplication;
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.FileRW;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.RecyclerItemClickListener;
 import ru.temoteam.artek.app.account.AccountManager;
 import ru.temoteam.artek.app.adapters.RecyclerAdapter;
@@ -50,6 +51,7 @@ public class VisitedFragment extends ArtekFragment implements AccountManager.Rec
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
 
+        title = getString(R.string.scanned_points);
         return inflater.inflate(ru.temoteam.artek.app.R.layout.fragment_visited, null);
 
     }

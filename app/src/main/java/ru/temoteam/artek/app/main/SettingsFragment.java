@@ -13,6 +13,7 @@ import com.google.android.gms.analytics.Tracker;
 import ru.temoteam.artek.app.AnalyticsApplication;
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 
 public class SettingsFragment extends ArtekFragment {
     private String name = "Settings";
@@ -21,6 +22,7 @@ public class SettingsFragment extends ArtekFragment {
                              Bundle savedInstanceState) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
+        title = getString(R.string.action_settings);
         return inflater.inflate(ru.temoteam.artek.app.R.layout.fragment_settings, null);
 
     }

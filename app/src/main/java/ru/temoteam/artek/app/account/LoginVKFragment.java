@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.main.ArtekFragment;
 import ru.temoteam.artek.app.main.NewsFragment;
 
@@ -37,6 +38,8 @@ public class LoginVKFragment extends ArtekFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+
+        title = getString(R.string.login_vk);
         WebView loginVkWeb = (WebView) getView().findViewById(ru.temoteam.artek.app.R.id.webView);
         loginVkWeb.setWebViewClient(new VkWebViewClient());
         loginVkWeb.getSettings().setJavaScriptEnabled(true);

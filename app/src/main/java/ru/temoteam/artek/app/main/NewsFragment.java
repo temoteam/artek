@@ -25,6 +25,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import ru.temoteam.artek.app.AnalyticsApplication;
 import ru.temoteam.artek.app.ExceptionHandler;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.adapters.NewsRecyclerAdapter;
 
 
@@ -45,17 +46,21 @@ public class NewsFragment extends ArtekFragment {
 
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.init(false);
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         setRetainInstance(true);
+        title = getString(R.string.news);
         layoutManager = new LinearLayoutManager(getActivity());
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        //
     }
 
     @Override
@@ -82,6 +87,7 @@ public class NewsFragment extends ArtekFragment {
         rw = (RecyclerView) result.findViewById(ru.temoteam.artek.app.R.id.recycler);
         noInternetFragment = new NoInternetFragment();
         noInternetFragment.setFrom(this);
+
         return result;
     }
 

@@ -51,6 +51,7 @@ import ru.temoteam.artek.app.AnalyticsApplication;
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.GCMRegistrationIntentService;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.account.LoginFragment;
 import ru.temoteam.artek.app.account.LoginVKFragment;
 import ru.temoteam.artek.app.account.SelectCampFragment;
@@ -384,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fab.hide();
 
                 fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, aboutFragment);
+                getSupportActionBar().setTitle(getString(R.string.about));
                 fTrans.addToBackStack(null);
                 fTrans.commit();
                 return;
@@ -415,6 +417,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, selectCampFragment);
             Toast.makeText(this, "Необходимо выбрать лагерь", Toast.LENGTH_SHORT).show();
         }
+        getSupportActionBar().setTitle(artekFragment.getTitle());
         fTrans.addToBackStack(null);
         fTrans.commit();
 

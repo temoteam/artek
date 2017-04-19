@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 import ru.temoteam.artek.app.AnalyticsApplication;
 import ru.temoteam.artek.app.ExceptionHandler;
+import ru.temoteam.artek.app.R;
 
 
 public class DictFragment extends ArtekFragment {
@@ -28,6 +29,7 @@ public class DictFragment extends ArtekFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View result = inflater.inflate(ru.temoteam.artek.app.R.layout.fragment_dict, null);
         list = (ListView) result.findViewById(ru.temoteam.artek.app.R.id.list);
+        title = getString(R.string.dictionary);
         return result;
     }
 

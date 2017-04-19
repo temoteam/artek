@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.adapters.Camps;
 import ru.temoteam.artek.app.adapters.CampsAdapter;
 import ru.temoteam.artek.app.main.ArtekFragment;
@@ -37,6 +38,8 @@ public class SelectCampFragment extends ArtekFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.init(false);
+
+        title = getString(R.string.action_camp);
     }
 
     public void setAppInterface(Global.appInterface appInterface) {

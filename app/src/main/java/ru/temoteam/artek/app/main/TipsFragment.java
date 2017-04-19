@@ -37,6 +37,7 @@ import cz.msebera.android.httpclient.message.BasicNameValuePair;
 import ru.temoteam.artek.app.AnalyticsApplication;
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.adapters.RecyclerTipsAdapter;
 
 public class TipsFragment extends ArtekFragment {
@@ -56,6 +57,7 @@ public class TipsFragment extends ArtekFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        title = getString(R.string.tips);
         View result = inflater.inflate(ru.temoteam.artek.app.R.layout.fragment_tips, null);
         rw = (RecyclerView) result.findViewById(ru.temoteam.artek.app.R.id.rw);
         rw.setLayoutManager(new LinearLayoutManager(getActivity()));

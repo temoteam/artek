@@ -57,6 +57,8 @@ public class StartGameFragment extends ArtekFragment {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         }
 
+        title = getString(R.string.list_points);
+
 
         return inflater.inflate(ru.temoteam.artek.app.R.layout.fragment_start_game, null);
     }

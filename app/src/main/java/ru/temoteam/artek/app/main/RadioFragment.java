@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import ru.temoteam.artek.app.ExceptionHandler;
 import ru.temoteam.artek.app.Global;
+import ru.temoteam.artek.app.R;
 import ru.temoteam.artek.app.RadioService;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
@@ -56,6 +57,8 @@ public class RadioFragment extends ArtekFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        title = getString(R.string.radio);
         View result = inflater.inflate(ru.temoteam.artek.app.R.layout.fragment_radio, null);
         download = (ImageButton) result.findViewById(ru.temoteam.artek.app.R.id.Radio_download);
         name = (TextView) result.findViewById(ru.temoteam.artek.app.R.id.Radio_text2);/*

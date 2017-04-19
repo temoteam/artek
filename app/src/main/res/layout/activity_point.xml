@@ -9,13 +9,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.artek.app.game.PointActivity">
+    tools:context="ru.temoteam.artek.app.game.PointActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,28 +23,28 @@
             android:orientation="vertical" >
 
             <TextView
-                android:text="TextView"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/title"
-                tools:text="Аллея саманты смит"
+                android:gravity="center_horizontal"
+                android:text="TextView"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="18sp"
-                android:gravity="center_horizontal"  />
+                tools:text="Аллея саманты смит" />
 
             <ImageView
+                android:id="@+id/logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/logo"
-                android:id="@+id/logo" />
+                app:srcCompat="@drawable/logo" />
 
             <TextView
-                android:text="TextView"
-                android:paddingLeft="7dp"
-                android:paddingRight="7dp"
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/description" />
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
+                android:text="TextView" />
         </LinearLayout>
     </ScrollView>
 

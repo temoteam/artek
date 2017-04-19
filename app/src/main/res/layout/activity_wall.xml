@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:padding="5dp"
-    tools:context="org.artek.app.main.WallActivity">
+    tools:context="ru.temoteam.artek.app.main.WallActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,76 +16,76 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/img"
+                android:layout_marginTop="5dp"
                 tools:text="Описание" />
 
 
 
             <ImageView
-                android:scaleType="fitXY"
+                android:id="@+id/img"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:adjustViewBounds="true"
-                android:id="@+id/img"
-                tools:src="@drawable/logo"
-                android:layout_centerHorizontal="true"
                 android:layout_alignBaseline="@id/title"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
                 android:paddingTop="5dp"
+                android:scaleType="fitXY"
+                tools:src="@drawable/logo"
                 />
 
             <ImageView
+                android:id="@+id/imageView3"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                app:srcCompat="@drawable/repost"
-                android:layout_marginTop="5dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/description"
-                android:id="@+id/imageView3" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                app:srcCompat="@drawable/repost" />
 
             <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                app:srcCompat="@drawable/like"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@id/description"
-                android:id="@+id/imageView2"
-                android:layout_alignParentLeft="true" />
+                android:layout_marginTop="5dp"
+                app:srcCompat="@drawable/like" />
 
             <TextView
+                android:id="@+id/likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@id/imageView2"
                 android:layout_below="@+id/img"
                 android:layout_marginLeft="7dp"
-                android:id="@+id/likes"
-                tools:text="300K"
                 android:layout_toEndOf="@+id/imageView2"
-                android:layout_alignTop="@id/imageView2"
                 android:layout_toRightOf="@+id/imageView2"
+                tools:text="300K"
  />
 
             <TextView
+                android:id="@+id/reposts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@id/imageView3"
                 android:layout_below="@+id/img"
                 android:layout_marginLeft="7dp"
-                android:id="@+id/reposts"
-                tools:text="550K"
                 android:layout_toEndOf="@+id/imageView3"
-                android:layout_alignTop="@id/imageView3"
-                android:layout_toRightOf="@+id/imageView3" />
+                android:layout_toRightOf="@+id/imageView3"
+                tools:text="550K" />
 
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/comments"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/imageView2"
-                android:layout_marginTop="5dp"
-                android:id="@+id/comments" />
+                android:layout_marginTop="5dp" />
 
         </RelativeLayout>
     </ScrollView>

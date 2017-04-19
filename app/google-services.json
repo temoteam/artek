@@ -8,7 +8,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1085000591250:android:069d9a670106be00",
         "android_client_info": {
-          "package_name": "org.artek.app"
+          "package_name": "ru.temoteam.artek.app"
         }
       },
       "oauth_client": [],

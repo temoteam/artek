@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.artek.app.main.NoInternetFragment">
+    tools:context="ru.temoteam.artek.app.main.NoInternetFragment">
 
 
     <ImageView

@@ -6,6 +6,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkMorskoy</item>
     </style>
 
     <style name="AppThemeLazyrny.NoActionBar">
@@ -13,6 +14,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkLazyrnoi</item>
     </style>
 
     <style name="AppThemeChrustalny.NoActionBar">
@@ -20,6 +22,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkChrystalny</item>
     </style>
 
     <style name="AppThemeAlmazny.NoActionBar">
@@ -27,6 +30,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkAlmazny</item>
     </style>
 
     <style name="AppThemeKiparis.NoActionBar">
@@ -34,6 +38,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkKiparisny</item>
     </style>
 
     <style name="AppThemeLes.NoActionBar">
@@ -41,6 +46,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkLes</item>
     </style>
 
     <style name="AppThemeMorflot.NoActionBar">
@@ -48,6 +54,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkMorflot</item>
     </style>
 
     <style name="AppThemeOzer.NoActionBar">
@@ -55,6 +62,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkOzerniy</item>
     </style>
 
 
@@ -63,6 +71,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkPolevoy</item>
     </style>
 
 
@@ -71,6 +80,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkRechnoy</item>
     </style>
 
 
@@ -79,6 +89,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorDarkYantarny</item>
     </style>
 
 

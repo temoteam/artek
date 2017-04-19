@@ -89,7 +89,7 @@ public class RadioService extends Service  implements MediaPlayer.OnCompletionLi
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
 
-        playMp3("http://azurecom.ru:8000/newradio");
+        playMp3("http://azurecom.ru:8000/artek");
     }
 
     @Override

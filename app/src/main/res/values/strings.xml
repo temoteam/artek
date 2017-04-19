@@ -20,8 +20,8 @@
     <string name="tips">Tips</string>
     <string name="news">News</string>
     <string name="settings">Settings</string>
-    <string name="list_points">List points</string>
-    <string name="scanned_points">Got points</string>
+    <string name="list_points">All places</string>
+    <string name="scanned_points">Visited places</string>
     <string name="statistics">Statistics</string>
 
 
@@ -71,6 +71,12 @@
     <string name="proceed">Proceed</string>
     <string name="no_camera">Your device hasn\'t camera</string>
     <string name="exit_press_again">Press again to exit</string>
+
+    <string name="navdrawer_general_section">General</string>
+    <string name="navdrawer_game_section">Game</string>
+    <string name="navdrawer_services_section">Services</string>
+    <string name="navdrawer_settings_section">Settings</string>
+    <string name="feedback">Leave feedback</string>
 
 
 </resources>

@@ -57,4 +57,10 @@
     <string name="no_camera">Необходимо наличие камеры!</string>
     <string name="exit_press_again">Для выхода нажмите еще раз</string>
     <string name="artekdeti">Артек Дети</string>
+
+    <string name="navdrawer_general_section">Главное</string>
+    <string name="navdrawer_game_section">Игра</string>
+    <string name="navdrawer_services_section">Сервисы</string>
+    <string name="navdrawer_settings_section">Настройки</string>
+    <string name="feedback">Письмо разработчикам</string>
 </resources>

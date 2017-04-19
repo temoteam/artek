@@ -387,12 +387,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (artekDetiFragment == null) artekDetiFragment = new ArtekDetiFragment();
                     artekFragment=  artekDetiFragment;
                     fab.hide();
-            } else if (id == ru.temoteam.artek.app.R.id.nav_callback) {
+            } else if (id == ru.temoteam.artek.app.R.id.nav_callback)  {
+                if (callBack == null) callBack = new ru.temoteam.artek.app.main.Callback();
                     artekFragment= callBack;
                     fab.hide();
                 }
 
-                Log.i("vkNeed",artekFragment.isNeedVK()+"");
+
                 if (artekFragment.isNeedVK()) {
                     if (Global.sharedPreferences.contains(Global.SharedPreferencesTags.LAST_TOKEN)) {
                         fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, artekFragment);

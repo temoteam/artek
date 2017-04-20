@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, selectCampFragment);
             Toast.makeText(this, "Необходимо выбрать лагерь", Toast.LENGTH_SHORT).show();
         }
-        getSupportActionBar().setTitle(artekFragment.getTitle());
+        //getSupportActionBar().setTitle(artekFragment.getTitle());
         fTrans.addToBackStack(null);
         fTrans.commit();
 

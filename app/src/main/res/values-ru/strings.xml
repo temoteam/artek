@@ -81,14 +81,8 @@
     <string name="developer_kek_link">https://vk.com/rooh1622</string>
     <string name="temoteam">Темотим</string>
     <string name="developer_site">Сайт разработчика</string>
-    <string name="developer_site_link" translatable="false">https://temoteam.ru</string>
     <string name="developer_github_repo">GitHub репозиторий</string>
-    <string name="developer_github_repo_summary" translatable="false">temoteam/artek</string>
-    <string name="developer_github_repo_link" translatable="false">https://github.com/temoteam/artek</string>
     <string name="developer_google_play">Приложение в Google Play</string>
-    <string name="developer_google_play_link" translatable="false">https://github.com/temoteam/artek</string>
     <string name="developer_vkontakte">Группа Вконтакте</string>
-    <string name="developer_vkontakte_summary" translatable="false">vk.com/temoteam</string>
-    <string name="developer_vkontakte_link" translatable="false">https://vk.com/temoteam</string>
 
 </resources>

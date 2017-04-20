@@ -9,7 +9,7 @@ android {
         applicationId "ru.temoteam.artek.app"
         minSdkVersion 15
         targetSdkVersion 24
-        versionName 'alpha3'
+        versionName '0.5-rc'
     }
     buildTypes {
         release {

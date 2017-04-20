@@ -45,7 +45,7 @@ public class RadioService extends Service  implements MediaPlayer.OnCompletionLi
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         mediaPlayer = new MediaPlayer();
-        playMp3("http://azurecom.ru:8000/newradio");
+        playMp3("http://azurecom.ru:8000/artek");
     }
 
 

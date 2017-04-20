@@ -10,6 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 24
         versionName '0.5-rc'
+        versionCode 1
     }
     buildTypes {
         release {

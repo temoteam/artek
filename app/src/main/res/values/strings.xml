@@ -106,8 +106,14 @@
     <string name="developer_vkontakte">VK community</string>
     <string name="developer_vkontakte_summary" translatable="false">vk.com/temoteam</string>
     <string name="developer_vkontakte_link" translatable="false">https://vk.com/temoteam</string>
+    <string name="privacy_policy_link" translatable="false">https://azurecom.ru/artek/artek_privacy-policy.html</string>
 
     <string name="about">About</string>
+    <string name="continue_btn">Continue</string>
+    <string name="privacy_policy">Privacy policy</string>
+
+
+    <string name="toast_view_exception">Looks like you don\'t have any browsers installed</string>
 
 
 </resources>

@@ -84,5 +84,9 @@
     <string name="developer_github_repo">GitHub репозиторий</string>
     <string name="developer_google_play">Приложение в Google Play</string>
     <string name="developer_vkontakte">Группа Вконтакте</string>
+    <string name="continue_btn">Продолжить</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+
+    <string name="toast_view_exception">Похоже у вас не установлен браузер</string>
 
 </resources>

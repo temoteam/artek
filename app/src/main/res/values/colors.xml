@@ -7,8 +7,8 @@
     <color name="colorPrimaryMorskoy">#3F51B5</color>
     <color name="colorDarkMorskoy">#303F9F</color>
 
-    <color name="colorDarkLazyrnoi">#00BCD4</color>
-    <color name="colorPrimaryLazyrnoi">#0097A7</color>
+    <color name="colorDarkLazyrnoi">#0097A7</color>
+    <color name="colorPrimaryLazyrnoi">#00BCD4</color>
 
     <color name="colorPrimaryChrystalny">#673AB7</color>
     <color name="colorDarkChrystalny">#512DA8</color>

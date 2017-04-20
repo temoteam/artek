@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ru.temoteam.artek.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -38,6 +39,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="ru.temoteam.artek.app.SafeViewActivity"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppTheme.NoActionBar">
+            tools:ignore="UnusedAttribute">
+            <intent-filter>
+                <action android:name="ru.temoteam.artek.app.SafeViewActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
         <activity android:name="ru.temoteam.artek.app.game.ScannerQRActivity" />
 
         <receiver

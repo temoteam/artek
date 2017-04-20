@@ -11,10 +11,10 @@
             android:summary="@string/developer_lol_summary"
             android:title="@string/developer_lol">
 
-            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
                 <extra
                     android:name="data"
-                    android:value="@@string/developer_lol_link" />
+                    android:value="@string/developer_lol_link" />
             </intent>
 
         </PreferenceScreen>
@@ -22,7 +22,7 @@
             android:summary="@string/developer_lala_summary"
             android:title="@string/developer_lala">
 
-            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
                 <extra
                     android:name="data"
                     android:value="@string/developer_lala_link" />
@@ -33,7 +33,7 @@
             android:summary="@string/developer_kek_summary"
             android:title="@string/developer_kek">
 
-            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
                 <extra
                     android:name="data"
                     android:value="@string/developer_kek_link" />
@@ -48,7 +48,7 @@
             android:summary="@string/developer_github_repo_summary"
             android:title="@string/developer_github_repo">
 
-            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
                 <extra
                     android:name="data"
                     android:value="@string/developer_github_repo_link" />
@@ -60,7 +60,7 @@
             android:summary="@string/developer_vkontakte_summary"
             android:title="@string/developer_vkontakte">
 
-            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
                 <extra
                     android:name="data"
                     android:value="@string/developer_vkontakte_link" />
@@ -72,7 +72,7 @@
             android:summary="@string/developer_site_link"
             android:title="@string/developer_site">
 
-            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
                 <extra
                     android:name="data"
                     android:value="@string/developer_site_link" />
@@ -82,10 +82,19 @@
 
         <PreferenceScreen android:title="@string/developer_google_play">
 
-            <intent android:action="pw.thedrhax.mosmetro.activities.SafeViewActivity">
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
                 <extra
                     android:name="data"
                     android:value="@string/developer_google_play_link" />
+            </intent>
+
+        </PreferenceScreen>
+        <PreferenceScreen android:title="@string/privacy_policy">
+
+            <intent android:action="ru.temoteam.artek.app.SafeViewActivity">
+                <extra
+                    android:name="data"
+                    android:value="@string/privacy_policy_link" />
             </intent>
 
         </PreferenceScreen>

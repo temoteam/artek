@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ScannerQRActivity.class);
                 startActivityForResult(intent, 0);
+                select(R.id.nav_visited);
             }
         });
 
@@ -339,6 +341,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                visitedFragment.add(contents);
+            } else if (resultCode == RESULT_CANCELED) {
+
+                Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP, 25, 400);
+                toast.show();
+            }
+        }
     }
 
 

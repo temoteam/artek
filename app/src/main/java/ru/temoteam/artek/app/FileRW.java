@@ -32,6 +32,8 @@ public final class FileRW {
     public void writeFile(String FILENAME, String content) {
         try {
 
+
+
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(context.openFileOutput(FILENAME, MODE_PRIVATE)));
 
             bw.write(content);

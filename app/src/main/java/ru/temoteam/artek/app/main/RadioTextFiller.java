@@ -1,53 +1,50 @@
 package ru.temoteam.artek.app.main;
 
+import android.os.AsyncTask;
 import android.widget.TextView;
 
-import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Scanner;
 
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import ru.temoteam.artek.app.Global;
 
 /**
  * Created by AlexS on 25.12.2016.
  */
 
-class RadioTextFiller {
-    private final OkHttpClient client = new OkHttpClient();
-    private TextView textView;
-
-    RadioTextFiller(TextView textView) {
+public class RadioTextFiller {
+    TextView textView;
+    public RadioTextFiller(TextView textView){
         this.textView=textView;
-        textUpdater();
+        TextUpdating textUpdating = new TextUpdating();
+        textUpdating.execute();
     }
 
-
-    private void textUpdater() {
-
-        final Request request = new Request.Builder()
-                .url(Global.server + "lala.php")
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .build();
+    class TextUpdating extends AsyncTask<Void, String, Void> {
 
 
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
+        @Override
+        protected Void doInBackground(Void... params) {
+            while(true){
+                try {
+                    Thread.sleep(1000);
+                    URL url = new URL(Global.server+"lala.php");
+                    InputStream input = url.openStream();
+                    Scanner in = new Scanner(input);
+                    String answer = in.nextLine();
+                    publishProgress(answer);
+                } catch (Exception e) {
+
                 }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseString = response.body().string();
-                textView.setText(responseString);
-                Global.nowPlaying = responseString;
-
             }
-            }
+        }
 
-        );
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            textView.setText(values[0]);
+        }
     }
 
 

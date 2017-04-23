@@ -382,11 +382,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else if (id == ru.temoteam.artek.app.R.id.nav_radio) {
                 if (radioFragment == null) radioFragment = new RadioFragment();
                 artekFragment = radioFragment;
-                fab.hide();
+                fab.hide();/*
             } else if (id == ru.temoteam.artek.app.R.id.nav_leaderboard) {
                 if (detailSpotFragment == null) detailSpotFragment = new DetailSpotFragment();
                 artekFragment = detailSpotFragment;
-                fab.show();
+                fab.show();*/
             } else if (id == ru.temoteam.artek.app.R.id.nav_allpoints) {
                 if (startGameFragment == null) startGameFragment = new StartGameFragment();
                 artekFragment = startGameFragment;
@@ -421,6 +421,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, artekFragment);
                 } else {
                     if (loginFragment == null) loginFragment = new LoginFragment();
+                    fab.hide();
                     fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, loginFragment);
                     Toast.makeText(this, "Для использования этого необходима авторизация", Toast.LENGTH_SHORT).show();
                 }
@@ -429,10 +430,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else {
             if (selectCampFragment == null) selectCampFragment = new SelectCampFragment();
+            fab.hide();
             fTrans = fTrans.replace(ru.temoteam.artek.app.R.id.frgmCont, selectCampFragment);
             Toast.makeText(this, "Необходимо выбрать лагерь", Toast.LENGTH_SHORT).show();
         }
-        //getSupportActionBar().setTitle(artekFragment.getTitle());
+
         fTrans.addToBackStack(null);
         fTrans.commit();
 

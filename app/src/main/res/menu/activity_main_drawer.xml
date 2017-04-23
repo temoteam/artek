@@ -32,53 +32,53 @@
                 android:id="@+id/nav_visited"
                 android:icon="@drawable/ic_visited"
                 android:title="@string/scanned_points" />
-            <item
-                android:id="@+id/nav_leaderboard"
-                android:icon="@drawable/ic_leaderboard"
-                android:title="@string/statistics" />
+            <!---  <item
+                  android:id="@+id/nav_leaderboard"
+                  android:icon="@drawable/ic_leaderboard"
+                  android:title="@string/statistics" />
+-->
+          </menu>
+      </item>
 
-        </menu>
-    </item>
+      <item android:title="@string/navdrawer_services_section">
+          <menu>
 
-    <item android:title="@string/navdrawer_services_section">
-        <menu>
+              <item
+                  android:id="@+id/nav_radio"
+                  android:gravity="bottom"
+                  android:icon="@drawable/ic_radio"
+                  android:title="@string/radio" />
+              <item
+                  android:id="@+id/nav_artekdeti"
+                  android:gravity="bottom"
+                  android:icon="@drawable/icon_artek"
+                  android:title="@string/artekdeti" />
 
-            <item
-                android:id="@+id/nav_radio"
-                android:gravity="bottom"
-                android:icon="@drawable/ic_radio"
-                android:title="@string/radio" />
-            <item
-                android:id="@+id/nav_artekdeti"
-                android:gravity="bottom"
-                android:icon="@drawable/icon_artek"
-                android:title="@string/artekdeti" />
+          </menu>
+      </item>
 
-        </menu>
-    </item>
+      <item android:title="@string/navdrawer_settings_section">
+          <menu>
+              <item
+                  android:id="@+id/nav_settings"
+                  android:gravity="bottom"
+                  android:icon="@drawable/ic_settings"
+                  android:title="@string/settings" />
+              <item
+                  android:id="@+id/nav_about"
+                  android:gravity="bottom"
+                  android:icon="@drawable/ic_info"
+                  android:title="@string/about" />
 
-    <item android:title="@string/navdrawer_settings_section">
-        <menu>
-            <item
-                android:id="@+id/nav_settings"
-                android:gravity="bottom"
-                android:icon="@drawable/ic_settings"
-                android:title="@string/settings" />
-            <item
-                android:id="@+id/nav_about"
-                android:gravity="bottom"
-                android:icon="@drawable/ic_info"
-                android:title="@string/about" />
-
-            <item
-                android:id="@+id/nav_callback"
-                android:gravity="bottom"
-                android:icon="@drawable/ic_menu_msg"
-                android:title="@string/feedback" />
-        </menu>
-    </item>
-
-
+              <item
+                  android:id="@+id/nav_callback"
+                  android:gravity="bottom"
+                  android:icon="@drawable/ic_menu_msg"
+                  android:title="@string/feedback" />
+          </menu>
+      </item>
 
 
-</menu>
+
+
+  </menu>

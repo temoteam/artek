@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -9,23 +9,24 @@
     android:orientation="vertical">
 
 
-
     <ImageView
-        android:layout_width="775dp"
-        android:layout_height="0dp"
         android:id="@+id/imageLogoOpenArtek"
-        android:src="@drawable/icon_artek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:onClick="open_artek"
-        android:contentDescription="@string/logo_pic"
-        android:cropToPadding="false"
-        android:contextClickable="false"
+        android:adjustViewBounds="false"
         android:baselineAlignBottom="false"
-        android:adjustViewBounds="false" />
+        android:contentDescription="@string/logo_pic"
+        android:contextClickable="false"
+        android:cropToPadding="false"
+        android:onClick="open_artek"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/icon_artek" />
 
 
     <Button
         android:text="Log in"
+        android:layout_marginTop="10dp"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:id="@+id/imageButtonLoginVk"
@@ -34,7 +35,9 @@
         android:allowUndo="false"
         android:drawableRight="@drawable/ic_action_vk_box"
         android:gravity="center_vertical|center_horizontal|center"
-        android:drawablePadding="0dp" />
+        android:drawablePadding="0dp"
+        android:layout_below="@+id/imageLogoOpenArtek"
+        android:layout_centerHorizontal="true" />
 
 
-</LinearLayout>
+</RelativeLayout>

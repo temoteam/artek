@@ -46,6 +46,7 @@ public class TipsFragment extends ArtekFragment {
     FloatingActionButton fab;
     View.OnClickListener fabListener;
     EditText et;
+    NoInternetFragment nif;
     private String name = "Tips";
 
 
@@ -65,6 +66,8 @@ public class TipsFragment extends ArtekFragment {
         createListners();
         fab.setOnClickListener(fabListener);
         new TipsGet().execute();
+        nif = new NoInternetFragment();
+        nif.setFrom(this);
 
         return result;
     }
@@ -244,6 +247,9 @@ public class TipsFragment extends ArtekFragment {
             super.onPostExecute(aVoid);
             if (aVoid)
                 rw.getAdapter().notifyDataSetChanged();
+            else {
+                getFragmentManager().beginTransaction().replace(ru.temoteam.artek.app.R.id.frgmCont, nif).addToBackStack(null).commit();
+            }
         }
     }
 

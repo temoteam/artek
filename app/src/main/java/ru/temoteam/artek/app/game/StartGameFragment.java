@@ -66,19 +66,6 @@ public class StartGameFragment extends ArtekFragment {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
-        Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Image~" + name);
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
         final RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(ru.temoteam.artek.app.R.id.my_recycler_view);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
@@ -102,6 +89,20 @@ public class StartGameFragment extends ArtekFragment {
         parms.put("camp", Global.sharedPreferences.getString(Global.SharedPreferencesTags.CAMP, null));
         parms.put("id",Global.sharedPreferences.getString(Global.SharedPreferencesTags.LAST_ID,null));
         new GetContent().execute(parms);
+    }
+
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+
 
     }
 
